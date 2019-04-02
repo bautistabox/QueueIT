@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - QueueIT</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/myStyles.css"/>
+    <link rel="icon" href="~/favicon.ico"/>
+
+</head>
+<body class="background-grey">
+<header>
+    <nav class="navbar navbar-expand-sm background-dark-grey border-bottom">
+        <div class="container">
+
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link thin shadow-lg" asp-area="" asp-controller="Home" asp-action="Index">
+                            <img class="nav" src="~/home.png" alt=""/>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                            <img class="nav" src="~/quickqlogo.png" alt=""/>
+                        </a>
+                        <div class="dropdown-menu background-grey shadow-lg">
+                            <h4 class="dropdown-header">Quick-Q's</h4>
+                            <button class="dropdown-item secondary-text">Bucket List</button>
+                            <button class="dropdown-item secondary-text">QueueIt</button>
+                            <button class="dropdown-item secondary-text">Dingus</button>
+                        </div>
+                    </li>
+                    <li class="nav-item mx-auto secondary-text">
+                        <img class="tall" src="~/QueueITCenterLogo.png" alt=""/>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link plus dropdown-toggle shadow-lg" data-toggle="dropdown">
+                            <img class="nav" src="~/plus.png" alt=""/>
+                        </a>
+                        <div class="dropdown-menu background-grey shadow-lg">
+                            <h4 class="dropdown-header">Create</h4>
+                            <button class="dropdown-item create secondary-text">
+                                <b>Create Team</b>
+                                <br/>A Team is a group of people who own Queues
+                            </button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item create secondary-text">
+                                <b>Create Queue</b>
+                                <br/>A Queue is a group of tasks that is owned by a team
+                            </button>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link thin dropdown-toggle shadow-lg" data-toggle="dropdown">
+                            <img class="nav" src="~/Bell.png" alt=""/>
+                        </a>
+                        <div class="dropdown-menu background-grey shadow-lg">
+                            <h4 class="dropdown-header">Notifications</h4>
+                            <button class="dropdown-item secondary-text">TEST</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item secondary-text">TEST</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item secondary-text">TEST</button>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link thin dropdown-toggle shadow-lg" data-toggle="dropdown">
+                            <img class="nav" src="~/profile.png" alt=""/>
+                        </a>
+                        <div class="dropdown-menu background-grey shadow-lg">
+                            <h4 class="dropdown-header">First_Name Last_Name</h4>
+                            <button class="dropdown-item secondary-text" type="button">Profile</button>
+                            <button class="dropdown-item secondary-text" type="button">Settings</button>
+                            <form asp-controller="Home" asp-action="Logout" method="post">
+                                <button class="dropdown-item secondary-text" type="submit">Logout</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <partial name="_CookieConsentPartial"/>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer disabled-text background-dark-grey">
+    <div class="container">
+        &copy; 2019 - QueueIT - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+
+<environment include="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
+    </script>
+</environment>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@RenderSection("Scripts", required: false)
+</body>
+</html>

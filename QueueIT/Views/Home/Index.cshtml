@@ -1,0 +1,210 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model RegisterModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="row">
+    <div class="column">
+        <div align="center">
+            <br/><br/>
+            <img class="img-fluid" src="~/q.it1.png" asp-append-version="true" alt=""/>
+            <img class="img-fluid" src="~/WelcometoQIT.png" asp-append-version="true" alt=""/>
+            <div align="center">
+                <h4 class="display-6 disabled-text">The issue tracking system</h4>
+            </div>
+        </div>
+    </div>
+    <div class="column background-light-grey landing-box">
+        
+        <div class="container-col">
+            <form class="border-bottom" asp-controller="Home" asp-action="Login" method="post">
+                <div class="container-row">
+                    <input class="log-input" name="LoginUserName" type="text" required placeholder="Username"
+                           oninvalid="setCustomValidity('Please enter a username')"
+                           onchange="try { setCustomValidity('') } catch (e) {}"/>
+                    <div class="container-col">
+                        <input class="log-input" name="LoginPassword" type="password" required placeholder="password"
+                               oninvalid="setCustomValidity('Please enter a password')"
+                               onchange="try { setCustomValidity('') } catch (e) {}"/>
+                        <label>
+                            <a asp-action="ForgotPassword">Forgot password?</a>
+                        </label>
+                    </div>
+                    <button class="my-btn my-btn-primary shadow" type="submit">Log in</button>
+                </div>
+                @if (ViewData.ModelState.ContainsKey("login-err"))
+                {
+                    <div class="errors" asp-validation-summary="All"></div>
+                }
+
+            </form>
+            <br/>
+            <div class="container-row">
+                <img class="img-fluid" src="~/create_account.png" asp-append-version="true" alt=""/>
+            </div>
+            <div class="container-row">
+                <form asp-controller="Home" asp-action="Register" method="post">
+                    <div class="container-col">
+                        <input asp-for="FirstName" class="reg-input" id="fName" type="text" placeholder="First name"/>
+                        <small class="error" id="fNameErr" hidden="true"></small>
+                        <input asp-for="LastName" class="reg-input" id="lName" type="text" placeholder="Last name"/>
+                        <small class="error" id="lNameErr" hidden="true"></small>
+                        <input asp-for="UserName" class="reg-input" id="uName" type="text" placeholder="UserName"/>
+                        <small class="error" id="uNameErr" hidden="true"></small>
+                        <input asp-for="Email" class="reg-input" id="email" type="email" placeholder="Email"/>
+                        <small>This is used to verify your account.</small>
+                        <small class="error" id="emailErr" hidden="true"></small>
+                        <input asp-for="Password" class="reg-input" id="pass1" type="password" placeholder="Password"/>
+                        <small class="error" id="pass1Err" hidden="true"></small>
+                        <input asp-for="ConfirmPassword" class="reg-input" id="pass2" type="password" placeholder="Confirm password"/>
+                        <small class="error" id="pass2Err" hidden="true"></small>
+                        <div align="center">
+                            <br/>
+                            <button id="regBtn" class="btn my-btn-primary shadow">Create account</button>
+                        </div>
+                        @if (ViewData.ModelState.ContainsKey("reg-err"))
+                        {
+                            <br/>
+                            <div class="errors" asp-validation-summary="All"></div>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br/>
+    </div>
+</div>
+<script>
+    window.onload = function() {
+        var fName = document.getElementById('fName');
+        var fNameErr = document.getElementById('fNameErr');
+        var lName = document.getElementById('lName');
+        var lNameErr = document.getElementById('lNameErr');
+        var uName = document.getElementById('uName');
+        var uNameErr = document.getElementById('uNameErr');
+        var email = document.getElementById('email');
+        var emailErr = document.getElementById('emailErr');
+        var password = document.getElementById('pass1');
+        var passwordErr = document.getElementById('pass1Err');
+        var password2 = document.getElementById('pass2');
+        var password2Err = document.getElementById('pass2Err');
+
+        document.getElementById('regBtn').checkRegInput = function() {
+            if (fName.value === "") {
+                fName.style.borderColor = 'red';
+                fNameErr.innerHTML = "Please enter a first name";
+                fNameErr.hidden = false;
+            }
+
+            if (lName.value === "") {
+                lName.style.borderColor = 'red';
+                lNameErr.innerHTML = "Please enter a last name";
+                lNameErr.hidden = false;
+            }
+
+            if (uName.value === "") {
+                uName.style.borderColor = 'red';
+                uNameErr.innerHTML = "Please choose a UserName";
+                uNameErr.hidden = false;
+            }
+
+            if (email.value === "") {
+                email.style.borderColor = 'red';
+                emailErr.innerHTML = "Please enter a valid email";
+                emailErr.hidden = false;
+            }
+
+            if (password.value === "") {
+                password.style.borderColor = 'red';
+                passwordErr.innerHTML = "Please enter a password";
+                passwordErr.hidden = false;
+            }
+
+            if (password.value !== "" && password2.value === "") {
+                password2.style.borderColor = 'red';
+                password2Err.innerHTML = "Please re-enter the same password";
+                password2Err.hidden = false;
+            }
+        }
+
+        fName.onblur = function() {
+            if (fName.value !== "") {
+                fName.style.borderColor = 'darkblue';
+                fNameErr.hidden = true;
+            } else {
+                fName.style.borderColor = 'red';
+                fNameErr.innerHTML = "Please enter a first name";
+                fNameErr.hidden = false;
+            }
+        }
+        lName.onblur = function() {
+            if (lName.value !== "") {
+                lName.style.borderColor = 'darkblue';
+                lNameErr.hidden = true;
+            } else {
+                lName.style.borderColor = 'red';
+                lNameErr.innerHTML = "Please enter a last name";
+                lNameErr.hidden = false;
+            }
+        }
+        uName.onblur = function() {
+            if (uName.value !== "") {
+                uName.style.borderColor = 'darkblue';
+                uNameErr.hidden = true;
+            } else {
+                uNameErr.style.borderColor = 'red';
+                uNameErr.innerHTML = "Please choose a UserName";
+                uNameErr.hidden = false;
+            } // need to check for patterns in the UserName
+        }
+        email.onblur = function() {
+            if (email.value.includes('@@') && email.value.includes('.')) {
+                email.style.borderColor = 'darkblue';
+                emailErr.hidden = true;
+            } else if (email.value.includes('@@')) {
+                email.style.borderColor = 'red';
+                emailErr.innerHTML = "Email must contain . symbol";
+                emailErr.hidden = false;
+            } else if (email.value.includes('.')) {
+                email.style.borderColor = 'red';
+                emailErr.innerHTML = "Email must contain @@ symbol";
+                emailErr.hidden = false;
+            } else {
+                email.style.borderColor = 'red';
+                emailErr.innerHTML = "Email must contain @@ and . symbols";
+                emailErr.hidden = false;
+            }
+        }
+        password.onblur = function() {
+            if (password.value !== "") {
+                if (password.value === password2.value) {
+                    password.style.borderColor = 'darkblue';
+                    passwordErr.hidden = true;
+                }
+            } else {
+                password.style.borderColor = 'red';
+                passwordErr.innerHTML = "Please enter a password";
+                passwordErr.hidden = false;
+            }
+        }
+        password2.onblur = function() {
+            if (password.value === "") {
+                password2.style.borderColor = 'red';
+                password2Err.innerHTML = "Please re-enter the same password";
+                password2Err.hidden = false;
+            } else if (password.value !== password2.value) {
+                password.style.borderColor = 'red';
+                passwordErr.innerHTML = "Passwords do not match";
+                passwordErr.hidden = false;
+                password2.style.borderColor = 'red';
+                password2Err.innerHTML = "Passwords do not match";
+                password2Err.hidden = false;
+            } else if (password2.value === password.value) {
+                password.style.borderColor = 'darkblue';
+                passwordErr.hidden = true;
+                password2.style.borderColor = 'darkblue';
+                password2Err.hidden = true;
+            }
+        }
+    }
+</script>
