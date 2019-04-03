@@ -3,70 +3,82 @@
     Layout = "_LoggedInLayout";
 }
 <br/>
-<div align="center"><h4 class="display-5 primary-text">User Home</h4></div>  
+<div align="center">
+    <h4 class="display-5 primary-text">User Home</h4>
+</div>
 <br/>
-<div class="row" align="center">
-    <div class="home-column-30">
-        <br/><br/>
-        <div class="table">
-            <h4 class="primary-text display-7">
-                <u>Teams</u>
-            </h4>
-            <span class="primary-text">Morningside</span><br/>
-            <span class="primary-text hoverable">RT</span><br/>
-            <button class="my-btn my-btn-secondary shadow"><span class="thick-plus">+</span> Create Team</button>
-        </div>
-        <br/>
-        <div>
-            <h4 class="primary-text display-7">
-                <u>Queues</u>
-            </h4>
+<div class="rounded user-home-bg shadow-lg">
+    <div class="row" align="center">
+        <div class="home-column-30">
+            <br/><br/>
+            <div class="table">
+                <h4 class="primary-text display-7">
+                    <u>Teams</u>
+                </h4>
+                <span class="primary-text">Morningside</span><br/>
+                <span class="primary-text hoverable">RT</span><br/>
+                <button class="my-btn my-btn-secondary" data-toggle="modal" data-target="#CreateTeamModal" aria-hidden="true">
+                    <span class="thick-plus">+</span> Create Team
+                </button>
+            </div>
+            <br/>
             <div>
-                <span class="primary-text">Bucket List</span><br/>
-                <span class="primary-text">QueueIt</span><br/>
-                <span class="primary-text">Dingus</span><br/>
-                <button class="my-btn my-btn-secondary shadow"><span class="thick-plus">+</span> Create Queue</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="home-column-70">
-        <div class="container-col p-10" align="left">
-            <div class="border shadow-lg">
-                <h4 class="display-8 primary-text m-10">Personal</h4>
-                <div class="container-row home-cards">
-                    <div class="card m-10">
-                        <div class="card-body home-card shadow-lg">Dingus</div>
-                    </div>
-                    <div class="card m-10">
-                        <div class="card-body home-card shadow-lg"><span class="thick-plus">+</span> Add a Queue</div>
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-lg">
-                <h4 class="display-8 primary-text m-10">Morningside</h4>
-                <div class="container-row home-cards">
-                    <div class="card m-10">
-                        <div class="card-body home-card shadow-lg">Bucket List</div>
-                    </div>
-                    <div class="card m-10">
-                        <div class="card-body home-card shadow-lg">QueueIt</div>
-                    </div>
-                    <div class="card m-10">
-                        <div class="card-body home-card shadow-lg"><span class="thick-plus">+</span> Add a Queue</div>
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-lg">
-                <h4 class="display-8 primary-text m-10">RT</h4>
-                <div class="container-row home-cards">
-                    <div class="card m-10">
-                        <div class="card-body home-card shadow-lg"><span class="thick-plus">+</span> Add a Queue</div>
-                    </div>
+                <h4 class="primary-text display-7">
+                    <u>Queues</u>
+                </h4>
+                <div>
+                    <span class="primary-text">Bucket List</span><br/>
+                    <span class="primary-text">QueueIt</span><br/>
+                    <span class="primary-text">Dingus</span><br/>
+                    <button class="my-btn my-btn-secondary" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
+                        <span class="thick-plus">+</span> Create Queue
+                    </button>
                 </div>
             </div>
         </div>
+
+        <div class="home-column-70">
+            <div class="container-col p-10 custom-border" align="left">
+                <div>
+                    <h4 class="display-8 primary-text m-10">Personal</h4>
+                    <div class="container-row home-cards">
+                        <div class="card m-10">
+                            <div class="card-body home-card shadow-lg">Dingus</div>
+                        </div>
+                        <div class="card m-10">
+                            <button class="card-body home-card shadow-lg" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
+                                <span class="thick-plus">+</span> Add a Queue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="display-8 primary-text m-10">Morningside</h4>
+                    <div class="container-row home-cards">
+                        <div class="card m-10">
+                            <div class="card-body home-card shadow-lg">Bucket List</div>
+                        </div>
+                        <div class="card m-10">
+                            <div class="card-body home-card shadow-lg">QueueIt</div>
+                        </div>
+                        <div class="card m-10">
+                            <button class="card-body home-card shadow-lg" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
+                                <span class="thick-plus">+</span> Add a Queue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="display-8 primary-text m-10">RT</h4>
+                    <div class="container-row home-cards">
+                        <div class="card m-10">
+                            <button class="card-body home-card shadow-lg" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
+                                <span class="thick-plus">+</span> Add a Queue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
 </div>

@@ -17,7 +17,7 @@
     </environment>
     <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/myStyles.css"/>
-    <link rel="icon" href="~/favicon.ico"/>
+    <link rel="icon" href="~/favicon.png"/>
 
 </head>
 <body class="background-grey">
@@ -52,14 +52,16 @@
                         </a>
                         <div class="dropdown-menu background-grey shadow-lg">
                             <h4 class="dropdown-header">Create</h4>
-                            <button class="dropdown-item create secondary-text">
+                            <button class="dropdown-item create secondary-text" data-toggle="modal"
+                                    data-target="#CreateTeamModal" aria-hidden="true">
                                 <b>Create Team</b>
                                 <br/>A Team is a group of people who own Queues
                             </button>
                             <div class="dropdown-divider"></div>
-                            <button class="dropdown-item create secondary-text">
+                            <button class="dropdown-item create secondary-text" data-toggle="modal"
+                                    data-target="#CreateQueueModal" aria-hidden="true">
                                 <b>Create Queue</b>
-                                <br/>A Queue is a group of tasks that is owned by a team
+                                <br/>A Queue is a group of tasks that are owned by a Team
                             </button>
                         </div>
                     </li>
@@ -100,6 +102,92 @@
         @RenderBody()
     </main>
 </div>
+
+<div class="modal fade" id="CreateTeamModal" tabindex="-1" role="dialog"
+     aria-labelledby="CreateTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content background-grey">
+            <div class="modal-header">
+                <h4 class="modal-title secondary-text" id="CreateTeamModalLabel">Create Team</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true" class="primary-text">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body secondary-text">
+                <form>
+                    <div class="form-group">
+                        <label for="teamName">Team Name</label>
+                        <input type="text" id="teamName" class="form-control" aria-describedby="teamNameHelp" placeholder="Enter team name"/>
+                        <small id="teamNameHelp" class="form-text disabled-text">Choose a team name unique to yourself.</small>
+                        <label for="teamDesc">Team Description</label>
+                        <textarea id="teamDesc" class="form-control" rows="6" cols="50" placeholder="Description (optional)"></textarea>
+                    </div>
+                    <button class="my-btn my-btn-primary right">Create Team</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <small class="disabled-text">A Team is a group of people and their Queues. Work together to complete tasks and organize your workload!</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CreateQueueModal" tabindex="-1" role="dialog"
+     aria-labelledby="CreateQueueModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content background-grey">
+            <div class="modal-header">
+                <h4 class="modal-title primary-text" id="CreateQueueModalLabel">Create Queue</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true" class="primary-text">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body secondary-text">
+                <form>
+                    <div class="form-group">
+                        <label for="queueTitle">Queue Title</label>
+                        <input type="text" class="form-control" id="queueTitle" placeholder="Enter title"/>
+                        <br/>
+                        <label for="teamSelector">Select Team</label>
+                        <div class="input-group">
+                            <select class="custom-select" id="teamSelector" aria-describedby="teamSelectorHelp">
+                                <option selected>Personal</option>
+                                <option>Morningside</option>
+                                <option>RT</option>
+                            </select>
+                        </div>
+                        <p>
+                            <small id="teamSelectorHelp" class="form-text disabled-text">Choose the team that will own this Queue or choose to keep it personal.</small>
+                        </p>
+
+                        <label for="visibilitySelector">Select Visibility</label>
+                        <div class="custom-radio-group" id="visibilitySelector" aria-describedby="visibilitySelectorHelp">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="privateRadio" value="private" checked>
+                                <label class="form-check-label" for="privateRadio">Private</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="publicRadio" value="public">
+                                <label class="form-check-label" for="publicRadio">Public</label>
+                            </div>
+                        </div>
+                        <small id="visibilitySelectorHelp" class="primary-text disabled-text">Public means anyone who visits the team's profile can see this Queue.</small>
+                    </div>
+                    <button class="my-btn my-btn-primary" style="color: #ffffff !important">Create Queue</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <small class="disabled-text">
+                    A Queue is a group of tasks that can be organized into one of four columns:
+                    <b>Todo</b>, <b>Doing</b>, <b>Done</b>, and <b>Blocked</b>.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <footer class="border-top footer disabled-text background-dark-grey">
     <div class="container">

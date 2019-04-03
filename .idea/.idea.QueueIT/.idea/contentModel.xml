@@ -16,6 +16,9 @@
             <e p="AccountController.cs" t="Include" />
           </e>
           <e p="HomeController.cs" t="Include" />
+          <e p="Queues" t="Include">
+            <e p="QueuesController.cs" t="Include" />
+          </e>
         </e>
         <e p="Identity" t="Include">
           <e p="CustomIdentityUserStore.cs" t="Include" />
@@ -76,6 +79,9 @@
             <e p="ResetPassword.cshtml" t="Include" />
             <e p="Success.cshtml" t="Include" />
           </e>
+          <e p="Queues" t="Include">
+            <e p="Show.cshtml" t="Include" />
+          </e>
           <e p="Shared" t="Include">
             <e p="_CookieConsentPartial.cshtml" t="Include" />
             <e p="_Layout.cshtml" t="Include" />
@@ -86,6 +92,11 @@
         </e>
         <e p="wwwroot" t="Include">
           <e p="Bell.png" t="Include" />
+          <e p="big-blk-bg.jpg" t="Include" />
+          <e p="bk-striped-bg.jpg" t="Include" />
+          <e p="black-geo.jpg" t="Include" />
+          <e p="black-striped-background.png" t="Include" />
+          <e p="black-texture-background.jpg" t="Include" />
           <e p="create_account.png" t="Include" />
           <e p="css" t="Include">
             <e p="myStyles.css" t="Include" />
