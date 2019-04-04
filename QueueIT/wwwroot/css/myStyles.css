@@ -200,6 +200,10 @@ div.kanban-col-header {
     padding: 0 0 5px 0;
 }
 
+div.kanban-col-body {
+    background-image: linear-gradient(180deg, #ff3c00, #ff0049);
+}
+
 div.kanban-col-item {
     background-color: #363636;
     margin: 4px 2px 4px 2px;
