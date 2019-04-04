@@ -1,3 +1,4 @@
+@using System.Reflection.Metadata
 @{
     ViewBag.Title = "title";
     Layout = "_LoggedInLayout";
@@ -7,87 +8,159 @@
     <h4 class="display-6 secondary-text">Bucket List | Morningside | Private</h4>
     <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
 </div>
-<div class="kanban">
-    <div class="kanban-col shadow">
+<div class="kanban" id="kanban">
+    <div class="kanban-col shadow" id="todo-col">
         <div class="kanban-col-header">Todo</div>
-        <div class="kanban-col-body">
-            <div class="kanban-col-item">
-                make top page layout button work: personal profile
-            </div>
-            <div class="kanban-col-item">
-                add to user home page layout: list of teams user is a part of
-            </div>
-            <div class="kanban-col-item">
-                add to user home page layout: list of queues user is a part of
-            </div>
-            <div class="kanban-col-item">
-                add to user home page layout: main focus
-            </div>
-            <div class="kanban-col-item">
-                create team modal logic
-            </div>
-            <div class="kanban-col-item">
-                create queue modal logic
-            </div>
+        <div class="kanban-col-body" id="todo-body">
+            <div class="kanban-col-item drag shadow-sm">DRAG ME</div>
+            <div class="kanban-col-item drag shadow-sm">DRAG ME TOO</div>
         </div>
-        <div class="kanban-col-footer">
-            <span class="thick-plus">+</span> Add Task
+        <div class="kanban-col-footer" id="todo-footer">
+            <button class="add-task" id="add-task" onclick="addTask()">
+                <span class="thick-plus">+</span> Add Task
+            </button>
+            <button class="my-btn my-btn-secondary" id="create-task" hidden="true" onclick="createTask()">
+                Create Task
+            </button>
+            <button type="button" id="close-btn" hidden="true" class="close" onclick="cancelTask()">
+                <span class="primary-text">&times;</span>
+            </button>
         </div>
     </div>
     <div class="kanban-col shadow">
         <div class="kanban-col-header">Doing</div>
-        <div class="kanban-col-body">
-            <div class="kanban-col-item">
-                viewing a queue layout
-            </div>
+        <div class="kanban-col-body" id="doing-body">
+            
         </div>
     </div>
     <div class="kanban-col shadow">
         <div class="kanban-col-header">Done</div>
-        <div class="kanban-col-body">
-            <div class="kanban-col-item">
-                create user homepage layout
-            </div>
-            <div class="kanban-col-item">
-                implement identity framework
-            </div>
-            <div class="kanban-col-item">
-                create landing page
-            </div>
-            <div class="kanban-col-item">
-                create register method
-            </div>
-            <div class="kanban-col-item">
-                create login method
-            </div>
-            <div class="kanban-col-item">
-                create forgot password logic
-            </div>
-            <div class="kanban-col-item">
-                create queue modal layout
-            </div>
-            <div class="kanban-col-item">
-                create team modal layout
-            </div>
-            <div class="kanban-col-item">
-                create top of page layout with nonworking buttons
-            </div>
-            <div class="kanban-col-item">
-                create email verification logic
-            </div>
-            <div class="kanban-col-item">
-                Create database
-            </div>
+        <div class="kanban-col-body" id="done-body">
+            
         </div>
     </div>
-    <div class="kanban-col shadow">
+    <div class="kanban-col shadow" id="blocked-col">
         <div class="kanban-col-header">
             Blocked
         </div>
-        <div class="kanban-col-body"></div>
-        <div class="kanban-col-footer">
-            <span class="thick-plus">+</span> Add Task
+        <div class="kanban-col-body" id="blocked-body">
         </div>
-
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function addTask() {
+        // grab elements
+        var addTaskBtn = document.getElementById('add-task');
+        var createTaskBtn = document.getElementById('create-task');
+        var footer = document.getElementById('todo-footer');
+        var closeBtn = document.getElementById('close-btn');
+
+        // hide add task btn
+        addTaskBtn.hidden = true;
+
+        // add an input field
+        var input = document.createElement('input');
+        input.id = 'new-task';
+        input.placeholder = "Enter a title for this task";
+        input.classList.add('new-task');
+        footer.insertBefore(input, footer.childNodes[0]);
+        input.focus();
+
+        // reveal hidden buttons
+        createTaskBtn.hidden = false;
+        closeBtn.hidden = false;
+    }
+
+    function cancelTask() {
+        // grab elements 
+        var addTaskBtn = document.getElementById('add-task');
+        var createTaskBtn = document.getElementById('create-task');
+        var closeBtn = document.getElementById('close-btn');
+        var footer = document.getElementById('todo-footer');
+        var newTask = document.getElementById('new-task');
+
+        // hide and reveal buttons
+        closeBtn.hidden = true;
+        createTaskBtn.hidden = true;
+        addTaskBtn.hidden = false;
+
+        // remove the new text field
+        footer.removeChild(newTask);
+    }
+
+    function createTask() {
+        // grab elements 
+        var body = document.getElementById('todo-body');
+        var newTask = document.getElementById('new-task');
+        if (newTask.value !== "") {
+            // create new kanban item
+            var newTaskDiv = $('<div class="drag kanban-col-item">' + newTask.value + '</div>');
+            $(newTaskDiv).draggable();
+            $('#todo-body').append(newTaskDiv);
+            console.dir($('.drag'));
+            newTask.value = "";
+        }       
+    }
+
+    $("#todo-footer").keyup(function(event) {
+        switch (event.keyCode) {
+        case 13:
+            createTask();
+            break;
+        case 27:
+            cancelTask();
+            break;
+        default:
+            break;
+        }
+    });
+
+    $('.drag').draggable();
+
+    $(".kanban-col-body").droppable({
+        accept: ".drag",
+        drop: function(event, ui) {
+            var droppable = $(this);
+            var draggable = ui.draggable;
+            // move draggable into droppable
+            draggable.appendTo(droppable);
+            draggable.css({top: '0px', left: '0px'});
+        }
+    });
+    
+    $("#doing-body").droppable({
+        accept: ".drag",
+        drop: function(event, ui) {
+            var droppable = $(this);
+            var draggable = ui.draggable;
+            // move draggable into droppable
+            draggable.appendTo(droppable);
+            draggable.css({top: '0px', left: '0px'});
+        }
+    });
+    
+    $("#todo-body").droppable({
+        accept: ".drag",
+        drop: function(event, ui) {
+            var droppable = $(this);
+            var draggable = ui.draggable;
+            // move draggable into droppable
+            draggable.appendTo(droppable);
+            draggable.css({top: '0px', left: '0px'});
+        }
+    });
+    
+    $("#done-body").droppable({
+        accept: ".drag",
+        drop: function(event, ui) {
+            var droppable = $(this);
+            var draggable = ui.draggable;
+            // move draggable into droppable
+            draggable.appendTo(droppable);
+            draggable.css({top: '0px', left: '0px'});
+        }
+    });
+</script>
