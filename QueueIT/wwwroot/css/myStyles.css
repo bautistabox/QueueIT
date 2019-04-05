@@ -79,13 +79,6 @@ input:not(:focus) {
     box-shadow: none;
 }
 
-input:invalid {
-}
-
-input:valid {
-
-}
-
 h4.display-10 {
     font-size: .5rem;
     font-weight: 300;
@@ -207,8 +200,6 @@ div.kanban-col-body {
     min-height: 30px;
 }
 
-
-
 div.kanban-col-item {
     background-color: #363636;
     margin: 4px 2px 4px 2px;
@@ -216,6 +207,11 @@ div.kanban-col-item {
     color: #ffffff;
     border-radius: .25rem;
     border: 1px solid #000000;
+    cursor: grab;
+}
+
+div.kanban-col-item:active {
+    cursor: grabbing;
 }
 
 div.kanban-col-footer {
@@ -237,9 +233,6 @@ input.new-task {
 input.new-task:focus {
     outline: 0;
     box-shadow: 0 0 0 0;
-}
-
-button.close {
 }
 
 button.add-task {
@@ -268,6 +261,10 @@ div.home-card {
     color: #FFFFFF;
 }
 
+div.home-card:focus {
+    cursor: pointer;
+}
+
 button.home-card {
     background-image: linear-gradient(180deg, #ff3c00, #ff0049);
     color: #FFFFFF;
@@ -280,6 +277,48 @@ button.home-card:hover {
 
 button.home-card:focus {
     border: rgba(0, 0, 0, 0.125);
+}
+
+div.border-bk-1 {
+    border: 1px solid #000;
+    padding: 5px;
+}
+
+div.border-bk-2 {
+    border: 2px solid #000;
+    padding: 5px;
+}
+
+div.border-bk-3 {
+    border: 3px solid #000;
+    padding: 5px;
+}
+
+a.trans-link {
+    color: #ffffff;
+    width: 100%;
+    height: 100%;
+}
+
+a.trans-link:hover {
+    text-decoration: none;
+}
+
+.grow { transition: all .2s ease-in-out; }
+
+.grow:hover { 
+    transform: scale(1.1);
+    border: 1px solid #ffffff;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+.grow-secondary { transition: all .2s ease-in-out; }
+
+.grow-secondary:hover {
+    transform: scale(1.1);
+    border: 1px solid #000000;
+    border-radius: 1rem;
 }
 
 div.p-10 {
@@ -385,15 +424,18 @@ span.hoverable:hover {
 .dropdown-toggle:after { content: none }
 
 button.link {
-    background:none!important;
-    color:inherit;
-    border:none;
-    padding:0!important;
-    margin:0!important;
-    font: inherit;
-    /*border is optional*/
-    border-bottom:1px solid #444;
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
     cursor: pointer;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+button.link:hover {
+    color: #0056b3;
+    text-decoration: underline;
 }
 
 div.dropdown-divider {
@@ -463,6 +505,3 @@ img.lock {
     width: 40px;
     padding: 10px 0 0 6px
 }
-
-
-
