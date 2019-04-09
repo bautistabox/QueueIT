@@ -1,5 +1,8 @@
+@model QueueIT.Controllers.Account.UserHomeViewModel;
 @{
     ViewBag.Title = "Home";
+    ViewBag.Teams = Model.UserTeams.ToList();
+    ViewBag.Queues = Model.UserQueues.ToList(); 
     Layout = "_LoggedInLayout";
 }
 <br/>
@@ -9,15 +12,21 @@
 <br/>
 <div class="rounded user-home-bg shadow-lg">
     <div class="row" align="center">
-        <div class="home-column-30">
+        <div class="home-column-30 custom-border">
             <br/><br/>
             <div class="table">
                 <h4 class="primary-text display-7">
                     <u>Teams</u>
                 </h4>
-                <span class="primary-text">Morningside</span><br/>
-                <span class="primary-text hoverable">RT</span><br/>
-                <button class="my-btn my-btn-secondary grow-secondary" data-toggle="modal" data-target="#CreateTeamModal" aria-hidden="true">
+                <div id="TeamsDiv">
+                    @foreach (var team in @Model.UserTeams)
+                    {
+                        <span class="primary-text">@team.Name</span>
+                        <br/>
+                    }
+                </div>
+                <button class="my-btn my-btn-secondary grow-secondary" data-toggle="modal"
+                        data-target="#CreateTeamModal" aria-hidden="true">
                     <span class="thick-plus">+</span> Create Team
                 </button>
             </div>
@@ -26,58 +35,46 @@
                 <h4 class="primary-text display-7">
                     <u>Queues</u>
                 </h4>
-                <div>
-                    <span class="primary-text">Bucket List</span><br/>
-                    <span class="primary-text">QueueIt</span><br/>
-                    <span class="primary-text">Dingus</span><br/>
-                    <button class="my-btn my-btn-secondary grow-secondary" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
-                        <span class="thick-plus">+</span> Create Queue
-                    </button>
+                <div id="QueuesDiv">
+                    @foreach (var queue in Model.UserQueues)
+                    {
+                        <span class="primary-text">@queue.Title</span><br/>
+                    }
                 </div>
+                <button class="my-btn my-btn-secondary grow-secondary" data-toggle="modal"
+                        data-target="#CreateQueueModal" aria-hidden="true">
+                    <span class="thick-plus">+</span> Create Queue
+                </button>
             </div>
+            <br/><br/>
         </div>
 
         <div class="home-column-70">
-            <div class="container-col p-10 custom-border" align="left">
-                <div>
-                    <h4 class="display-8 primary-text m-10">Personal</h4>
-                    <div class="container-row home-cards">
-                        <div class="card m-10">
-                            <div class="card-body home-card grow shadow-lg">Dingus</div>
-                        </div>
-                        <div class="card m-10">
-                            <button class="card-body home-card grow shadow-lg" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
-                                <span class="thick-plus">+</span> Add a Queue
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="display-8 primary-text m-10">Morningside</h4>
-                    <div class="container-row home-cards">
-                        <div class="card m-10">
-                            <div class="card-body home-card grow shadow-lg"><a class="trans-link" asp-controller="Queues" asp-action="Show">Bucket List</a></div>
-                        </div>
-                        <div class="card m-10">
-                            <div class="card-body home-card grow shadow-lg">QueueIt</div>
-                        </div>
-                        <div class="card m-10">
-                            <button class="card-body home-card grow shadow-lg" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
-                                <span class="thick-plus">+</span> Add a Queue
-                            </button>
+            <div class="container-col p-10" align="left">
+
+                @foreach (var team in Model.UserTeams)
+                {
+                    <div>
+                        <h4 class="display-8 primary-text m-10">@team.Name</h4>
+                        <div class="container-row home-cards">
+                            @foreach (var queue in Model.UserQueues)
+                            {
+                                <div class="card m-10" id="team-queue-div">
+                                    <div class="card-body home-card grow shadow-lg">@queue.Title</div>
+                                </div>
+                            }
+                            @* <div class="card m-10" id="team-queue-div"> *@
+                            @*     <div class="card-body home-card grow shadow-lg"></div> *@
+                            @* </div> *@
+                            <div class="card m-10">
+                                <button class="card-body home-card grow shadow-lg" data-toggle="modal"
+                                        data-target="#CreateQueueModal" aria-hidden="true">
+                                    <span class="thick-plus">+</span> Add a Queue
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <h4 class="display-8 primary-text m-10">RT</h4>
-                    <div class="container-row home-cards">
-                        <div class="card m-10">
-                            <button class="card-body home-card grow shadow-lg" data-toggle="modal" data-target="#CreateQueueModal" aria-hidden="true">
-                                <span class="thick-plus">+</span> Add a Queue
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>

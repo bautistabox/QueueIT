@@ -22,14 +22,16 @@ namespace QueueIT.Controllers
 //        private readonly QueueItDbContext _db;
         private readonly UserManager<QueueItUser> _userManager;
         private readonly IUserClaimsPrincipalFactory<QueueItUser> _claimsPrincipalFactory;
+        private readonly QueueItDbContext _db;
 
         // Constructor
         public HomeController(UserManager<QueueItUser> userManager, 
-            IUserClaimsPrincipalFactory<QueueItUser> claimsPrincipalFactory)
+            IUserClaimsPrincipalFactory<QueueItUser> claimsPrincipalFactory,
+            QueueItDbContext queueItDbContext)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
-// _db = db;
+            _db = queueItDbContext;
         }
 
         // Landing Page
@@ -46,6 +48,7 @@ namespace QueueIT.Controllers
             {
                 var user = await _userManager.FindByNameAsync(model.LoginUserName);
 
+             
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.LoginPassword))
                 {
                     if (!await _userManager.IsEmailConfirmedAsync(user))
@@ -98,6 +101,19 @@ namespace QueueIT.Controllers
                     
                     if (result.Succeeded)
                     {
+                        var team = new Team
+                        {
+                            Name = "Personal", 
+                            CreatorId = user.Id,
+                            Description = "This is your Personal Team. " +
+                                          "Use it to keep track of your Queues and Tasks " +
+                                          "that you do not want to share with your team.",
+                            IsPrivate = true,
+                            CreatedOn = DateTime.Now
+                        };
+                        _db.Teams.Add(team);
+                        _db.SaveChanges();
+                        
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var confirmationEmail = Url.Action("ConfirmEmailAddress", "Home",
                             new {token = token, email = user.Email }, Request.Scheme);
@@ -206,7 +222,6 @@ namespace QueueIT.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult Privacy()
         {
             return View();

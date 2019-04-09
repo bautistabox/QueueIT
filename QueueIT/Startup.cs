@@ -36,11 +36,14 @@ namespace QueueIT
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var connectionString = @"Server=localhost;Database=QueueIt.QueueItUser;Trusted_Connection=True;MultipleActiveResultSets=True;";
+            var queueItDbConn = @"Server=localhost;Database=QueueIt;Trusted_Connection=True;";
             var migrationAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddDbContext<QueueItUserDbContext>(opt => opt.UseSqlServer(connectionString,
                 sql => sql.MigrationsAssembly(migrationAssembly)));
+            services.AddDbContext<QueueItDbContext>(opt => opt.UseSqlServer(queueItDbConn));
             services.AddIdentity<QueueItUser, IdentityRole>(options =>
                     {
+                        
                         options.Tokens.EmailConfirmationTokenProvider = "emailconf";
                         
                         options.Password.RequireNonAlphanumeric = false;
@@ -62,9 +65,6 @@ namespace QueueIT
             services.Configure<PasswordHasherOptions>(options => { options.IterationCount = 100000; });
             
             services.ConfigureApplicationCookie(options => options.LoginPath = "/home/index");
-
-//            services.AddDbContext<QueueItDbContext>
-//                (options => options.UseSqlServer(conn));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

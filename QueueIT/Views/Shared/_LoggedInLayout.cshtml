@@ -1,3 +1,8 @@
+@{
+    var teamList = ViewData["Teams"] as List<Team>;
+    var queueList = ViewData["Queues"] as List<Queue>;
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,9 +43,13 @@
                         </a>
                         <div class="dropdown-menu background-grey shadow-lg">
                             <h4 class="dropdown-header">Quick-Q's</h4>
-                            <button class="dropdown-item secondary-text">Bucket List</button>
-                            <button class="dropdown-item secondary-text">QueueIt</button>
-                            <button class="dropdown-item secondary-text">Dingus</button>
+                            @if (queueList != null)
+                            {
+                                foreach (var queue in queueList)
+                                {
+                                    <button class="dropdown-item secondary-text">@queue.Title</button>
+                                }
+                            }
                         </div>
                     </li>
                     <li class="nav-item mx-auto secondary-text">
@@ -115,13 +124,13 @@
                 </button>
             </div>
             <div class="modal-body secondary-text">
-                <form>
+                <form asp-controller="Teams" asp-action="CreateTeam" method="POST">
                     <div class="form-group">
                         <label for="teamName">Team Name</label>
-                        <input type="text" id="teamName" class="form-control" aria-describedby="teamNameHelp" placeholder="Enter team name"/>
+                        <input type="text" id="teamName" name="teamName" class="form-control" aria-describedby="teamNameHelp" placeholder="Enter team name"/>
                         <small id="teamNameHelp" class="form-text disabled-text">Choose a team name unique to yourself.</small>
                         <label for="teamDesc">Team Description</label>
-                        <textarea id="teamDesc" class="form-control" rows="6" cols="50" placeholder="Description (optional)"></textarea>
+                        <textarea id="teamDesc" name="desc" class="form-control" rows="6" cols="50" placeholder="Description (optional)"></textarea>
                     </div>
                     <button class="my-btn my-btn-primary right">Create Team</button>
                 </form>
@@ -145,17 +154,22 @@
                 </button>
             </div>
             <div class="modal-body secondary-text">
-                <form>
+                <form asp-controller="Queues" asp-action="CreateQueue" method="POST">
                     <div class="form-group">
                         <label for="queueTitle">Queue Title</label>
-                        <input type="text" class="form-control" id="queueTitle" placeholder="Enter title"/>
+                        <input type="text" class="form-control" id="queueTitle" name="queueTitle" placeholder="Enter title"/>
                         <br/>
                         <label for="teamSelector">Select Team</label>
                         <div class="input-group">
-                            <select class="custom-select" id="teamSelector" aria-describedby="teamSelectorHelp">
-                                <option selected>Personal</option>
-                                <option>Morningside</option>
-                                <option>RT</option>
+                            <select class="custom-select" id="teamSelector" name="queueTeam" aria-describedby="teamSelectorHelp">
+                                @if (teamList != null)
+                                    {
+                                        foreach (var team in teamList)
+                                        {
+                                            <option value="@team.Id">@team.Name</option>
+                                        }
+                                    }
+                                }
                             </select>
                         </div>
                         <p>
@@ -165,11 +179,11 @@
                         <label for="visibilitySelector">Select Visibility</label>
                         <div class="custom-radio-group" id="visibilitySelector" aria-describedby="visibilitySelectorHelp">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="privateRadio" value="private" checked>
+                                <input class="form-check-input" type="radio" name="queueVisibility" id="privateRadio" value="private" checked>
                                 <label class="form-check-label" for="privateRadio">Private</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="publicRadio" value="public">
+                                <input class="form-check-input" type="radio" name="queueVisibility" id="publicRadio" value="public">
                                 <label class="form-check-label" for="publicRadio">Public</label>
                             </div>
                         </div>

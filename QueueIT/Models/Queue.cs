@@ -8,7 +8,8 @@ namespace QueueIT.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public int CreatorId { get; set; }
+        public string CreatorId { get; set; }
+        public bool IsPrivate { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
     }
