@@ -138,6 +138,41 @@ button.my-btn-primary {
     border: 1px solid black;
 }
 
+button.my-btn-primary:hover {
+    background-image: linear-gradient(-90deg, #e50042, #e75f00);
+}
+
+
+button.my-btn-nonthreat {
+    background-color: #858585;
+    color: #ffffff;
+    height: 36px;
+    border: 1px solid black;
+    min-width: 5vw;
+}
+
+button.my-btn-nonthreat:hover {
+    background-color: #696969;
+}
+
+button.my-btn-danger {
+    background-image: linear-gradient(-90deg, #ff0000, #5d0b2f);
+    color: #ffffff;
+    height: 36px;
+    border: 1px solid black;
+}
+
+button.my-btn-primary:disabled,
+button[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+
+button.my-btn-danger:hover {
+    background-image: linear-gradient(-90deg, #dc0000, #490b23);
+}
+
 button.right {
     float: right;
 }
@@ -152,6 +187,18 @@ button.my-btn-secondary {
 button.my-btn-secondary:hover {
     outline: 0;
     box-shadow: 0 0 0 2px #212121;
+}
+
+button.my-btn-outline-secondary {
+    color: #ffffff;
+    background-color: transparent;
+    border-color: #ffffff;
+}
+
+button.my-btn-outline-secondary:hover {
+    color: #ffffff;
+    background-color:transparent;
+    border-color: linear-gradient(-90deg, #ff0049, #ff6000);
 }
 
 div.container-row {
@@ -220,6 +267,64 @@ div.kanban-col-footer {
     padding: 2px 5px 2px 5px;
 }
 
+div.setting-pane {
+    width: 75%;
+}
+
+div.setting-header {
+    border-bottom: 1px solid #000;
+    background-color: #212121;
+    border-radius: .5rem .5rem 0 0;
+}
+
+div.setting-body {
+    background-color: #363636;
+    padding: 2rem 2rem 2rem 2rem;    
+}
+
+div.setting-footer {
+    background-color: #212121;
+    border-top: 1px solid #000;
+    border-radius: 0 0 .5rem .5rem;
+}
+
+#name-header {
+    flex: 5; 
+    padding-right: 5px;
+}
+
+#privacy-header {
+    flex: 3; 
+    display: flex; 
+    padding-top: 10px;
+}
+
+#del-team-btn {
+    margin: 1vh 0 1vh 3vw;
+}
+
+#team-setting-head {
+    margin: 0 0 0 0;
+}
+
+#is-private {
+    margin-top: 10px;
+}
+
+#setting-icon {
+    flex: 1;
+    max-width: 163px;
+}
+
+#setting-msg {
+    flex: 2;
+    text-align: left;
+}
+
+#setting-msg-btn {
+    flex: .5;
+}
+
 input.new-task {
     width: 98%;
     background-color: #363636;
@@ -245,6 +350,18 @@ button.add-task {
     width: 100%
 }
 
+button.quick-link {
+    color: #FFFFFF;
+    background-color: transparent;
+    border: none;
+}
+
+button.quick-link:hover{
+    background: rgba(164, 164, 164, .2);
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
 button.add-task:hover {
     background-color: #363636;
     color: #ffffff;
@@ -264,6 +381,13 @@ div.home-card {
 div.home-card:focus {
     cursor: pointer;
 }
+
+#team-desc {
+    padding: 5px 5px 5px 5px;
+    width: 75%;
+}
+
+
 
 button.home-card {
     background-image: linear-gradient(180deg, #ff3c00, #ff0049);
@@ -456,10 +580,40 @@ button.create{
     line-height: 1.25rem;
 }
 
-.nav:hover {
+.layout:hover {
     outline: 0;
     box-shadow: 0 0 0 2px #424242;
     border-radius: 5%;
+}
+
+#team-profile-container {
+    background-color: #424242;
+    width:fit-content;
+    min-width: 800px;
+    padding: 2vh 0 0 0;
+}
+
+#nav-tabContent {
+    padding: 0 0 2vh 0;
+}
+
+#edit-team-profile-btn {
+    margin: 15px 15px 15px 15px;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #000000;
+}
+
+.nav-link.active {
+    background-color: #363636 !important;
+    border-color: #000000 !important;
+    border-bottom: transparent !important;
+    color: #a4a4a4 !important;
+}
+
+.nav-link:hover {
+    border-color: #000 !important;
 }
 
 .modal-backdrop,
@@ -502,3 +656,112 @@ img.lock {
     width: 40px;
     padding: 10px 0 0 6px
 }
+
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    background-image: linear-gradient(-90deg, #ff0049, #ff6000);
+    text-align: center;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
+.initials {
+    position: relative;
+    top: 3px; /* 25% of parent */
+    font-size: 16px; /* 50% of parent */
+    line-height: 16px; /* 50% of parent */
+    color: #fff;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+}
+
+#team-profile-members {
+    width: 75%;
+    color: #a4a4a4;
+    margin-top: 6vh;
+}
+
+#team-profile-members-header {
+    width: 75%;
+    color: #a4a4a4;
+    padding: 10px;
+}
+
+td {
+    padding: 5px !important;
+}
+
+td.team-member-td {
+    vertical-align: middle;
+    border-top: 1px solid #a4a4a4;
+}
+
+#member-role-td {
+    width: 14vw;
+    min-width: 196px;
+}
+
+#member-rm-td {
+    width: 3vw;
+    min-width: 80px;
+}
+
+#member-avatar {
+    min-width: 45px;
+}
+
+#member-user {
+    min-width: 35px;
+}
+
+#member-q-num {
+    min-width: 152px;
+}
+
+.input-group-text {
+    background-color: #363636;
+    color: #a4a4a4;
+}
+
+.custom-select {
+    background-color: #a4a4a4;
+    color: #212121;
+}
+
+#team-owner-select {
+    background: #a4a4a4;
+}
+
+#rm-team-member {
+    background-color: #a4a4a4;
+    border-radius: .25rem;
+}
+
+.modal-input {
+    background-color: #a4a4a4;
+    color: #000000;
+}
+
+#new-member {
+    padding-left: 1px;
+}
+
+.modal-input::placeholder {
+    color: #363636;
+}
+
+.modal-input:focus {
+    color: #000000;
+}
+
+.modal-input:hover {
+    background-color: #FFFFFF;
+}
+
+
+.mt-modal {
+    margin-top: 32vh;
+}
+

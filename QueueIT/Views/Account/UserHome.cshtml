@@ -1,13 +1,13 @@
 @model QueueIT.Controllers.Account.UserHomeViewModel;
 @{
     ViewBag.Title = "Home";
-    ViewBag.Teams = Model.UserTeams.ToList();
-    ViewBag.Queues = Model.UserQueues.ToList(); 
+    ViewBag.Teams = Model.TeamsList.ToList();
+    ViewBag.Queues = Model.QueuesList.ToList(); 
     Layout = "_LoggedInLayout";
 }
 <br/>
 <div align="center">
-    <h4 class="display-5 primary-text">User Home</h4>
+    <h4 class="display-5 primary-text"></h4>
 </div>
 <br/>
 <div class="rounded user-home-bg shadow-lg">
@@ -19,10 +19,12 @@
                     <u>Teams</u>
                 </h4>
                 <div id="TeamsDiv">
-                    @foreach (var team in @Model.UserTeams)
+                    @foreach (var team in @Model.TeamsList)
                     {
-                        <span class="primary-text">@team.Name</span>
-                        <br/>
+                        <form asp-action="Show" asp-controller="Teams"
+                              asp-route-teamId="@team.Id" method="GET">
+                            <button class="quick-link">@team.Name</button>
+                        </form>
                     }
                 </div>
                 <button class="my-btn my-btn-secondary grow-secondary" data-toggle="modal"
@@ -36,9 +38,12 @@
                     <u>Queues</u>
                 </h4>
                 <div id="QueuesDiv">
-                    @foreach (var queue in Model.UserQueues)
+                    @foreach (var queue in Model.QueuesList)
                     {
-                        <span class="primary-text">@queue.Title</span><br/>
+                        <form asp-action="Show" asp-controller="Queues"
+                              asp-route-queueId="@queue.Id" method="GET">
+                            <button class="quick-link">@queue.Title</button><br/>
+                        </form>
                     }
                 </div>
                 <button class="my-btn my-btn-secondary grow-secondary" data-toggle="modal"
@@ -52,20 +57,25 @@
         <div class="home-column-70">
             <div class="container-col p-10" align="left">
 
-                @foreach (var team in Model.UserTeams)
+                @foreach (var team in Model.TeamsList)
                 {
                     <div>
                         <h4 class="display-8 primary-text m-10">@team.Name</h4>
                         <div class="container-row home-cards">
-                            @foreach (var queue in Model.UserQueues)
+                            @foreach (var queue in Model.QueuesList)
                             {
-                                <div class="card m-10" id="team-queue-div">
-                                    <div class="card-body home-card grow shadow-lg">@queue.Title</div>
-                                </div>
+                                if (queue.TeamId == team.Id)
+                                {
+                                    <div class="card m-10">
+                                        <form asp-action="Show" asp-controller="Queues"
+                                              method="GET" asp-route-queueId="@queue.Id">
+                                            <button class="card-body home-card grow shadow-lg">
+                                                @queue.Title
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
                             }
-                            @* <div class="card m-10" id="team-queue-div"> *@
-                            @*     <div class="card-body home-card grow shadow-lg"></div> *@
-                            @* </div> *@
                             <div class="card m-10">
                                 <button class="card-body home-card grow shadow-lg" data-toggle="modal"
                                         data-target="#CreateQueueModal" aria-hidden="true">

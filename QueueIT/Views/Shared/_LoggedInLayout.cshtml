@@ -33,13 +33,13 @@
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link thin shadow-lg" asp-area="" asp-controller="Home" asp-action="Index">
-                            <img class="nav" src="~/home.png" alt=""/>
+                        <a class="nav-link thin shadow-lg" asp-area="" asp-controller="Account" asp-action="UserHome">
+                            <img class="layout" src="~/home.png" alt=""/>
                         </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                            <img class="nav" src="~/quickqlogo.png" alt=""/>
+                            <img class="layout" src="~/quickqlogo.png" alt=""/>
                         </a>
                         <div class="dropdown-menu background-grey shadow-lg">
                             <h4 class="dropdown-header">Quick-Q's</h4>
@@ -47,7 +47,10 @@
                             {
                                 foreach (var queue in queueList)
                                 {
-                                    <button class="dropdown-item secondary-text">@queue.Title</button>
+                                    <form asp-action="Show" asp-controller="Queues"
+                                          asp-route-queueId="@queue.Id" method="GET">
+                                        <button class="dropdown-item secondary-text">@queue.Title</button>
+                                    </form>
                                 }
                             }
                         </div>
@@ -57,7 +60,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link plus dropdown-toggle shadow-lg" data-toggle="dropdown">
-                            <img class="nav" src="~/plus.png" alt=""/>
+                            <img class="layout" src="~/plus.png" alt=""/>
                         </a>
                         <div class="dropdown-menu background-grey shadow-lg">
                             <h4 class="dropdown-header">Create</h4>
@@ -76,7 +79,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link thin dropdown-toggle shadow-lg" data-toggle="dropdown">
-                            <img class="nav" src="~/Bell.png" alt=""/>
+                            <img class="layout" src="~/Bell.png" alt=""/>
                         </a>
                         <div class="dropdown-menu background-grey shadow-lg">
                             <h4 class="dropdown-header">Notifications</h4>
@@ -89,10 +92,12 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link thin dropdown-toggle shadow-lg" data-toggle="dropdown">
-                            <img class="nav" src="~/profile.png" alt=""/>
+                            <div class="avatar-circle grow">
+                                <span class="initials">AB</span>
+                            </div>
                         </a>
                         <div class="dropdown-menu background-grey shadow-lg">
-                            <h4 class="dropdown-header">First_Name Last_Name</h4>
+                            <h4 class="dropdown-header">Alex Bautista</h4>
                             <button class="dropdown-item secondary-text" type="button">Profile</button>
                             <button class="dropdown-item secondary-text" type="button">Settings</button>
                             <form asp-controller="Home" asp-action="Logout" method="post">
@@ -123,14 +128,14 @@
                     <span class="sr-only">Close</span>
                 </button>
             </div>
-            <div class="modal-body secondary-text">
+            <div class="modal-body">
                 <form asp-controller="Teams" asp-action="CreateTeam" method="POST">
                     <div class="form-group">
-                        <label for="teamName">Team Name</label>
-                        <input type="text" id="teamName" name="teamName" class="form-control" aria-describedby="teamNameHelp" placeholder="Enter team name"/>
+                        <label for="teamName" class="secondary-text">Team Name</label>
+                        <input type="text" id="teamName" name="teamName" class="form-control modal-input" aria-describedby="teamNameHelp" placeholder="Enter team name"/>
                         <small id="teamNameHelp" class="form-text disabled-text">Choose a team name unique to yourself.</small>
-                        <label for="teamDesc">Team Description</label>
-                        <textarea id="teamDesc" name="desc" class="form-control" rows="6" cols="50" placeholder="Description (optional)"></textarea>
+                        <label for="teamDesc" class="secondary-text">Team Description</label>
+                        <textarea id="teamDesc" name="desc" class="form-control modal-input" rows="6" cols="50" placeholder="Description (optional)"></textarea>
                     </div>
                     <button class="my-btn my-btn-primary right">Create Team</button>
                 </form>
@@ -153,21 +158,20 @@
                     <span class="sr-only">Close</span>
                 </button>
             </div>
-            <div class="modal-body secondary-text">
+            <div class="modal-body">
                 <form asp-controller="Queues" asp-action="CreateQueue" method="POST">
                     <div class="form-group">
-                        <label for="queueTitle">Queue Title</label>
-                        <input type="text" class="form-control" id="queueTitle" name="queueTitle" placeholder="Enter title"/>
+                        <label for="queueTitle" class="secondary-text">Queue Title</label>
+                        <input type="text" class="form-control modal-input" id="queueTitle" name="queueTitle" placeholder="Enter title"/>
                         <br/>
-                        <label for="teamSelector">Select Team</label>
+                        <label for="teamSelector" class="secondary-text">Select Team</label>
                         <div class="input-group">
                             <select class="custom-select" id="teamSelector" name="queueTeam" aria-describedby="teamSelectorHelp">
                                 @if (teamList != null)
+                                {
+                                    foreach (var team in teamList)
                                     {
-                                        foreach (var team in teamList)
-                                        {
-                                            <option value="@team.Id">@team.Name</option>
-                                        }
+                                        <option value="@team.Id">@team.Name</option>
                                     }
                                 }
                             </select>
@@ -176,15 +180,15 @@
                             <small id="teamSelectorHelp" class="form-text disabled-text">Choose the team that will own this Queue or choose to keep it personal.</small>
                         </p>
 
-                        <label for="visibilitySelector">Select Visibility</label>
+                        <label for="visibilitySelector" class="secondary-text">Select Visibility</label>
                         <div class="custom-radio-group" id="visibilitySelector" aria-describedby="visibilitySelectorHelp">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="queueVisibility" id="privateRadio" value="private" checked>
-                                <label class="form-check-label" for="privateRadio">Private</label>
+                                <label class="form-check-label secondary-text" for="privateRadio">Private</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="queueVisibility" id="publicRadio" value="public">
-                                <label class="form-check-label" for="publicRadio">Public</label>
+                                <label class="form-check-label secondary-text" for="publicRadio">Public</label>
                             </div>
                         </div>
                         <small id="visibilitySelectorHelp" class="primary-text disabled-text">Public means anyone who visits the team's profile can see this Queue.</small>

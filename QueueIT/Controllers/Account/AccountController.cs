@@ -26,11 +26,12 @@ namespace QueueIT.Controllers.Account
             var currentUserId = _userManager.GetUserId(HttpContext.User);
             var teams = _db.Teams.Where(t => t.CreatorId == currentUserId).ToList();
             var queues = _db.Queues.Where(q => q.CreatorId == currentUserId).ToList();
+            
 
             var model = new UserHomeViewModel
             {
-                UserTeams = teams,
-                UserQueues = queues
+                TeamsList = teams,
+                QueuesList = queues
             };
             
             return View(model);

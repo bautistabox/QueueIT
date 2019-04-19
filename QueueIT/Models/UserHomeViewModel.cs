@@ -5,7 +5,7 @@ namespace QueueIT.Controllers.Account
 {
     public class UserHomeViewModel
     {
-        public List<Team> UserTeams { get; set; }
-        public List<Models.Queue> UserQueues { get; set; }
+        public List<Team> TeamsList { get; set; }
+        public List<Models.Queue> QueuesList { get; set; }
     }
 }

@@ -1,22 +1,32 @@
+@model QueueShowViewModel
+
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = @Model.CurrentQueue.Title;
     Layout = "_LoggedInLayout";
 }
 <br/>
 <div class="container-row">
-    <h4 class="display-6 secondary-text">Bucket List | Morningside | Private</h4>
-    <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
+    <h4 class="display-6 secondary-text">@Model.CurrentQueue.Title | @Model.CurrentTeam.Name |&nbsp;</h4> 
+        @if (Model.CurrentQueue.IsPrivate)
+        {
+            <h4 class="display-6 secondary-text"><span>Private</span></h4>
+            <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
+        }
+        else
+        {
+            <h4 class="display-6 secondary-text"><span>Public</span></h4>
+            <img class="lock" src="https://img.icons8.com/ios/50/000000/unlock.png" alt="">
+        }
 </div>
 <div class="kanban" id="kanban">
     <div class="kanban-col shadow" id="todo-col">
         <div class="kanban-col-header">Todo</div>
         <div class="kanban-col-body" id="todo-body">
-            <div class="kanban-col-item drag">DRAG ME</div>
-            <div class="kanban-col-item drag">DRAG ME TOO</div>
+            @* <div class="kanban-col-item drag">DRAG ME</div> *@
         </div>
         <div class="kanban-col-footer" id="todo-footer">
             <button class="add-task" id="add-task" onclick="addTask()">
-                <span class="thick-plus">+</span> Add Task
+                <span class="thick-plus">&#43</span> Add Task
             </button>
             <button class="my-btn my-btn-secondary grow-secondary" id="create-task" hidden="true" onclick="createTask()">
                 Create Task
@@ -39,10 +49,9 @@
         </div>
     </div>
     <div class="kanban-col shadow" id="blocked-col">
-        <div class="kanban-col-header">
-            Blocked
-        </div>
+        <div class="kanban-col-header">Blocked</div>
         <div class="kanban-col-body" id="blocked-body">
+        
         </div>
     </div>
 </div>
@@ -96,9 +105,21 @@
             var newTask = document.getElementById('new-task');
             if (newTask.value !== "") {
                 // create new kanban item
-                var $newTaskDiv = $('<div class="drag kanban-col-item">' + newTask.value + '</div>');
+                var $newTaskDiv = 
+                    $('<div class="drag kanban-col-item"><form asp-action="CreateTask" asp-controller="Queues" method="POST">'
+                        + '<span name="testInput">' + newTask.value + '</span>' + '<button type="submit">submit</button>' + '</form></div>');
                 $('#todo-body').append($newTaskDiv);
-                $newTaskDiv.draggable();
+                $newTaskDiv.draggable({ stack: ".drag" });
+                $newTaskDiv.draggable({
+                    revert: function(event, ui) {
+                        $(this).data("uiDraggable").originalPosition = {
+                            top: 0,
+                            left: 0
+                        };
+
+                        return !event;
+                    }
+                });
                 newTask.value = "";
             }
         }

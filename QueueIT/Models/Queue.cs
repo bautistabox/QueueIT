@@ -7,6 +7,7 @@ namespace QueueIT.Models
     public class Queue
     {
         public int Id { get; set; }
+        public int TeamId { get; set; }
         public string Title { get; set; }
         public string CreatorId { get; set; }
         public bool IsPrivate { get; set; }

@@ -7,5 +7,6 @@ namespace QueueIT.Models
     {
         public int TeamId { get; set; }
         public int QueueId { get; set; }
+        
     }
 }
