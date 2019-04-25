@@ -22,6 +22,33 @@
           "lib/netstandard2.0/Dapper.dll": {}
         }
       },
+      "dbup-core/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.4.0",
+          "System.Diagnostics.TraceSource": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/dbup-core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/dbup-core.dll": {}
+        }
+      },
+      "dbup-sqlserver/4.2.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Data.SqlClient": "4.4.0",
+          "dbup-core": "4.2.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/dbup-sqlserver.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/dbup-sqlserver.dll": {}
+        }
+      },
       "Glyphicon.HTMLHelper/1.0.3": {
         "type": "package",
         "dependencies": {
@@ -32,7 +59,7 @@
       "HelperMethods.HTMLHelper/1.0.0": {
         "type": "package"
       },
-      "jQuery/1.9.0": {
+      "jQuery/1.10.2": {
         "type": "package"
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3236,6 +3263,33 @@
           "ref/netstandard1.0/System.Diagnostics.Tools.dll": {}
         }
       },
+      "System.Diagnostics.TraceSource/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "runtime.native.System": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Diagnostics.TraceSource.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netstandard1.3/System.Diagnostics.TraceSource.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netstandard1.3/System.Diagnostics.TraceSource.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
       "System.Diagnostics.Tracing/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -4467,6 +4521,19 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
+      },
+      "Twitter.Typeahead/0.10.0": {
+        "type": "package",
+        "dependencies": {
+          "jQuery": "1.10.2"
+        }
+      },
+      "typeahead.js-bootstrap.css/0.0.4": {
+        "type": "package",
+        "dependencies": {
+          "Twitter.Typeahead": "0.10.0",
+          "bootstrap": "3.0.0"
+        }
       }
     }
   },
@@ -4511,6 +4578,34 @@
         "lib/netstandard2.0/Dapper.xml"
       ]
     },
+    "dbup-core/4.2.0": {
+      "sha512": "7SIxaDK35WtUmSWhuPxxhXxIiRbn8AlZdW843ds7vtA0vB6SoPAASr8OoUVTu7l3/hJ2gcQan+rhYZOkIYdhNQ==",
+      "type": "package",
+      "path": "dbup-core/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dbup-core.4.2.0.nupkg.sha512",
+        "dbup-core.nuspec",
+        "lib/net35/dbup-core.dll",
+        "lib/net45/dbup-core.dll",
+        "lib/netstandard1.3/dbup-core.dll",
+        "lib/netstandard2.0/dbup-core.dll"
+      ]
+    },
+    "dbup-sqlserver/4.2.0": {
+      "sha512": "QyyBrvjaHzT9G145Wz9ILt59lQfMn8t6ll7q4/hjj/iCpWHjaMd8xWMIqTP1btG+PyqQ4m/93D1iRCWUOsd8Aw==",
+      "type": "package",
+      "path": "dbup-sqlserver/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dbup-sqlserver.4.2.0.nupkg.sha512",
+        "dbup-sqlserver.nuspec",
+        "lib/net35/dbup-sqlserver.dll",
+        "lib/netstandard1.3/dbup-sqlserver.dll"
+      ]
+    },
     "Glyphicon.HTMLHelper/1.0.3": {
       "sha512": "z+atyRgJAXHHz0svO24Z6Oa6zy+HIfTuLAJaNjwFD6VDtD/tQJGM8xrwqsjdLxZrUVLzzH6NeEJkZw6RpDooCQ==",
       "type": "package",
@@ -4535,23 +4630,23 @@
         "helpermethods.htmlhelper.nuspec"
       ]
     },
-    "jQuery/1.9.0": {
-      "sha512": "rl82HRANOh4pSAzCfGUl/7kpKsa1FfyndY/YwC+wm1yBPFgBjmulU6MHba8V8htYnVaT8YfeDtHm1ZifcJGR/w==",
+    "jQuery/1.10.2": {
+      "sha512": "efC7Sca+zo0U4VxlUmqWO5kvX0aHLd3oylknqgKCWlsDm7BCdCjgHx6m36GVrUBQ+G8yKxYrcn+VHxIrj2aYaA==",
       "type": "package",
-      "path": "jquery/1.9.0",
+      "path": "jquery/1.10.2",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Content/Scripts/jquery-1.9.0-vsdoc.js",
-        "Content/Scripts/jquery-1.9.0.js",
-        "Content/Scripts/jquery-1.9.0.min.js",
-        "Content/Scripts/jquery-1.9.0.min.map",
+        "Content/Scripts/jquery-1.10.2-vsdoc.js",
+        "Content/Scripts/jquery-1.10.2.js",
+        "Content/Scripts/jquery-1.10.2.min.js",
+        "Content/Scripts/jquery-1.10.2.min.map",
         "Tools/common.ps1",
         "Tools/install.ps1",
-        "Tools/jquery-1.9.0.intellisense.js",
+        "Tools/jquery-1.10.2.intellisense.js",
         "Tools/uninstall.ps1",
-        "jquery.1.9.0.nupkg.sha512",
+        "jquery.1.10.2.nupkg.sha512",
         "jquery.nuspec"
       ]
     },
@@ -8585,6 +8680,47 @@
         "system.diagnostics.tools.nuspec"
       ]
     },
+    "System.Diagnostics.TraceSource/4.3.0": {
+      "sha512": "PXWAEqWXamctxvdYSlHY+HG0e++cVkg0FwiqtiOZ4Ziy31GD9uab2QAgkuDKUARcCdVq3DfruvdMnPfalEJbNw==",
+      "type": "package",
+      "path": "system.diagnostics.tracesource/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Diagnostics.TraceSource.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Diagnostics.TraceSource.dll",
+        "ref/netstandard1.3/System.Diagnostics.TraceSource.dll",
+        "ref/netstandard1.3/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/de/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/es/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/fr/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/it/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/ja/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/ko/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/ru/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/zh-hans/System.Diagnostics.TraceSource.xml",
+        "ref/netstandard1.3/zh-hant/System.Diagnostics.TraceSource.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/unix/lib/netstandard1.3/System.Diagnostics.TraceSource.dll",
+        "runtimes/win/lib/net46/System.Diagnostics.TraceSource.dll",
+        "runtimes/win/lib/netstandard1.3/System.Diagnostics.TraceSource.dll",
+        "system.diagnostics.tracesource.4.3.0.nupkg.sha512",
+        "system.diagnostics.tracesource.nuspec"
+      ]
+    },
     "System.Diagnostics.Tracing/4.3.0": {
       "sha512": "rswfv0f/Cqkh78rA5S8eN8Neocz234+emGCtTF3lxPY96F+mmmUen6tbn0glN6PMvlKQb9bPAY5e9u7fgPTkKw==",
       "type": "package",
@@ -12187,6 +12323,33 @@
         "system.xml.xpath.xdocument.4.3.0.nupkg.sha512",
         "system.xml.xpath.xdocument.nuspec"
       ]
+    },
+    "Twitter.Typeahead/0.10.0": {
+      "sha512": "NHZ5IBX7hcD9ztmAsvbLr0efm2a5Lb7rv8Ef69E6scosh5ir0iGBWum1YwhZbXisVS9+0AS81ibwUQuSIRLZZA==",
+      "type": "package",
+      "path": "twitter.typeahead/0.10.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Scripts/bloodhound.js",
+        "content/Scripts/typeahead.bundle.js",
+        "content/Scripts/typeahead.bundle.min.js",
+        "content/Scripts/typeahead.jquery.js",
+        "twitter.typeahead.0.10.0.nupkg.sha512",
+        "twitter.typeahead.nuspec"
+      ]
+    },
+    "typeahead.js-bootstrap.css/0.0.4": {
+      "sha512": "CI8C5DUhLMRaIkplgkFHyOqB+An56bSPepXqt8QvzYcyqOdDD5YETTrNjdIH5PkutFV8wJZv17dSpW6NNOB1wA==",
+      "type": "package",
+      "path": "typeahead.js-bootstrap.css/0.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Content/typeahead.css",
+        "typeahead.js-bootstrap.css.0.0.4.nupkg.sha512",
+        "typeahead.js-bootstrap.css.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -12204,7 +12367,10 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.2.3",
       "Microsoft.Extensions.Identity.Core >= 2.2.0",
       "Microsoft.Extensions.Identity.Stores >= 2.2.0",
-      "Microsoft.NETCore.App >= 2.2.0"
+      "Microsoft.NETCore.App >= 2.2.0",
+      "dbup-core >= 4.2.0",
+      "dbup-sqlserver >= 4.2.0",
+      "typeahead.js-bootstrap.css >= 0.0.4"
     ]
   },
   "packageFolders": {
@@ -12308,6 +12474,18 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
+          },
+          "dbup-core": {
+            "target": "Package",
+            "version": "[4.2.0, )"
+          },
+          "dbup-sqlserver": {
+            "target": "Package",
+            "version": "[4.2.0, )"
+          },
+          "typeahead.js-bootstrap.css": {
+            "target": "Package",
+            "version": "[0.0.4, )"
           }
         },
         "imports": [

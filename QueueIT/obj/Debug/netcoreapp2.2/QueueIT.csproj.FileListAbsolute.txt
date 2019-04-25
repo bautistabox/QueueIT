@@ -34,3 +34,4 @@ C:\Users\alexb\RiderProjects\QueueIT\QueueIT\obj\Debug\netcoreapp2.2\Razor\Views
 C:\Users\alexb\RiderProjects\QueueIT\QueueIT\obj\Debug\netcoreapp2.2\Razor\Views\Account\UserHome.g.cshtml.cs
 C:\Users\alexb\RiderProjects\QueueIT\QueueIT\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_LoggedInLayout.g.cshtml.cs
 C:\Users\alexb\RiderProjects\QueueIT\QueueIT\obj\Debug\netcoreapp2.2\Razor\Views\Queues\Show.g.cshtml.cs
+C:\Users\alexb\RiderProjects\QueueIT\QueueIT\obj\Debug\netcoreapp2.2\Razor\Views\Teams\Show.g.cshtml.cs

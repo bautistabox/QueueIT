@@ -32,5 +32,7 @@
       <EmbeddedResource Include="Migrations\Script0001 - Create Tables.sql" />
       <None Remove="Migrations\Script0000 - prevent incorrect execution.sql" />
       <EmbeddedResource Include="Migrations\Script0000 - prevent incorrect execution.sql" />
+      <None Remove="Migrations\Script0002 - Alter CreatorId on Task table.sql" />
+      <EmbeddedResource Include="Migrations\Script0002 - Alter CreatorId on Task table.sql" />
     </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "4064825176b4121ca061b2ff879a5cd18f97c193"
+    "signature": "58c981819041c6dc829b89e9bdadc0698d915cc8"
   },
   "compilationOptions": {
     "defines": [
@@ -37,7 +37,10 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.3",
           "Microsoft.Extensions.Identity.Core": "2.2.0",
           "Microsoft.Extensions.Identity.Stores": "2.2.0",
-          "Microsoft.NETCore.App": "2.2.0"
+          "Microsoft.NETCore.App": "2.2.0",
+          "dbup-core": "4.2.0",
+          "dbup-sqlserver": "4.2.0",
+          "typeahead.js-bootstrap.css": "0.0.4"
         },
         "runtime": {
           "QueueIT.dll": {}
@@ -48,7 +51,7 @@
       },
       "bootstrap/3.1.1": {
         "dependencies": {
-          "jQuery": "1.9.0"
+          "jQuery": "1.10.2"
         }
       },
       "Dapper/1.60.5": {
@@ -67,6 +70,37 @@
           "lib/netstandard2.0/Dapper.dll": {}
         }
       },
+      "dbup-core/4.2.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.5.0",
+          "System.Diagnostics.TraceSource": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/dbup-core.dll": {
+            "assemblyVersion": "4.2.0.0",
+            "fileVersion": "4.2.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/dbup-core.dll": {}
+        }
+      },
+      "dbup-sqlserver/4.2.0": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "System.Data.SqlClient": "4.6.0",
+          "dbup-core": "4.2.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/dbup-sqlserver.dll": {
+            "assemblyVersion": "4.2.0.0",
+            "fileVersion": "4.2.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/dbup-sqlserver.dll": {}
+        }
+      },
       "Glyphicon.HTMLHelper/1.0.3": {
         "dependencies": {
           "HelperMethods.HTMLHelper": "1.0.0",
@@ -74,7 +108,7 @@
         }
       },
       "HelperMethods.HTMLHelper/1.0.0": {},
-      "jQuery/1.9.0": {},
+      "jQuery/1.10.2": {},
       "Microsoft.AspNetCore.Mvc.Core/2.2.2": {
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.Core": "2.2.0",
@@ -417,6 +451,29 @@
         }
       },
       "System.Collections.Immutable/1.5.0": {},
+      "System.Diagnostics.TraceSource/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.2.0",
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "runtime.native.System": "4.3.0"
+        },
+        "runtimeTargets": {
+          "runtime/unix/lib/_._": {
+            "rid": "unix",
+            "assetType": "runtime"
+          },
+          "runtime/win/lib/_._": {
+            "rid": "win",
+            "assetType": "runtime"
+          }
+        }
+      },
       "System.Interactive.Async/3.2.0": {
         "runtime": {
           "lib/netstandard2.0/System.Interactive.Async.dll": {
@@ -441,6 +498,17 @@
         }
       },
       "System.Reflection.TypeExtensions/4.4.0": {},
+      "Twitter.Typeahead/0.10.0": {
+        "dependencies": {
+          "jQuery": "1.10.2"
+        }
+      },
+      "typeahead.js-bootstrap.css/0.0.4": {
+        "dependencies": {
+          "Twitter.Typeahead": "0.10.0",
+          "bootstrap": "3.1.1"
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2",
@@ -3320,6 +3388,20 @@
       "path": "dapper/1.60.5",
       "hashPath": "dapper.1.60.5.nupkg.sha512"
     },
+    "dbup-core/4.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7SIxaDK35WtUmSWhuPxxhXxIiRbn8AlZdW843ds7vtA0vB6SoPAASr8OoUVTu7l3/hJ2gcQan+rhYZOkIYdhNQ==",
+      "path": "dbup-core/4.2.0",
+      "hashPath": "dbup-core.4.2.0.nupkg.sha512"
+    },
+    "dbup-sqlserver/4.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QyyBrvjaHzT9G145Wz9ILt59lQfMn8t6ll7q4/hjj/iCpWHjaMd8xWMIqTP1btG+PyqQ4m/93D1iRCWUOsd8Aw==",
+      "path": "dbup-sqlserver/4.2.0",
+      "hashPath": "dbup-sqlserver.4.2.0.nupkg.sha512"
+    },
     "Glyphicon.HTMLHelper/1.0.3": {
       "type": "package",
       "serviceable": true,
@@ -3334,12 +3416,12 @@
       "path": "helpermethods.htmlhelper/1.0.0",
       "hashPath": "helpermethods.htmlhelper.1.0.0.nupkg.sha512"
     },
-    "jQuery/1.9.0": {
+    "jQuery/1.10.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rl82HRANOh4pSAzCfGUl/7kpKsa1FfyndY/YwC+wm1yBPFgBjmulU6MHba8V8htYnVaT8YfeDtHm1ZifcJGR/w==",
-      "path": "jquery/1.9.0",
-      "hashPath": "jquery.1.9.0.nupkg.sha512"
+      "sha512": "sha512-efC7Sca+zo0U4VxlUmqWO5kvX0aHLd3oylknqgKCWlsDm7BCdCjgHx6m36GVrUBQ+G8yKxYrcn+VHxIrj2aYaA==",
+      "path": "jquery/1.10.2",
+      "hashPath": "jquery.1.10.2.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Mvc.Core/2.2.2": {
       "type": "package",
@@ -3467,6 +3549,13 @@
       "path": "system.collections.immutable/1.5.0",
       "hashPath": "system.collections.immutable.1.5.0.nupkg.sha512"
     },
+    "System.Diagnostics.TraceSource/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PXWAEqWXamctxvdYSlHY+HG0e++cVkg0FwiqtiOZ4Ziy31GD9uab2QAgkuDKUARcCdVq3DfruvdMnPfalEJbNw==",
+      "path": "system.diagnostics.tracesource/4.3.0",
+      "hashPath": "system.diagnostics.tracesource.4.3.0.nupkg.sha512"
+    },
     "System.Interactive.Async/3.2.0": {
       "type": "package",
       "serviceable": true,
@@ -3487,6 +3576,20 @@
       "sha512": "sha512-BWYdrACMy1Sbq7Kh1oISS+2qKX1dHhXNpRByG3c6M9i2fhU9BZqO3nFYIabmbZuQwd7svR5zfxNHgmgv2XkkIg==",
       "path": "system.reflection.typeextensions/4.4.0",
       "hashPath": "system.reflection.typeextensions.4.4.0.nupkg.sha512"
+    },
+    "Twitter.Typeahead/0.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NHZ5IBX7hcD9ztmAsvbLr0efm2a5Lb7rv8Ef69E6scosh5ir0iGBWum1YwhZbXisVS9+0AS81ibwUQuSIRLZZA==",
+      "path": "twitter.typeahead/0.10.0",
+      "hashPath": "twitter.typeahead.0.10.0.nupkg.sha512"
+    },
+    "typeahead.js-bootstrap.css/0.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-CI8C5DUhLMRaIkplgkFHyOqB+An56bSPepXqt8QvzYcyqOdDD5YETTrNjdIH5PkutFV8wJZv17dSpW6NNOB1wA==",
+      "path": "typeahead.js-bootstrap.css/0.0.4",
+      "hashPath": "typeahead.js-bootstrap.css.0.0.4.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",

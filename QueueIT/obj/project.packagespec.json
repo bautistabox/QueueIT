@@ -86,6 +86,18 @@
           "target": "Package",
           "version": "[2.2.0, )",
           "autoReferenced": true
+        },
+        "dbup-core": {
+          "target": "Package",
+          "version": "[4.2.0, )"
+        },
+        "dbup-sqlserver": {
+          "target": "Package",
+          "version": "[4.2.0, )"
+        },
+        "typeahead.js-bootstrap.css": {
+          "target": "Package",
+          "version": "[0.0.4, )"
         }
       },
       "imports": [
