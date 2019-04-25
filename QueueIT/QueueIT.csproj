@@ -8,6 +8,8 @@
 
     <ItemGroup>
         <PackageReference Include="Dapper" Version="1.60.5" />
+        <PackageReference Include="dbup-core" Version="4.2.0" />
+        <PackageReference Include="dbup-sqlserver" Version="4.2.0" />
         <PackageReference Include="Glyphicon.HTMLHelper" Version="1.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
@@ -20,8 +22,15 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
+        <PackageReference Include="typeahead.js-bootstrap.css" Version="0.0.4" />
     </ItemGroup>
     <ItemGroup>
         <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Migrations\Script0001 - Create Tables.sql" />
+      <EmbeddedResource Include="Migrations\Script0001 - Create Tables.sql" />
+      <None Remove="Migrations\Script0000 - prevent incorrect execution.sql" />
+      <EmbeddedResource Include="Migrations\Script0000 - prevent incorrect execution.sql" />
     </ItemGroup>
 </Project>

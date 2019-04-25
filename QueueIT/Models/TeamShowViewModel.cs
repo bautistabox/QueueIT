@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using QueueIT.Identity;
 
 namespace QueueIT.Models
 {
@@ -11,6 +12,8 @@ namespace QueueIT.Models
         public string Description { get; set; }
         public bool IsPrivate { get; set; }
         public List<Queue> QueuesList { get; set; }
+        public List<UserTeam> TeamMembers { get; set; }
+        public List<QueueItUser> TeamMemberUsers { get; set; }
         
     }
 }

@@ -13,6 +13,7 @@ namespace QueueIT.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamQueue> TeamsQueues { get; set; }
         public DbSet<UserTeam> UserTeams { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

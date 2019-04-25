@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using DbUp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,17 +11,58 @@ using QueueIT.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using QueueIT.Identity;
 
 namespace QueueIT
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private ILogger log;
+        private IHostingEnvironment env;
+        public Startup(IConfiguration configuration, IHostingEnvironment env, ILogger<Startup> log)
         {
             Configuration = configuration;
+            this.log = log;
+            this.env = env;
+
+            RunMigrations();
         }
 
+        private void RunMigrations()
+        {
+            var upgradeEngine = DeployChanges.To
+                .SqlDatabase(Configuration.GetConnectionString("QueueItDbConn"))
+                .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(),
+                    (string s) => s.StartsWith("QueueIT.Migrations.Script"))
+                .WithTransactionPerScript()
+                .LogToConsole()
+                .Build();
+
+            if (upgradeEngine.IsUpgradeRequired())
+            {
+                log.LogInformation("Database Update Required.");
+
+                var result = upgradeEngine.PerformUpgrade();
+
+                if (!result.Successful)
+                {
+                    log.LogError(result.Error, "Failed to run migrations due to an error executing the sql scripts.");
+                    throw result.Error;
+                }
+                
+                log.LogInformation("Completed database upgrade. The following scripts were executed");
+                foreach (var script in result.Scripts)
+                {
+                    log.LogInformation(script.Name);
+                }
+            }
+            else
+            {
+                log.LogInformation("No database update is required.");
+            }
+        }
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -35,12 +77,11 @@ namespace QueueIT
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var connectionString = @"Server=localhost;Database=QueueIt.QueueItUser;Trusted_Connection=True;MultipleActiveResultSets=True;";
-            var queueItDbConn = @"Server=localhost;Database=QueueIt;Trusted_Connection=True;";
+            
             var migrationAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddDbContext<QueueItUserDbContext>(opt => opt.UseSqlServer(connectionString,
+            services.AddDbContext<QueueItUserDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("QueueItUserDbConn"),
                 sql => sql.MigrationsAssembly(migrationAssembly)));
-            services.AddDbContext<QueueItDbContext>(opt => opt.UseSqlServer(queueItDbConn));
+            services.AddDbContext<QueueItDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("QueueItDbConn")));
             services.AddIdentity<QueueItUser, IdentityRole>(options =>
                     {
                         

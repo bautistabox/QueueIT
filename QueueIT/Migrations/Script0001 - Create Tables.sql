@@ -1,0 +1,40 @@
+CREATE TABLE Teams (
+	Id INT IDENTITY PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL,
+	CreatorId nvarchar(450) NOT NULL,
+	Description VARCHAR(255),
+	IsPrivate BIT NOT NULL,
+	CreatedOn DATETIME NOT NULL
+);
+
+CREATE TABLE Queues (
+	Id INT IDENTITY PRIMARY KEY,
+	Title VARCHAR(50) NOT NULL,
+	CreatorId nvarchar(450) NOT NULL,
+	CreatedOn DATETIME NOT NULL,
+	UpdatedOn DATETIME NOT NULL,
+	IsPrivate BIT NOT NULL,
+	TeamId INT NOT NULL
+);
+
+CREATE TABLE TeamsQueues (
+	TeamId INT NOT NULL,
+	QueueId INT NOT NULL,
+);
+
+CREATE TABLE Tasks (
+	Id INT IDENTITY PRIMARY KEY,
+	QueueId INT NOT NULL,
+	Title VARCHAR(50) NOT NULL,
+	Description VARCHAR(255),
+	CreatorId INT NOT NULL,
+	AssigneeId Int ,
+	Status INT NOT NULL,
+	DueOn DATETIME
+);
+
+CREATE TABLE UserTeams (
+  UserId NVARCHAR(450) NOT NULL,
+  TeamId INT NOT NULL,
+  IsAdmin BIT NOT NULL
+);

@@ -27,7 +27,6 @@ namespace QueueIT.Controllers.Account
             var teams = _db.Teams.Where(t => t.CreatorId == currentUserId).ToList();
             var queues = _db.Queues.Where(q => q.CreatorId == currentUserId).ToList();
             
-
             var model = new UserHomeViewModel
             {
                 TeamsList = teams,

@@ -10,9 +10,9 @@ namespace QueueIT.Models
         public int QueueId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public int CreatorId { get; set; }
+        public string CreatorId { get; set; }
         public int AssigneeId { get; set; }
-        public Status Status { get; set; }
-        public DateTime DueOn { get; set; }
+        public int Status { get; set; }
+        public DateTime? DueOn { get; set; }
     }
 }
