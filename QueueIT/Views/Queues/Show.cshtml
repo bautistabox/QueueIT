@@ -36,9 +36,7 @@
             {
                 if (task.Status == 0)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">
-                        @task.Title
-                        <div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
@@ -71,9 +69,7 @@
             {
                 if (task.Status == 1)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">
-                        @task.Title
-                        <div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
@@ -95,9 +91,7 @@
             {
                 if (task.Status == 2)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">
-                        @task.Title
-                        <div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
@@ -119,9 +113,7 @@
             {
                 if (task.Status == 3)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">
-                        @task.Title
-                        <div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
@@ -254,8 +246,8 @@
                 var $newTaskDiv =
                     $('<div id="new-item" class="drag kanban-col-item new-item">' +
                         newTask.value +
-                        '<div class="view"><a id="newTaskDetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
-                        '<div class="edit"><a id="newTaskDetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>');
+                        '<div class="view"><a id="'+ newTask.value +'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
+                        '<div class="edit"><a id="'+ newTask.value +'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>');
 
 
                 var task = newTask.value;
@@ -281,9 +273,9 @@
                                 $newTaskDiv.id = taskId;
                                 $('#todo-body').append($newTaskDiv);
                                 document.getElementById('new-item').setAttribute("id", taskId);
-                                document.getElementById('newTaskDetailsBtn')
+                                document.getElementById(newTask.value + 'DetailsBtn')
                                     .setAttribute("onclick", "openModal(" + taskId + ", 'edit')");
-                                document.getElementById('newTaskDetailsViewBtn')
+                                document.getElementById(newTask.value + 'DetailsViewBtn')
                                     .setAttribute("onclick", "openModal(" + taskId + ", 'view')");
                                 newTask.value = "";
                                 $newTaskDiv.draggable({ stack: ".drag" });
@@ -397,7 +389,10 @@
                     if (resp === -1) {
                         showAlert("Task does not exist.", "alert-danger");
                     }
-                    document.getElementById(resp).innerHTML.innerHTML = $('#modalTaskTitle').val();
+                    document.getElementById(resp).innerHTML = $('#modalTaskTitle').val() + 
+                        '<div class="view"><a id="'+ $('#modalTaskTitle').val() +'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
+                    '<div class="edit"><a id="'+ $('#modalTaskTitle').val() +'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>';
+                    
                     showAlert("Task saved!", "alert-success");
                 },
                 error: function() {

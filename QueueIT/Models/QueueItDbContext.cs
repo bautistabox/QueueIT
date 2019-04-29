@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QueueIT.Notifications;
 
 namespace QueueIT.Models
 {
@@ -13,7 +14,7 @@ namespace QueueIT.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamQueue> TeamsQueues { get; set; }
         public DbSet<UserTeam> UserTeams { get; set; }
-        
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

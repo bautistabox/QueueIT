@@ -98,7 +98,7 @@ namespace QueueIT
                 .AddPasswordValidator<DoesNotContainPasswordValidator<QueueItUser>>();
             
             services.AddScoped<IUserClaimsPrincipalFactory<QueueItUser>, QueueItUserClaimsPrincipalFactory>();
-
+            services.AddScoped<IEmailSender, EmailSender>();
             services.Configure<DataProtectionTokenProviderOptions>(options =>
                 options.TokenLifespan = TimeSpan.FromHours(3));
             services.Configure<EmailConfirmationTokenProviderOptions>(options =>

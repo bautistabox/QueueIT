@@ -34,5 +34,9 @@
       <EmbeddedResource Include="Migrations\Script0000 - prevent incorrect execution.sql" />
       <None Remove="Migrations\Script0002 - Alter CreatorId on Task table.sql" />
       <EmbeddedResource Include="Migrations\Script0002 - Alter CreatorId on Task table.sql" />
+      <None Remove="Migrations\Script0003 - Adding Notification Table.sql" />
+      <EmbeddedResource Include="Migrations\Script0003 - Adding Notification Table.sql" />
+      <None Remove="Migrations\Script0004 - altering notification table to add extra columns.sql" />
+      <EmbeddedResource Include="Migrations\Script0004 - altering notification table to add extra columns.sql" />
     </ItemGroup>
 </Project>

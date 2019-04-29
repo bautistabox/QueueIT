@@ -42,6 +42,26 @@ a.navbar-brand {
     margin-right: .5em;
 }
 
+a.team-name-link {
+    color: #ff3c00;
+}
+
+a.team-name-link:hover {
+    color: #9d2500;
+}
+
+a.dropdown-item {
+    color: #ffffff !important;
+}
+
+a.dropdown-item:hover {
+    color: #16181b !important;
+}
+
+a.dropdown-item:visited {
+    color: #ffffff;
+}
+
 .column {
     float: left;
     width: 50%;

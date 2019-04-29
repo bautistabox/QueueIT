@@ -29,15 +29,13 @@
         }
     </div>
 </div>
-@if (Model.Description != null || Model.Description != "")
-{
-    <div class="background-grey rounded shadow" id="team-desc-div">
-        <h4 id="team-desc" class="display-9 secondary-text">@Model.Description</h4>
-        <textarea class="form-control modal-input" rows="4" id="team-desc-edit" style="display: none">
-            @Model.Description
-        </textarea>
-    </div>
-}
+<div class="background-grey rounded shadow" id="team-desc-div">
+    
+    <h4 id="team-desc" class="display-9 secondary-text">@Model.Description</h4>
+    <textarea class="form-control modal-input" rows="4" id="team-desc-edit" style="display: none">@Model.Description</textarea>
+</div>
+
+
 <button id="save-team-profile-btn" class="my-btn my-btn-primary m-15" style="display: none;">Save Team Profile</button>
 <button id="edit-team-profile-btn" class="my-btn my-btn-primary m-15">Edit Team Profile</button>
 
@@ -59,181 +57,181 @@
     </div>
 </nav>
 <div class="tab-content background-grey" id="nav-tabContent">
-<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-    <br/>
-    <div class="container-row">
-        @foreach (var queue in Model.QueuesList)
-        {
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <br/>
+        <div class="container-row">
+            @foreach (var queue in Model.QueuesList)
+            {
+                <div class="card m-10">
+                    <form asp-action="Show" asp-controller="Queues"
+                          method="GET" asp-route-queueId="@queue.Id">
+                        <button class="card-body home-card grow shadow">@queue.Title</button>
+                    </form>
+                </div>
+            }
             <div class="card m-10">
-                <form asp-action="Show" asp-controller="Queues"
-                      method="GET" asp-route-queueId="@queue.Id">
-                    <button class="card-body home-card grow shadow">@queue.Title</button>
-                </form>
+                <button class="card-body home-card grow shadow-lg" data-toggle="modal"
+                        data-target="#CreateQueueModal" aria-hidden="true">
+                    <span class="thick-plus">+</span> Add a Queue
+                </button>
             </div>
-        }
-        <div class="card m-10">
-            <button class="card-body home-card grow shadow-lg" data-toggle="modal"
-                    data-target="#CreateQueueModal" aria-hidden="true">
-                <span class="thick-plus">+</span> Add a Queue
-            </button>
         </div>
     </div>
-</div>
-<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-    <br/>
-    <div id="team-profile-members-header">
-        <h4 class="display-7 secondary-text" style="float: left">Team Members <strong>(3)</strong></h4>
-        <button class="my-btn my-btn-primary" style="float: right"
-                data-toggle="modal" data-target="#exampleModal">
-            Invite Members
-        </button>
-    </div>
-    <table id="team-profile-members" class="table table-responsive-sm">
-        <tbody>
-        @foreach (var user in @Model.TeamMemberUsers)
-        {
-            <tr>
-                <td id="member-avatar" class="team-member-td">
-                    <div class="avatar-circle">
-                        <span class="initials">@user.FirstName.Substring(0,1)@user.LastName.Substring(0,1)</span>
-                    </div>
-                </td>
-                <td id="member-user" class="team-member-td">
-                    @user.FirstName @user.LastName
-                </td>
-                <td id="member-q-num" class="team-member-td">
-                    <div align="right">
-                        on <u>@Model.QueuesList.Count</u>
-                        @if (@Model.QueuesList.Count == 1)
-                        {
-                            <html>Queue</html>
-                        }
-                        else
-                        {
-                            <html>Queues</html>
-                        }
-                    </div>
-                </td>
-                <td class="team-member-td">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Role</span>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <br/>
+        <div id="team-profile-members-header">
+            <h4 class="display-7 secondary-text" style="float: left">Team Members <strong>(@Model.TeamMembers.Count)</strong></h4>
+            <button class="my-btn my-btn-primary" style="float: right"
+                    data-toggle="modal" data-target="#exampleModal">
+                Invite Members
+            </button>
+        </div>
+        <table id="team-profile-members" class="table table-responsive-sm">
+            <tbody>
+            @foreach (var user in @Model.TeamMemberUsers)
+            {
+                <tr>
+                    <td id="member-avatar" class="team-member-td">
+                        <div class="avatar-circle">
+                            <span class="initials">@user.FirstName.Substring(0, 1)@user.LastName.Substring(0, 1)</span>
                         </div>
-                        @if (Model.TeamCreatorId == user.Id)
-                        {
-                            <span id="team-owner-select" class="custom-select" title="Cannot change role of Team Owner">
-                                Team Owner
-                            </span>
-                        }
-                        else
-                        {
-                            foreach (var member in @Model.TeamMembers)
+                    </td>
+                    <td id="member-user" class="team-member-td">
+                        @user.FirstName @user.LastName
+                    </td>
+                    <td id="member-q-num" class="team-member-td">
+                        <div align="right">
+                            on <u>@Model.QueuesList.Count</u>
+                            @if (@Model.QueuesList.Count == 1)
                             {
-                                if (member.UserId == user.Id)
+                                <html>Queue</html>
+                            }
+                            else
+                            {
+                                <html>Queues</html>
+                            }
+                        </div>
+                    </td>
+                    <td class="team-member-td">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Role</span>
+                            </div>
+                            @if (Model.TeamCreatorId == user.Id)
+                            {
+                                <span id="team-owner-select" class="custom-select" title="Cannot change role of Team Owner">
+                                    Team Owner
+                                </span>
+                            }
+                            else
+                            {
+                                foreach (var member in @Model.TeamMembers)
                                 {
-                                    if (member.IsAdmin)
+                                    if (member.UserId == user.Id)
                                     {
-                                        <select class="custom-select">
-                                            <option selected value="Admin">Admin</option>
-                                            <option value="Normal">Normal</option>
-                                        </select>
-                                    }
-                                    else
-                                    {
-                                        <select class="custom-select">
-                                            <option value="Admin">Admin</option>
-                                            <option selected value="Normal">Normal</option>
-                                        </select>
+                                        if (member.IsAdmin)
+                                        {
+                                            <select class="custom-select">
+                                                <option selected value="Admin">Admin</option>
+                                                <option value="Normal">Normal</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="custom-select">
+                                                <option value="Admin">Admin</option>
+                                                <option selected value="Normal">Normal</option>
+                                            </select>
+                                        }
                                     }
                                 }
                             }
-                        }
-                    </div>
-                </td>
-                <td id="member-rm-td" class="team-member-td">
-                    <div align="right">
-                        @if (Model.TeamCreatorId == user.Id)
-                        {
-                            <button id="rm-team-member" disabled title="Cannot remove Team Owner"
-                                    class="shadow">
-                                remove
-                            </button>
-                        }
-                        else
-                        {
-                            <button id="rm-team-member" class="shadow">
-                                remove
-                            </button>
-                        }
-                    </div>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
-<div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-profile-tab">
-    <br/>
-    <div class="setting-pane shadow">
-        <div class="setting-header">
-            <h4 id="team-setting-head" class="display-8 secondary-text">Visibility</h4>
-        </div>
-        <div class="setting-body">
-            <div class="container-row">
-                @if (Model.IsPrivate)
-                {
-                    <div style="display: flex; flex-direction: row; justify-content: right"
-                         id="setting-icon" align="right">
-                        <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
-                        <h4 id="is-private" class="secondary-text display-8">&nbsp;Private &nbsp;&mdash;</h4>
-                    </div>
-                    <span id="setting-msg" class="secondary-text">
-                        This team's privacy setting is set to <b>private</b>.
-                        Meaning anyone outside of the team <u>cannot</u> view queues or members.
-                    </span>
-                    <span id="setting-msg-btn">
-                        <form asp-action="ChangePrivacy" asp-controller="Teams" method="POST">
-                            <input type="hidden" value="@Model.TeamId" name="teamId"/>
-                            <button id="change-btn" type="submit" class="my-btn my-btn-primary">Change</button>
-                        </form>
-                    </span>
-                }
-                else
-                {
-                    <div style="display: flex; flex-direction: row; justify-content: right"
-                         id="setting-icon" align="right">
-                        <img class="lock" src="https://img.icons8.com/ios/50/000000/unlock.png" alt="">
-                        <h4 id="is-private" class="secondary-text display-8">&nbsp;Public &nbsp;&mdash;</h4>
-                    </div>
-                    <span id="setting-msg" class="secondary-text">
-                        This team's privacy setting is set to <b>public</b>.
-                        Meaning anyone outside of the team <u>can</u> view queues and members.
-                    </span>
-                    <span id="setting-msg-btn" class="secondary-text">
-                        <form asp-action="ChangePrivacy" asp-controller="Teams" method="POST">
-                            <input type="hidden" value="@Model.TeamId" name="teamId"/>
-                            <button id="change-btn" type="submit" class="my-btn my-btn-primary">Change</button>
-                        </form>
-                    </span>
-                }
-            </div>
-        </div>
-
-        @if (Model.CurrentUserId == Model.TeamCreatorId)
-        {
-            <div align="left" class="setting-footer">
-                <button id="del-team-btn" class="my-btn my-btn-primary"
-                        data-toggle="modal" data-target="#delete-team-modal">
-                    Delete
-                </button>
-            </div>
-        }
-        else
-        {
-        }
-
+                        </div>
+                    </td>
+                    <td id="member-rm-td" class="team-member-td">
+                        <div align="right">
+                            @if (Model.TeamCreatorId == user.Id)
+                            {
+                                <button id="rm-team-member" disabled title="Cannot remove Team Owner"
+                                        class="shadow">
+                                    remove
+                                </button>
+                            }
+                            else
+                            {
+                                <button id="rm-team-member" class="shadow">
+                                    remove
+                                </button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
-</div>
+    <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <br/>
+        <div class="setting-pane shadow">
+            <div class="setting-header">
+                <h4 id="team-setting-head" class="display-8 secondary-text">Visibility</h4>
+            </div>
+            <div class="setting-body">
+                <div class="container-row">
+                    @if (Model.IsPrivate)
+                    {
+                        <div style="display: flex; flex-direction: row; justify-content: right"
+                             id="setting-icon" align="right">
+                            <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
+                            <h4 id="is-private" class="secondary-text display-8">&nbsp;Private &nbsp;&mdash;</h4>
+                        </div>
+                        <span id="setting-msg" class="secondary-text">
+                            This team's privacy setting is set to <b>private</b>.
+                            Meaning anyone outside of the team <u>cannot</u> view queues or members.
+                        </span>
+                        <span id="setting-msg-btn">
+                            <form asp-action="ChangePrivacy" asp-controller="Teams" method="POST">
+                                <input type="hidden" value="@Model.TeamId" name="teamId"/>
+                                <button id="change-btn" type="submit" class="my-btn my-btn-primary">Change</button>
+                            </form>
+                        </span>
+                    }
+                    else
+                    {
+                        <div style="display: flex; flex-direction: row; justify-content: right"
+                             id="setting-icon" align="right">
+                            <img class="lock" src="https://img.icons8.com/ios/50/000000/unlock.png" alt="">
+                            <h4 id="is-private" class="secondary-text display-8">&nbsp;Public &nbsp;&mdash;</h4>
+                        </div>
+                        <span id="setting-msg" class="secondary-text">
+                            This team's privacy setting is set to <b>public</b>.
+                            Meaning anyone outside of the team <u>can</u> view queues and members.
+                        </span>
+                        <span id="setting-msg-btn" class="secondary-text">
+                            <form asp-action="ChangePrivacy" asp-controller="Teams" method="POST">
+                                <input type="hidden" value="@Model.TeamId" name="teamId"/>
+                                <button id="change-btn" type="submit" class="my-btn my-btn-primary">Change</button>
+                            </form>
+                        </span>
+                    }
+                </div>
+            </div>
+
+            @if (Model.CurrentUserId == Model.TeamCreatorId)
+            {
+                <div align="left" class="setting-footer">
+                    <button id="del-team-btn" class="my-btn my-btn-primary"
+                            data-toggle="modal" data-target="#delete-team-modal">
+                        Delete
+                    </button>
+                </div>
+            }
+            else
+            {
+            }
+
+        </div>
+    </div>
 </div>
 </div>
 </div>

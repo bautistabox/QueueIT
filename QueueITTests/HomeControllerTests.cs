@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
+using QueueIT;
 using QueueIT.Controllers;
 using QueueIT.Identity;
 using QueueIT.InputModels;
@@ -35,6 +36,8 @@ namespace QueueITTests
             new Mock<ITempDataDictionaryFactory>();
 
         private readonly Mock<QueueItDbContext> _mockQueueItDbContext = new Mock<QueueItDbContext>();
+
+        private readonly Mock<IEmailSender> _mockEmailSender = new Mock<IEmailSender>();
         
         private static Mock<UserManager<QueueItUser>> GetMockUserManager()
         {
@@ -65,7 +68,7 @@ namespace QueueITTests
 
         private HomeController GetHomeController()
         {
-            return new HomeController(_mockUserManager.Object, _mockUserClaimsPrincipalFactory.Object, _mockQueueItDbContext.Object)
+            return new HomeController(_mockUserManager.Object, _mockUserClaimsPrincipalFactory.Object, _mockQueueItDbContext.Object, _mockEmailSender.Object)
             {
                 ControllerContext = {HttpContext = new DefaultHttpContext()
                 {

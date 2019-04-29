@@ -26,6 +26,8 @@ namespace QueueIT.Controllers.Queue
         [Route("queues/show/{queueId}")]
         public IActionResult Show(int queueId)
         {
+            Console.WriteLine("IN QUEUES/" +
+                              "SHOW");
             var queue = _db.Queues.FirstOrDefault(q => q.Id == queueId);
 
             if (queue != null)

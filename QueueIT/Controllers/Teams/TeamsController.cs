@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite.Internal.UrlMatches;
 using QueueIT.Identity;
 using QueueIT.Models;
+using QueueIT.Notifications;
 
 namespace QueueIT.Teams
 {
@@ -48,6 +49,12 @@ namespace QueueIT.Teams
                 if (!normalizedTName.Equals(normalizedTeamName)) continue;
                 Console.WriteLine("Team Already Exists");
                 return RedirectToAction("UserHome", "Account");
+            }
+
+            if (desc == null)
+            {
+                desc = teamName + "'s description.";
+                
             }
 
             var team = new Team
@@ -138,6 +145,11 @@ namespace QueueIT.Teams
 
             foreach (var queue in queues)
             {
+                var tasks = _db.Tasks.Where(t => t.QueueId == queue.Id).ToList();
+                foreach (var task in tasks)
+                {
+                    _db.Tasks.Remove(task);
+                }
                 _db.Queues.Remove(queue);
             }
 
@@ -202,6 +214,10 @@ namespace QueueIT.Teams
                     team.Name = model.NewTeamName;
                 }
 
+                if (string.IsNullOrEmpty(model.NewTeamDescription))
+                {
+                    model.NewTeamDescription = model.NewTeamName + "'s description.";
+                }
                 team.Description = model.NewTeamDescription;
 
                 _db.SaveChanges();
@@ -220,19 +236,36 @@ namespace QueueIT.Teams
         [HttpPost]
         public void AddUserToTeam([FromBody] AddUserToTeamInputModel model)
         {
-            Console.WriteLine("in ADDUSERTOTEAM");   
             var user = _userDb.Users.FirstOrDefault(u => u.UserName == model.Username);
+            var currentUser = _userDb.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(HttpContext.User));
+            var team = _db.Teams.FirstOrDefault(t => t.Id == model.TeamId);
 
-            if (user == null) return;
-            var userTeam = new UserTeam
+            if (user == null || currentUser == null) return;
+            if (team == null) return;
+            
+            var message = "@" + currentUser.UserName + " added you to their team: " + team.Name + ".";
+
+            var notification = new Notification
             {
-                UserId = user.Id,
-                TeamId = model.TeamId,
-                IsAdmin = false
+                ToId = user.Id,
+                FromId = currentUser.Id,
+                ToName = user.UserName,
+                FromName = currentUser.UserName,
+                IsRead = false,
+                Message = message
             };
-            _db.UserTeams.Add(userTeam);
+
+            _db.Notifications.Add(notification);
             _db.SaveChanges();
-            Console.WriteLine("Success");
+//            var userTeam = new UserTeam
+//            {
+//                UserId = user.Id,
+//                TeamId = model.TeamId,
+//                IsAdmin = false
+//            };
+//            _db.UserTeams.Add(userTeam);
+//            _db.SaveChanges();
+//            Console.WriteLine("Success");
         }
     }
 }

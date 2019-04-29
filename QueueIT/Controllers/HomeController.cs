@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -19,19 +20,20 @@ namespace QueueIT.Controllers
 {
     public class HomeController : Controller
     {
-//        private readonly QueueItDbContext _db;
         private readonly UserManager<QueueItUser> _userManager;
         private readonly IUserClaimsPrincipalFactory<QueueItUser> _claimsPrincipalFactory;
         private readonly QueueItDbContext _db;
+        private readonly IEmailSender _emailSender;
 
         // Constructor
         public HomeController(UserManager<QueueItUser> userManager, 
             IUserClaimsPrincipalFactory<QueueItUser> claimsPrincipalFactory,
-            QueueItDbContext queueItDbContext)
+            QueueItDbContext queueItDbContext, IEmailSender emailSender)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _db = queueItDbContext;
+            _emailSender = emailSender;
         }
 
         // Landing Page
@@ -114,10 +116,38 @@ namespace QueueIT.Controllers
                         _db.Teams.Add(team);
                         _db.SaveChanges();
                         
+                        var userTeam = new UserTeam
+                        {
+                            UserId = user.Id,
+                            TeamId = team.Id,
+                            IsAdmin = true
+                        };
+                        _db.UserTeams.Add(userTeam);
+                        _db.SaveChanges();
+
+                        var queue = new Models.Queue
+                        {
+                            Title = "Personal Queue",
+                            TeamId = team.Id,
+                            CreatorId = user.Id,
+                            IsPrivate = true,
+                            CreatedOn = DateTime.Now,
+                            UpdatedOn = DateTime.Now
+                        };
+
+                        _db.Queues.Add(queue);
+                        _db.SaveChanges();                        
+                        
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var confirmationEmail = Url.Action("ConfirmEmailAddress", "Home",
                             new {token = token, email = user.Email }, Request.Scheme);
-                        System.IO.File.WriteAllText("confirmationLink.txt", confirmationEmail); 
+                        var fullName = user.FirstName + " " + user.LastName;
+                        const string from = "infinity.test.email@gmail.com";
+                        const string fromName = "QueueIT";
+                        const string subject = "QueueIT: Confirm Your Email";
+                        var body = "<br/>Your username is:<br/><br/><b>" + user.UserName + "</b><br/><br/>Visit this link to confirm your email and gain access to the site. <br/><br/>" +
+                                   confirmationEmail + "<br/><br/>Thanks for using the site!<br/><br/>";
+                        _emailSender.SendEmail(user.Email, fullName, from, fromName, subject, body, true);
                     }
                     else
                     {
@@ -173,8 +203,14 @@ namespace QueueIT.Controllers
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var resetUrl = Url.Action("ResetPassword", "Home",
                         new {token = token, email = user.Email}, Request.Scheme);
-                    
-                    System.IO.File.WriteAllText("resetLink.txt", resetUrl);  
+                    var fullName = user.FirstName + " " + user.LastName;
+                    const string from = "infinity.test.email@gmail.com";
+                    const string fromName = "QueueIT";
+                    const string subject = "QueueIT: Reset Your Password";
+                    var body = "Click this link to reset your password and re-gain access to the site. <br/>" +
+                               resetUrl;
+                    _emailSender.SendEmail(user.Email, fullName, from, fromName, subject, body, true);
+                      
                 }
                 else
                 {

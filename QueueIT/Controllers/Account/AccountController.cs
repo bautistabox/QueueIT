@@ -1,5 +1,6 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QueueIT.Identity;
@@ -34,6 +35,62 @@ namespace QueueIT.Controllers.Account
             };
             
             return View(model);
-        }    
+        }
+
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult<LayoutViewModel> GetLayoutData()
+        {
+            var currentUserId = _userManager.GetUserId(HttpContext.User);
+            var userTeams = _db.UserTeams.Where(ut => ut.UserId == currentUserId).ToList();
+            var notifications = _db.Notifications.Where(n => n.ToId == currentUserId).ToList();
+            var queues = new List<Models.Queue>();
+            var teams = new List<Team>();
+
+            if (userTeams.Count <= 0) return new LayoutViewModel
+            {
+                Queues = new List<Models.Queue>(),
+                Teams = new List<Team>()
+            };
+            
+            foreach (var userTeam in userTeams)
+            {
+                teams.Add(_db.Teams.FirstOrDefault(t => t.Id == userTeam.TeamId));
+            }
+
+            foreach (var team in teams)
+            {
+                queues.Add(_db.Queues.FirstOrDefault(q => q.TeamId == team.Id));
+            }
+
+            var user = _dbUser.Users.FirstOrDefault(u => u.Id == currentUserId);
+            if(user == null) return new LayoutViewModel
+            {
+                Queues = new List<Models.Queue>(),
+                Teams = new List<Team>()
+            };
+            
+            var model = new LayoutViewModel
+            {
+                Queues = queues,
+                Teams = teams,
+                Notifications = notifications,
+                UserId = user.Id,
+                UserEmail = user.Email,
+                UserFirstName = user.FirstName,
+                UserLastName = user.LastName,
+                UserInitials = user.FirstName.Substring(0,1) + 
+                               user.LastName.Substring(0,1),
+                UserName = user.UserName
+            };
+
+            return model;
+
+        }
     }
 }
