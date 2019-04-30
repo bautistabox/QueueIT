@@ -141,6 +141,7 @@ namespace QueueIT.Controllers
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var confirmationEmail = Url.Action("ConfirmEmailAddress", "Home",
                             new {token = token, email = user.Email }, Request.Scheme);
+                        System.IO.File.WriteAllText("confirmation.txt", confirmationEmail);
                         var fullName = user.FirstName + " " + user.LastName;
                         const string from = "infinity.test.email@gmail.com";
                         const string fromName = "QueueIT";

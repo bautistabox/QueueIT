@@ -14,8 +14,10 @@ namespace QueueIT.Notifications
         public string FromId { get; set; }
         public bool IsRead { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public DateTime ReadAt { get; set; }
+        public DateTime? ReadAt { get; set; }
         public string Link { get; set; }
+        public int ToTeamId { get; set; }
+        public int Type { get; set; }
     }
     
     

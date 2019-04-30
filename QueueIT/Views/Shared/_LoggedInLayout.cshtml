@@ -74,13 +74,11 @@
                         <a href="#" class="nav-link thin dropdown-toggle shadow-lg" data-toggle="dropdown">
                             <img class="layout" src="~/Bell.png" alt=""/><span id="note-badge" style="display: none;" class="badge badge-danger"></span>
                         </a>
-                        <div class="dropdown-menu background-grey shadow-lg" style="min-width: 250px;">
+                        <div class="dropdown-menu background-grey shadow-lg" style="min-width: 180px;">
                             <h4 class="dropdown-header">Notifications</h4>
                             <div id="notifications-list">
-                                <button class="dropdown-item primary-text" style="white-space:normal">@@NotADog123 added you to their team: Team Q.</button>
+                            
                             </div>
-                            @* <button class="dropdown-item primary-text">TEST</button> *@
-                            @* <div class="dropdown-divider"></div> *@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -275,11 +273,121 @@
         $('#new-u-name').attr('value', resp.userName);
         
         if (resp.notifications.length > 0) {
-            $('#note-badge').toggle();
-            $('#note-badge').text(resp.notifications.length);
+           
+            var count = 0;
+            resp.notifications.forEach(function(note) {
+                
+                if (!note.isRead) {
+                    count++;
+                }
+                
+            });
+            
+            if(count > 0){
+                $('#note-badge').toggle();
+                $('#note-badge').text(count);
+            }
+            
 
+            resp.notifications.forEach(function(note) {
+//                var year = date.toISOString().slice(0,4);
+//                var time = date.toLocaleTimeString().slice(0,4);
+//                var dateTime = time + " " + date.getMonth() + "/" + date.getDay() + "/" + year;
+                var date = new Date(note.readAt);
+                var today = Date.now();
+                var oneWeek = 60 * 60 * 168 * 1000;
+                
+                if(note.isRead)
+                {
+                    if(!((today - date) > oneWeek))
+                    {
+                        var $notification = $(
+                            "<div class='dropdown-divider'></div>" +
+                            "<a class='dropdown-item primary-text background-light-grey' style='white-space: normal'" +
+                            "href=" + note.link + ">" + note.message + 
+                            "<br/><span class='disabled-text'>Read <i class='fa fa-check' aria-hidden='true'></i></span>" +
+                            "</a>"
+                        );
+                        $('#notifications-list').append($notification);
+                    }
+                }
+                else
+                {
+                    if(note.type === 1)
+                    {
+                        var $notification = $(
+                            "<div class='dropdown-divider'></div>" +
+                            "<a class='dropdown-item primary-text' style='white-space: normal'" +
+                            "href=" + note.link + ">" + note.message +
+                            "<div id='note-answer-id' class='ml-4'><a onclick='Accept(" + note.id + ")' href='#'>Accept</a> " +
+                            "<a onclick='Decline(" + note.id + ")' href='#' class='link-danger'>Decline</a></div>" +
+                            "</a>");
+                        $('#notifications-list').append($notification);
+                    } 
+                    else if (note.type === 2) {
+                        var $notification = $(
+                            "<div class='dropdown-divider'></div>" +
+                            "<a class='dropdown-item primary-text' style='white-space: normal'" +
+                            "href='#' onclick='Read(" + note.id + ")'>" +
+                            note.message +
+                            "</a>");
+                        $('#notifications-list').append($notification);                        
+                    }
+                }
+            });      
         }
     }
+    
+    function Accept(noteId) {
+        $.ajax({
+            type: 'post',
+            url: '/Teams/AcceptTeam',
+            beforeSend: function(req) {
+                req.setRequestHeader('Content-type', 'application/json');
+            },
+            data: JSON.stringify({
+                noteId: noteId
+                
+            }),
+            success: function(resp) {
+                $('#note-badge').toggle();
+
+            }
+    });
+    }
+    function Decline(noteId) {
+        $.ajax({
+            type: 'post',
+            url: '/Teams/DeclineTeam',
+            beforeSend: function(req) {
+                req.setRequestHeader('Content-type', 'application/json');               
+            },
+            data: JSON.stringify({
+                noteId: noteId
+            }),
+            success: function(resp) {
+                $('#note-badge').toggle();               
+            }
+        });
+    }
+    function Read(noteId) {
+        $.ajax({
+            type: 'post',
+            url: '/Teams/ReadNotification',
+            beforeSend: function(req) {
+                req.setRequestHeader('Content-type', 'application/json');               
+            },
+            data: JSON.stringify({
+                noteId: noteId
+            }),
+            success: function(resp) {
+                $('#note-badge').toggle();               
+            }
+        });
+    }
+    
+    
+    
 
 
 </script>

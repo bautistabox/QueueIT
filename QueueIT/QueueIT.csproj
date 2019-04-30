@@ -38,5 +38,9 @@
       <EmbeddedResource Include="Migrations\Script0003 - Adding Notification Table.sql" />
       <None Remove="Migrations\Script0004 - altering notification table to add extra columns.sql" />
       <EmbeddedResource Include="Migrations\Script0004 - altering notification table to add extra columns.sql" />
+      <None Remove="Migrations\Script0005 - Add column ToTeamId to notification.sql" />
+      <EmbeddedResource Include="Migrations\Script0005 - Add column ToTeamId to notification.sql" />
+      <None Remove="Migrations\Script0006 - add column to notification type.sql" />
+      <EmbeddedResource Include="Migrations\Script0006 - add column to notification type.sql" />
     </ItemGroup>
 </Project>

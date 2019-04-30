@@ -62,6 +62,22 @@ a.dropdown-item:visited {
     color: #ffffff;
 }
 
+a.link-success {
+    color: #00ff00;
+}
+
+a.link-danger {
+    color: #ff0000;
+}
+
+a.link-success:hover {
+    color: #00b400;
+}
+
+a.link-danger:hover {
+    color: #9e0000;
+}
+
 .column {
     float: left;
     width: 50%;

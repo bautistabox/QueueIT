@@ -244,28 +244,98 @@ namespace QueueIT.Teams
             if (team == null) return;
             
             var message = "@" + currentUser.UserName + " added you to their team: " + team.Name + ".";
-
+            var link = "/teams/show/" + team.Id;
+            
             var notification = new Notification
-            {
+            {   
                 ToId = user.Id,
                 FromId = currentUser.Id,
                 ToName = user.UserName,
                 FromName = currentUser.UserName,
                 IsRead = false,
-                Message = message
+                Message = message,
+                CreatedAt = DateTime.Now,
+                Link = link,
+                ToTeamId = team.Id,
+                Type = 1
             };
 
             _db.Notifications.Add(notification);
             _db.SaveChanges();
-//            var userTeam = new UserTeam
-//            {
-//                UserId = user.Id,
-//                TeamId = model.TeamId,
-//                IsAdmin = false
-//            };
-//            _db.UserTeams.Add(userTeam);
-//            _db.SaveChanges();
-//            Console.WriteLine("Success");
+        }
+
+        [HttpPost]
+        public void AcceptTeam([FromBody] AnswerTeamInputModel model)
+        {
+            var currentUser = _userDb.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(HttpContext.User));
+            var notification = _db.Notifications.FirstOrDefault(n => n.Id == model.NoteId);
+            
+            if (notification == null) return;
+            if (currentUser == null) return;
+            var userTeam = new UserTeam
+            {
+                TeamId = notification.ToTeamId,
+                UserId = currentUser.Id,
+                IsAdmin = false
+            };
+            _db.UserTeams.Add(userTeam);
+            _db.SaveChanges();
+
+            notification.IsRead = true;
+            notification.ReadAt = DateTime.Now;
+            _db.SaveChanges();
+            var newNotification = new Notification
+            {
+                ToId = notification.FromId,
+                ToName = notification.FromName,
+                Message = "@" + notification.ToName + " has accepted the invitation to join your team.",
+                FromId = currentUser.Id,
+                FromName = currentUser.UserName,
+                IsRead = false,
+                ToTeamId = notification.ToTeamId,
+                CreatedAt = DateTime.Now,
+                Type = 2,
+                Link = notification.Link
+            };
+            _db.Notifications.Add(newNotification);
+            _db.SaveChanges();
+        }
+
+        [HttpPost]
+        public void DeclineTeam([FromBody] AnswerTeamInputModel model)
+        {
+            var currentUser = _userDb.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(HttpContext.User));
+            var notification = _db.Notifications.FirstOrDefault(n => n.Id == model.NoteId);
+
+            if (currentUser == null) return;
+            if (notification == null) return;
+            notification.IsRead = true;
+            notification.ReadAt = DateTime.Now;
+            _db.SaveChanges();
+            var newNotification = new Notification
+            {
+                ToId = notification.FromId,
+                ToName = notification.FromName,
+                Message = "@" + notification.ToName + " has declined the invitation to join your team.",
+                FromId = currentUser.Id,
+                FromName = currentUser.UserName,
+                IsRead = false,
+                ToTeamId = notification.ToTeamId,
+                CreatedAt = DateTime.Now,
+                Type = 2
+            };
+            
+            _db.Notifications.Add(newNotification);
+            _db.SaveChanges();
+        }
+
+        [HttpPost]
+        public void ReadNotification([FromBody] AnswerTeamInputModel model)
+        {
+            var notification = _db.Notifications.FirstOrDefault(n => n.Id == model.NoteId);
+            notification.IsRead = true;
+            notification.ReadAt = DateTime.Now;
+            _db.SaveChanges();
         }
     }
 }
