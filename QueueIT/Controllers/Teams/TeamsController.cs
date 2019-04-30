@@ -269,7 +269,8 @@ namespace QueueIT.Teams
         {
             var currentUser = _userDb.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(HttpContext.User));
             var notification = _db.Notifications.FirstOrDefault(n => n.Id == model.NoteId);
-            
+            var team = _db.Teams.FirstOrDefault(t => t.Id == notification.ToTeamId);
+            if (team == null) return;
             if (notification == null) return;
             if (currentUser == null) return;
             var userTeam = new UserTeam
@@ -283,6 +284,7 @@ namespace QueueIT.Teams
 
             notification.IsRead = true;
             notification.ReadAt = DateTime.Now;
+            notification.Message = "You have accepted the invitation to join " + team.Name;
             _db.SaveChanges();
             var newNotification = new Notification
             {
@@ -306,11 +308,13 @@ namespace QueueIT.Teams
         {
             var currentUser = _userDb.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(HttpContext.User));
             var notification = _db.Notifications.FirstOrDefault(n => n.Id == model.NoteId);
-
+            var team = _db.Teams.FirstOrDefault(t => t.Id == notification.ToTeamId);
+            if (team == null) return;
             if (currentUser == null) return;
             if (notification == null) return;
             notification.IsRead = true;
             notification.ReadAt = DateTime.Now;
+            notification.Message = "You have declined the invitation to join " + team.Name;
             _db.SaveChanges();
             var newNotification = new Notification
             {
