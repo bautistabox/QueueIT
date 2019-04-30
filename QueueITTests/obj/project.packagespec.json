@@ -1,0 +1,71 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "C:\\Users\\alexb\\RiderProjects\\QueueIT\\QueueITTests\\QueueITTests.csproj",
+    "projectName": "QueueITTests",
+    "projectPath": "C:\\Users\\alexb\\RiderProjects\\QueueIT\\QueueITTests\\QueueITTests.csproj",
+    "outputPath": "C:\\Users\\alexb\\RiderProjects\\QueueIT\\QueueITTests\\obj\\",
+    "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+    ],
+    "originalTargetFrameworks": [
+      "netcoreapp2.2"
+    ],
+    "frameworks": {
+      "netcoreapp2.2": {
+        "projectReferences": {
+          "C:\\Users\\alexb\\RiderProjects\\QueueIT\\QueueIT\\QueueIT.csproj": {
+            "projectPath": "C:\\Users\\alexb\\RiderProjects\\QueueIT\\QueueIT\\QueueIT.csproj"
+          }
+        }
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "netcoreapp2.2": {
+      "dependencies": {
+        "Microsoft.NET.Test.Sdk": {
+          "target": "Package",
+          "version": "[15.9.0, )"
+        },
+        "Microsoft.NETCore.App": {
+          "suppressParent": "All",
+          "target": "Package",
+          "version": "[2.2.0, )",
+          "autoReferenced": true
+        },
+        "Moq": {
+          "target": "Package",
+          "version": "[4.10.1, )"
+        },
+        "Shouldly": {
+          "target": "Package",
+          "version": "[3.0.2, )"
+        },
+        "xunit": {
+          "target": "Package",
+          "version": "[2.4.0, )"
+        },
+        "xunit.core": {
+          "target": "Package",
+          "version": "[2.4.1, )"
+        },
+        "xunit.runner.visualstudio": {
+          "target": "Package",
+          "version": "[2.4.0, )"
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    }
+  }
+}
