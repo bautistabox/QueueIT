@@ -109,7 +109,7 @@ namespace QueueIT.Controllers
                             CreatorId = user.Id,
                             Description = "This is your Personal Team. " +
                                           "Use it to keep track of your Queues and Tasks " +
-                                          "that you do not want to share with your team.",
+                                          "that you do might not want to share with your other teams.",
                             IsPrivate = true,
                             CreatedOn = DateTime.Now
                         };

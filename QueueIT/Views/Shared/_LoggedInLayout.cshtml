@@ -84,7 +84,7 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link thin dropdown-toggle shadow-lg" data-toggle="dropdown">
                             <div class="avatar-circle grow">
-                                <span class="initials"></span>
+                                <span id="inish" class="initials"></span>
                             </div>
                         </a>
                         <div class="dropdown-menu background-grey shadow-lg">
@@ -262,7 +262,7 @@
             );
             $('#queue-dd').append($a);
         });
-        $('.initials').text(resp.userInitials);
+        $('#inish').text(resp.userInitials);
         $('#user-dd').text(resp.userFirstName + " " + resp.userLastName);
         
         $('#user-profile-btn').attr('href', '/Account/Profile');
