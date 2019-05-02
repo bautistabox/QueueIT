@@ -109,7 +109,7 @@ namespace QueueIT.Controllers
                             CreatorId = user.Id,
                             Description = "This is your Personal Team. " +
                                           "Use it to keep track of your Queues and Tasks " +
-                                          "that you do might not want to share with your other teams.",
+                                          "that you might not want to share with your other teams.",
                             IsPrivate = true,
                             CreatedOn = DateTime.Now
                         };
@@ -134,7 +134,15 @@ namespace QueueIT.Controllers
                             CreatedOn = DateTime.Now,
                             UpdatedOn = DateTime.Now
                         };
-
+                        
+                        var userNotificationSetting = new UserNotificationSetting
+                        {
+                            UserId = user.Id,
+                            NotificationsOn = true
+                        };
+                        _db.UserNotificationSettings.Add(userNotificationSetting);
+                        _db.SaveChanges();
+                        
                         _db.Queues.Add(queue);
                         _db.SaveChanges();                        
                         
@@ -179,7 +187,7 @@ namespace QueueIT.Controllers
 
                 if (result.Succeeded)
                 {
-                    return View("Success");
+                    return View("Index");
                 }
             }
 

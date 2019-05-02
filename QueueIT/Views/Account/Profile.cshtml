@@ -28,11 +28,11 @@
                     <div align="left">
                         <h4 class="primary-text display-8">Teams</h4>
                         <table class="table table-responsive-sm">
-                            <tbody>
-                            <tr>
-                                <td class="primary-text" style="width: 20%;"><a href="#" class="team-name-link"><h4 class="display-8">Team Name</h4></a></td>
-                                <td class="secondary-text" style="width: 80%;">this is a description of a team. a team is a group of tasks that are organized into queues. queues are grouped by the team they belong too. a team is a group of people who want to work together to organize and complete their work load.</td>
-                            </tr>
+                            <tbody id="profile-body">
+                            @* <tr> *@
+                            @*     <td class="primary-text" style="width: 20%;"><a href="#" class="team-name-link"><h4 class="display-8">Team Name</h4></a></td> *@
+                            @*     <td class="secondary-text" style="width: 80%;">this is a description of a team. a team is a group of tasks that are organized into queues. queues are grouped by the team they belong too. a team is a group of people who want to work together to organize and complete their work load.</td> *@
+                            @* </tr> *@
                             </tbody>
                         </table>
                     </div>
@@ -43,10 +43,8 @@
                 <div style="width: 75%">
                     <div align="left">
                         <div class="container-col">
-                            <div class="container-row rounded shadow background-dark-grey">
-                                <div class="card m-10">
-                                    <button class="card-body home-card shadow">TEST QUEUE</button>
-                                </div>
+                            <div id="q-container" class="container-row rounded shadow background-dark-grey">
+                            
                             </div>
                         </div>
                     </div>
@@ -54,36 +52,31 @@
             </div>
             <div class="tab-pane fade show" id="nav-settings" role="tabpanel" aria="labelledby=nav-settings-tab">
                 <br/>
-                <div style="width:40%">
-                    <div align="left">
-                        <div class="form-group">
-                            <h4 class="display-6 primary-text">Account Details</h4>
+                <div style="width:30%">
+                    <h4 class="display-6 primary-text">Account Details</h4>
+                    <form asp-action="SaveAccountDetails" asp-controller="Account" method="post">
+                        <div class="errors" asp-validation-summary="All"></div>
+                        <div class="form-group" align="left">
                             <label for="new-f-name" class="secondary-text">First Name</label>
-                            <input id="new-f-name" class="form-control modal-input"/>
+                            <input id="new-f-name" name="FirstName" class="form-control modal-input"/>
                             <label for="new-l-name" class="secondary-text">Last Name</label>
-                            <input id="new-l-name" class="form-control modal-input"/>
+                            <input id="new-l-name" name="LastName" class="form-control modal-input"/>
                             <label for="new-u-name" class="secondary-text">Username</label>
-                            <input id="new-u-name" class="form-control modal-input"/>
+                            <input id="new-u-name" name="Username" class="form-control modal-input"/>
+                            <input id="u-id" name="Id" type="hidden"/>
                         </div>
-                        <div align="center"><button class="my-btn my-btn-primary">Save Account Details</button></div>
-                        <div>
-                            <h4 class="display-6 primary-text">Notifications</h4>
-                        </div>
-                        <div align="center">
-                            <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dd-note-setting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Notification Settings
-                                </a>
-                                <div class="dropdown-menu background-dark-grey" aria-labelledby="dd-note-setting">
-                                    <a class="dropdown-item" href="#">Never</a>
-                                    <a class="dropdown-item" href="#">Due Date</a>
-                                    <a class="dropdown-item" href="#">All Activity</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <div align="center"><button id="save-acct-details" class="my-btn my-btn-primary shadow">Save Account Details</button></div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+    
+    
+    </script>
+}

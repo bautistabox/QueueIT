@@ -270,9 +270,42 @@
         $('#new-f-name').attr('value', resp.userFirstName);
         $('#new-l-name').attr('value', resp.userLastName);
         $('#new-u-name').attr('value', resp.userName);
+        $('#u-id').attr('value', resp.userId);
+        
+        if (resp.teams.length > 0) {
+            resp.teams.forEach(function(team) {
+                if(!team.isPrivate) {
+                    var $tr = $('<tr>' +
+                        '<td class="primary-text" style="width: 20%;"><a href="/Teams/Show/' +
+                        team.id +
+                        '" class="team-name-link"><h4 class="display-8">' +
+                        team.name +
+                        '</h4></a></td>' +
+                        '<td class="secondary-text" style="width: 80%">' +
+                        team.description +
+                        '</td></tr>');
+                    $('#profile-body').append($tr);
+                }
+            });
+        }
+        
+        if (resp.queues.length > 0) {
+            resp.queues.forEach(function(queue) {
+                var $div = $('<div class="card m-10">' +
+                    '<form action="/queues/show/' +
+                    queue.id +
+                    '" method="GET">' +
+                    '<button class="card-body home-card shadow">' +
+                    queue.title +
+                    '</button>' +
+                    '</form></div>');
+                console.log($div);
+                $('#q-container').append($div);
+            });
+        }
         
         if (resp.notifications.length > 0) {
-           
+            
             var count = 0;
             resp.notifications.forEach(function(note) {
                 

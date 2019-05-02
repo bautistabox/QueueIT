@@ -99,7 +99,38 @@ namespace QueueIT.Controllers.Account
             };
 
             return model;
+        }
 
+        [HttpPost]
+        public IActionResult SaveAccountDetails(SaveAccountDetailsInputModel model)
+        {
+            var user = _dbUser.Users.FirstOrDefault(u => u.Id == model.Id);
+            if (user == null) return RedirectToAction("Profile");
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+
+            
+            if (_dbUser.Users.FirstOrDefault(u => u.UserName == model.Username) == null)
+            {
+                user.UserName = model.Username;
+            }
+            else
+            {
+                if (user.UserName == model.Username)
+                {
+                    _dbUser.SaveChanges();
+                    return View("Profile");
+                }
+                
+                _dbUser.SaveChanges();
+                ModelState.AddModelError("uname-err", "Username already exists.");
+                return View("Profile");
+            }
+
+        _dbUser.SaveChanges();
+            
+            return RedirectToAction("Profile");
         }
     }
 }

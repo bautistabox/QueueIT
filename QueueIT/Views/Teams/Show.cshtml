@@ -207,7 +207,7 @@
                             This team's privacy setting is set to <b>public</b>.
                             Meaning anyone outside of the team <u>can</u> view queues and members.
                         </span>
-                        <span id="setting-msg-btn" class="secondary-text">
+                        <span id="setting-msg-btn">
                             <form asp-action="ChangePrivacy" asp-controller="Teams" method="POST">
                                 <input type="hidden" value="@Model.TeamId" name="teamId"/>
                                 <button id="change-btn" type="submit" class="my-btn my-btn-primary">Change</button>
@@ -297,6 +297,9 @@
         if ("@Model.TeamName" === "Personal") {
             $('#inv-mbr-btn').attr("disabled", true);
             $('#inv-mbr-btn').attr("title", "Cannot add members to Personal Team");
+
+            $('#del-team-btn').attr("disabled", true);
+            $('#del-team-btn').attr("title", "Cannot delete Personal Team");
         }
         
         function rmTeamMember(userId, teamId) {

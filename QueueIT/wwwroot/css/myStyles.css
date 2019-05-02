@@ -237,6 +237,7 @@ button[disabled] {
     background-color: #cccccc !important;
     color: #666666 !important;
     background-image: none;
+    cursor: not-allowed;
 }
 
 button.my-btn-danger:hover {
@@ -644,6 +645,7 @@ small.error {
     color: #ff0000;
     list-style-type: none;
     text-align: center;
+    padding: 0 0 0 0;
 }
 
 .landing-box {

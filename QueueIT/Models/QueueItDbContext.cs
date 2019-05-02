@@ -15,11 +15,13 @@ namespace QueueIT.Models
         public DbSet<TeamQueue> TeamsQueues { get; set; }
         public DbSet<UserTeam> UserTeams { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UserNotificationSetting> UserNotificationSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserTeam>().HasKey(u => new {u.UserId, u.TeamId});
             modelBuilder.Entity<TeamQueue>().HasKey(tq => new {tq.TeamId, tq.QueueId});
+            modelBuilder.Entity<UserNotificationSetting>().HasKey(uns => new {uns.UserId, uns.NotificationsOn});
         }
     }
 }
