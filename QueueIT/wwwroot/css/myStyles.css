@@ -78,6 +78,39 @@ a.link-danger:hover {
     color: #9e0000;
 }
 
+.scrollable {
+    margin: 0 0 0 0;
+    height: 72px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.table td {
+    border-top: none;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #363636;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .column {
     float: left;
     width: 50%;
@@ -200,9 +233,10 @@ button.my-btn-danger {
 
 button.my-btn-primary:disabled,
 button[disabled] {
-    border: 1px solid #999999;
-    background-color: #cccccc;
-    color: #666666;
+    border: 1px solid #999999 !important;
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    background-image: none;
 }
 
 button.my-btn-danger:hover {
@@ -571,7 +605,7 @@ a.trans-link:hover {
 
 .grow-secondary:hover {
     transform: scale(1.1);
-    border-radius: 1rem;
+    cursor: pointer;
 }
 
 div.p-10 {
@@ -722,8 +756,7 @@ button.create {
 
 #team-profile-container {
     background-color: #424242;
-    width: fit-content;
-    min-width: 72vw;
+    min-width: 58vw;
     padding: 2vh 0 0 0;
 }
 
@@ -801,6 +834,17 @@ img.lock {
     -moz-border-radius: 50%;
 }
 
+.avatar-circle-lg {
+    width: 47px;
+    height: 47px;
+    background-image: linear-gradient(-90deg, #ff0049, #ff6000);
+    text-align: center;
+    border-radius: 50%;
+    margin: 0 10px 0 10px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
 .initials {
     position: relative;
     top: 3px; /* 25% of parent */
@@ -809,6 +853,16 @@ img.lock {
     color: #fff;
     font-family: "Courier New", monospace;
     font-weight: bold;
+}
+
+.initials-lg {
+    position: relative;
+    top: 12px; /* 25% of parent */
+    font-size: 22px; /* 50% of parent */
+    line-height: 16px; /* 50% of parent */
+    color: #fff;
+    font-family: "Courier New", monospace;
+    font-weight: 500;
 }
 
 #new-task-input {

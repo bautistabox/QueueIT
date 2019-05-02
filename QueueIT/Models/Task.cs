@@ -11,7 +11,7 @@ namespace QueueIT.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string CreatorId { get; set; }
-        public int AssigneeId { get; set; }
+        public string AssigneeId { get; set; }
         public int Status { get; set; }
         public DateTime? DueOn { get; set; }
     }

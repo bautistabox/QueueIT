@@ -99,6 +99,8 @@ namespace QueueIT.Teams
                 return RedirectToAction("Index", "Home");
             }
 
+            teamMemberUsers.Reverse();
+            
             var model = new TeamShowViewModel
             {
                 CurrentUserId = currentUserId,
@@ -234,14 +236,15 @@ namespace QueueIT.Teams
         }
 
         [HttpPost]
-        public void AddUserToTeam([FromBody] AddUserToTeamInputModel model)
+        public int AddUserToTeam([FromBody] AddUserToTeamInputModel model)
         {
             var user = _userDb.Users.FirstOrDefault(u => u.UserName == model.Username);
             var currentUser = _userDb.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(HttpContext.User));
             var team = _db.Teams.FirstOrDefault(t => t.Id == model.TeamId);
 
-            if (user == null || currentUser == null) return;
-            if (team == null) return;
+            if (user == null || currentUser == null) return 1;
+            if (team == null) return 2;
+            if (team.Name == "Personal" || team.Name == "PERSONAL") return 3;
             
             var message = "@" + currentUser.UserName + " added you to their team: " + team.Name + ".";
             var link = "/teams/show/" + team.Id;
@@ -262,6 +265,8 @@ namespace QueueIT.Teams
 
             _db.Notifications.Add(notification);
             _db.SaveChanges();
+
+            return 0;
         }
 
         [HttpPost]
@@ -339,6 +344,24 @@ namespace QueueIT.Teams
             var notification = _db.Notifications.FirstOrDefault(n => n.Id == model.NoteId);
             notification.IsRead = true;
             notification.ReadAt = DateTime.Now;
+            _db.SaveChanges();
+        }
+
+        [HttpPost]
+        public void ChangeRole([FromBody] ChangeRoleInputModel model)
+        {
+            var userTeam = _db.UserTeams.FirstOrDefault(ut => ut.TeamId == model.TeamId && ut.UserId == model.UserId);
+            if (userTeam == null) return;
+            userTeam.IsAdmin = !userTeam.IsAdmin;
+            _db.SaveChanges();
+        }
+
+        [HttpPost]
+        public void DeleteMember([FromBody] ChangeRoleInputModel model)
+        {
+            var userTeam = _db.UserTeams.FirstOrDefault(ut => ut.TeamId == model.TeamId && ut.UserId == model.UserId);
+            if (userTeam == null) return;
+            _db.UserTeams.Remove(userTeam);
             _db.SaveChanges();
         }
     }

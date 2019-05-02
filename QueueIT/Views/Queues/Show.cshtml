@@ -10,9 +10,11 @@
 
 <br/><br/>
 <div class="container-row">
-    <h4 class="display-6 secondary-text">@Model.CurrentQueue.Title | 
-        <a id="team-name-link" href="/Teams/Show/@Model.CurrentTeam.Id">@Model.CurrentTeam.Name</a> 
-        |&nbsp;</h4>
+    <h4 class="display-6 secondary-text">
+        @Model.CurrentQueue.Title |
+        <a id="team-name-link" href="/Teams/Show/@Model.CurrentTeam.Id">@Model.CurrentTeam.Name</a>
+        |&nbsp;
+    </h4>
     @if (Model.CurrentQueue.IsPrivate)
     {
         <h4 class="display-6 secondary-text">
@@ -36,7 +38,8 @@
             {
                 if (task.Status == 0)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">
+                        @task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
@@ -69,7 +72,8 @@
             {
                 if (task.Status == 1)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">
+                        @task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
@@ -91,7 +95,8 @@
             {
                 if (task.Status == 2)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">
+                        @task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
@@ -113,12 +118,13 @@
             {
                 if (task.Status == 3)
                 {
-                    <div id="@task.Id" class="kanban-col-item drag">@task.Title<div class="view">
+                    <div id="@task.Id" class="kanban-col-item drag">
+                        @task.Title<div class="view">
                             <a onclick="openModal(@task.Id, 'view')" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal">
                                 <i class="fa fa-search grow-secondary"></i>
                             </a>
                         </div>
-                        
+
                         <div class="edit">
                             <a onclick="openModal(@task.Id, 'edit')" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal">
                                 <i class="fa fa-pencil grow-secondary"></i>
@@ -147,8 +153,24 @@
                     <input id="modalTaskId" hidden="true" value=""/>
                     <label for="modalTaskTitle" class="secondary-text">Title</label>
                     <input id="modalTaskTitle" class="form-control modal-input" placeholder="Enter a title for your task"/>
+                    <br/>
                     <label for="modalTaskDesc" class="secondary-text">Description (optional)</label>
                     <textarea id="modalTaskDesc" class="form-control modal-input" placeholder="Brief Description of your task"></textarea>
+                    <br/>
+                    <label for="task-assignee-container" class="secondary-text">Assign this task to a team member (optional)</label>
+                    <div id="task-assignee-container" class="container">
+                        <div class="row">
+                            <div class="scrollable">
+                                <table class="table">
+                                    <tbody>
+                                    <tr id="teamMembersScroll">
+                                        
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <label for="modalDueDatePicker" class="secondary-text">Due Date (optional)</label><br/>
                     <input type="date" class="modal-input date" id="modalDueDatePicker"/>
                 </div>
@@ -179,15 +201,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <label for="task-title" class="secondary-text">Title</label>
-                <h4 id="task-title" class="primary-text display-7"></h4>
-                <label for="task-desc" class="secondary-text">Description</label>
-                <h4 id="task-desc" class="primary-text display-8"></h4>
-                <label for="task-due" class="secondary-text">Due Date</label>
-                <h4 id="task-due" class="primary-text display-9"></h4>
+                <h4 id="task-title" class="primary-text display-6"></h4>
+                <h4 id="task-desc" class="secondary-text display-8"></h4>
+                <h4 id="task-assignee" class="primary-text display-9"></h4>
             </div>
             <div class="modal-footer">
-                <small class="disabled-text">Click the pencil icon to edit this task.</small>
+                <small id="task-due" class="disabled-text" style="float: left"></small>
             </div>
         </div>
     </div>
@@ -246,8 +265,12 @@
                 var $newTaskDiv =
                     $('<div id="new-item" class="drag kanban-col-item new-item">' +
                         newTask.value +
-                        '<div class="view"><a id="'+ newTask.value +'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
-                        '<div class="edit"><a id="'+ newTask.value +'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>');
+                        '<div class="view"><a id="' +
+                        newTask.value +
+                        'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
+                        '<div class="edit"><a id="' +
+                        newTask.value +
+                        'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>');
 
 
                 var task = newTask.value;
@@ -285,7 +308,6 @@
                                             top: 0,
                                             left: 0
                                         };
-
                                         return !event;
                                     }
                                 });
@@ -296,6 +318,16 @@
             }
         }
 
+        $(".kanban-col-item").draggable({
+            revert: function(event, ui) {
+                $(this).data("uiDraggable").originalPosition = {
+                    top: 0,
+                    left: 0
+                };
+                return !event;
+            }
+        });
+        
         function openModal(taskId, modalType) {
             $.ajax({
                 type: 'get',
@@ -305,10 +337,10 @@
                 },
                 data: { taskId: taskId },
                 success: function(data) {
-
+                    console.dir(data);
                     if (modalType === "edit") {
-                        if (data.dueOn != null) {
-                            var date = new Date(data.dueOn);
+                        if (data.theTask.dueOn != null) {
+                            var date = new Date(data.theTask.dueOn);
                             var dd = date.getDate();
                             var mm = date.getMonth() + 1;
 
@@ -323,17 +355,37 @@
 
                             $('#modalDueDatePicker').val(date);
                         } else {
-                            $('#modalDueDatePicker').val(data.dueOn);
+                            $('#modalDueDatePicker').val(data.theTask.dueOn);
                         }
-                        $('#hiddenTaskId').val(data.id);
+
+                        $('#teamMembersScroll').empty();
+                        data.teamMembers.forEach(function(member) {
+
+                            var $td = $(
+                                '<td><div class="avatar-circle-lg grow-secondary" onclick="assignUser(\'' +
+                                member.id +
+                                '\',\'' +
+                                data.theTask.id +
+                                '\')" title="' +
+                                member.firstName +
+                                " " +
+                                member.lastName +
+                                '"><span class="initials-lg">' +
+                                member.firstName.charAt(0) +
+                                member.lastName.charAt(0) +
+                                '</span></div></td>'
+                            );
+                            $('#teamMembersScroll').append($td);
+                        });
+                        $('#hiddenTaskId').val(data.theTask.id);
                         $('#hiddenQueueId').val(@Model.CurrentQueue.Id);
-                        $('#modalTaskId').val(data.id);
-                        $('#modalTaskTitle').val(data.title);
-                        $('#modalTaskDesc').val(data.description);
+                        $('#modalTaskId').val(data.theTask.id);
+                        $('#modalTaskTitle').val(data.theTask.title);
+                        $('#modalTaskDesc').val(data.theTask.description);
                         $('#modalSaveTask').attr("onclick", "saveTask()");
                     } else if (modalType === "view") {
-                        if (data.dueOn != null) {
-                            var date = new Date(data.dueOn);
+                        if (data.theTask.dueOn != null) {
+                            var date = new Date(data.theTask.dueOn);
                             var dd = date.getDate();
                             var mm = date.getMonth() + 1;
 
@@ -344,19 +396,66 @@
                             if (mm < 10) {
                                 mm = '0' + mm;
                             }
-                            date = yyyy + '-' + mm + '-' + dd;
+                            date = 'Due Date: ' + yyyy + '-' + mm + '-' + dd;
 
                             $('#task-due').text(date);
                         } else {
-                            $('#task-due').text(data.dueOn);
+                            $('#task-due').text(data.theTask.dueOn);
                         }
-                        $('#task-title').text(data.title);
-                        $('#task-desc').text(data.description);
+                        $('#task-title').text(data.theTask.title);
+                        $('#task-desc').text(data.theTask.description);
+                        $('#task-assignee').empty();
+                        if (data.theTask.assigneeId != null){
+                            var str = "Task assigned to: " + data.name;
+                            
+                            $('#task-assignee').append(str);
+                        }
+
                     }
                 }
             });
         }
 
+        function assignUser(userId, taskId) {
+            $.ajax({
+                type: 'post',
+                url: '/Queues/AssignUserToTask',
+                beforeSend: function(req) {
+                    req.setRequestHeader('Content-type', 'application/json');
+                },
+                data: JSON.stringify({
+                    userId: userId,
+                    taskId: taskId
+                }),
+                success: function(resp) {
+                    $('#TaskDetailsModal').modal('toggle');      
+                    showAlert("User Assigned to Task!", "alert-success");
+                    sendTaskAssignedNotification(resp);
+                }
+            });
+        }
+
+        function sendTaskAssignedNotification(task) {
+            $.ajax({
+                type: 'post',
+                url: '/Queues/SendAssignedTaskNotification',
+                beforeSend: function(req) {
+                    req.setRequestHeader('Content-type', 'application/json');
+                },
+                data: JSON.stringify({
+                    id: task.id,
+                    queueId: task.queueId,
+                    title: task.title,
+                    description: task.description,
+                    creatorId: task.creatorId,
+                    assigneeId: task.assigneeId
+                }),
+                success: function() {
+                    showAlert("notification sent", "alert-success");
+                }
+        })
+        };
+        
         function showAlert(message, alertType) {
 
             $('#alert_placeholder').append('<div id="alertDiv" class="fade show alert ' +
@@ -389,10 +488,14 @@
                     if (resp === -1) {
                         showAlert("Task does not exist.", "alert-danger");
                     }
-                    document.getElementById(resp).innerHTML = $('#modalTaskTitle').val() + 
-                        '<div class="view"><a id="'+ $('#modalTaskTitle').val() +'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
-                    '<div class="edit"><a id="'+ $('#modalTaskTitle').val() +'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>';
-                    
+                    document.getElementById(resp).innerHTML = $('#modalTaskTitle').val() +
+                        '<div class="view"><a id="' +
+                        $('#modalTaskTitle').val() +
+                        'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
+                        '<div class="edit"><a id="' +
+                        $('#modalTaskTitle').val() +
+                        'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>';
+
                     showAlert("Task saved!", "alert-success");
                 },
                 error: function() {

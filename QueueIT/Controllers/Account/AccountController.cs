@@ -25,8 +25,15 @@ namespace QueueIT.Controllers.Account
         public IActionResult UserHome()
         {
             var currentUserId = _userManager.GetUserId(HttpContext.User);
-            var teams = _db.Teams.Where(t => t.CreatorId == currentUserId).ToList();
             var queues = _db.Queues.Where(q => q.CreatorId == currentUserId).ToList();
+            var userTeams = _db.UserTeams.Where(ut => ut.UserId == currentUserId);
+
+            var teams = new List<Team>();
+
+            foreach (var userTeam in userTeams)
+            {
+                teams.Add(_db.Teams.FirstOrDefault(t => t.Id == userTeam.TeamId));
+            }
             
             var model = new UserHomeViewModel
             {
@@ -74,7 +81,9 @@ namespace QueueIT.Controllers.Account
                 Queues = new List<Models.Queue>(),
                 Teams = new List<Team>()
             };
-            
+
+            notifications.Reverse();
+                
             var model = new LayoutViewModel
             {
                 Queues = queues,

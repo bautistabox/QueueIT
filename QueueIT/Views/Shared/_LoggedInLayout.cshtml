@@ -128,8 +128,7 @@
                             Choose a team name unique to yourself.
                         </small>
                         <label for="teamDesc" class="secondary-text">Team Description</label>
-                        <textarea id="teamDesc" name="desc" class="form-control modal-input" rows="6" cols="50" aria-describedby="teamDescHelp" placeholder="Description (optional)">
-                        </textarea>
+                        <textarea id="teamDesc" name="desc" class="form-control modal-input" rows="6" cols="50" aria-describedby="teamDescHelp" placeholder="Description (optional)"></textarea>
                         <small id="teamDescHelp" class="form-text disabled-text">
                             Provide a brief description of your team.
                         </small>
@@ -295,11 +294,11 @@
 //                var dateTime = time + " " + date.getMonth() + "/" + date.getDay() + "/" + year;
                 var date = new Date(note.readAt);
                 var today = Date.now();
-                var oneWeek = 60 * 60 * 168 * 1000;
+                var oneDay = 60 * 60 * 24 * 1000;
                 
                 if(note.isRead)
                 {
-                    if(!((today - date) > oneWeek))
+                    if(!((today - date) > oneDay))
                     {
                         var $notification = $(
                             "<div class='dropdown-divider'></div>" +
@@ -332,6 +331,17 @@
                             note.message +
                             "</a>");
                         $('#notifications-list').append($notification);                        
+                    }
+                    else if (note.type === 3) {
+                        var $notification = $(
+                            "<div class='dropdown-divider'></div>" +
+                            "<a class='dropdown-item primary-text' style='white-space: normal'" +
+                            "href='#' onclick='Read(" +
+                            note.id +
+                            ")'>" +
+                            note.message +
+                            "</a>");
+                        $('#notifications-list').append($notification);
                     }
                 }
             });      
