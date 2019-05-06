@@ -1,4 +1,4 @@
-@model TeamShowViewModel
+@model QueueIT.Models.TeamShowViewModel
 
 @{
     ViewBag.Title = "Team Name";
@@ -97,7 +97,7 @@
                         </div>
                     </td>
                     <td id="member-user" class="team-member-td">
-                        @user.FirstName @user.LastName
+                        <a class="team-name-link" href="/users/profile/@user.UserName"><h4 class="display-8">@user.FirstName @user.LastName</h4></a>
                     </td>
                     <td id="member-q-num" class="team-member-td">
                         <div align="right">

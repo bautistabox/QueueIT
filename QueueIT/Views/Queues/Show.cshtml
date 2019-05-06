@@ -8,27 +8,38 @@
 
 </div>
 
-<br/><br/>
+<br/>
+@if (@Model.CurrentUserId == Model.CurrentQueue.CreatorId)
+{
+    <div align="center">
+        <button class="my-btn my-btn-primary shadow" style="width: 100px;"
+                data-toggle="modal" data-target="#EditQueueModal" aria-hidden="true">
+            Edit
+        </button>
+    </div>
+}
+<br/>
 <div class="container-row">
     <h4 class="display-6 secondary-text">
         @Model.CurrentQueue.Title |
         <a id="team-name-link" href="/Teams/Show/@Model.CurrentTeam.Id">@Model.CurrentTeam.Name</a>
         |&nbsp;
     </h4>
-    @if (Model.CurrentQueue.IsPrivate)
-    {
-        <h4 class="display-6 secondary-text">
-            <span>Private</span>
-        </h4>
-        <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
-    }
-    else
-    {
-        <h4 class="display-6 secondary-text">
-            <span>Public</span>
-        </h4>
-        <img class="lock" src="https://img.icons8.com/ios/50/000000/unlock.png" alt="">
-    }
+        @if (Model.CurrentQueue.IsPrivate)
+        {
+            <h4 class="display-6 secondary-text">
+                <span>Private</span>
+            </h4>
+            <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
+        }
+        else
+        {
+            <h4 class="display-6 secondary-text">
+                <span>Public</span>
+            </h4>
+            <img class="lock" src="https://img.icons8.com/ios/50/000000/unlock.png" alt="">
+        }
+    
 </div>
 <div class="kanban" id="kanban">
     <div class="kanban-col shadow" id="todo-col">
@@ -213,10 +224,77 @@
 </div>
 
 
+
+<div class="modal fade show" id="EditQueueModal" tabindex="-1" role="dialog"
+     aria-labelledby="EditQueueModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content background-grey">
+            <form asp-action="QueueUpdate" asp-controller="Queues" method="POST">
+                <input type="hidden" name="QueueId" value="@Model.CurrentQueue.Id"/>
+                <div class="modal-header">
+                    <h4 class="modal-title secondary-text" id="EditQueueModalLabel">Edit Queue</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true" class="primary-text">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="q-title" class="secondary-text">Queue Title</label>
+                        <input id="q-title" name="QueueTitle" class="modal-input form-control"
+                               value="@Model.CurrentQueue.Title" placeholder="Enter title"/>
+                        <br/>
+                        <div class="custom-radio-group" name="QueueVisibilitySelector" aria-describedby="QueueVisibilitySelectorHelp">
+                            @if (Model.CurrentQueue.IsPrivate)
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="QueueVisibility"
+                                           id="privateRadio" value="private" checked/>
+                                    <label class="form-check-label secondary-text" for="privateRadio">Private</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check form-check-inline" type="radio" name="QueueVisibility"
+                                           id="publicRadio" value="public"/>
+                                    <label class="form-check-label secondary-text" for="publicRadio">Public</label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="QueueVisibility"
+                                           id="privateRadio" value="private"/>
+                                    <label class="form-check-label secondary-text" for="privateRadio">Private</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check form-check-inline" type="radio" name="QueueVisibility"
+                                           id="publicRadio" value="public" checked/>
+                                    <label class="form-check-label secondary-text" for="publicRadio">Public</label>
+                                </div>
+                            }
+                            <br/>
+                            <small id="QueueVisibilitySelectorHelp" class="primary-text disabled-text" style="margin: 0 0 2px 0;">
+                                Public means anyone who visits the team's profile can see this Queue.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="my-btn my-btn-primary" style="width: 80px;">Save</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript">
     </script>
-    <script type="text/javascript">
+    <script type="text/javascript">      
         function addTask() {
             // grab elements
             var addTaskBtn = document.getElementById('add-task');
@@ -453,7 +531,7 @@
                 success: function() {
                     showAlert("notification sent", "alert-success");
                 }
-        })
+            });
         };
         
         function showAlert(message, alertType) {
@@ -551,7 +629,6 @@
         }
 
         function updateTaskStatus(status, taskId) {
-            console.log("in updateTaskStatus. status:" + status + " Taskid:" + taskId);
             $.ajax({
                 type: 'post',
                 url: '/Queues/UpdateTaskStatus',
@@ -568,6 +645,10 @@
 
             });
         }
+
+        
+        
     </script>
 
 }
+

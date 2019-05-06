@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using QueueIT.Models;
 
-namespace QueueIT.Controllers.Account
+namespace QueueIT.Models
 {
     public class UserHomeViewModel
     {

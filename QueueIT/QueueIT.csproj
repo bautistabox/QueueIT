@@ -48,5 +48,7 @@
       <EmbeddedResource Include="Migrations\Script0008 - alter FromId and FromName to allow nulls.sql" />
       <None Remove="Migrations\Script0009 - create table to hold user notification settings.sql" />
       <EmbeddedResource Include="Migrations\Script0009 - create table to hold user notification settings.sql" />
+      <None Remove="Migrations\Script0010 - create table to store team-urls.sql" />
+      <EmbeddedResource Include="Migrations\Script0010 - create table to store team-urls.sql" />
     </ItemGroup>
 </Project>

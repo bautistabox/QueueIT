@@ -1,0 +1,129 @@
+@model QueueIT.Models.TeamProfileViewModel
+@{
+    ViewBag.Title = "title";
+    Layout = "_LoggedInLayout";
+}
+<br/><br/>
+<div align="center">
+<div id="team-profile-container" class="rounded shadow">
+
+
+<div class="container-row">
+    <div id="name-header">
+        <h4 id="team-name" class="display-4 primary-text">@Model.TeamName</h4>
+    </div>
+</div>
+    <div class="background-grey rounded shadow" id="team-desc-div">
+        <h4 id="team-desc" class="display-9 secondary-text">@Model.TeamDescription</h4>
+    </div>
+    <br/>
+<nav class="my-nav">
+    <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
+           href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="True">
+            Queues
+        </a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
+           href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="False">
+            Members
+        </a>
+    </div>
+</nav>
+<div class="tab-content background-grey" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <br/>
+        <div class="container-row">
+            @foreach (var queue in Model.Queues)
+            {
+                <div class="card m-10">
+                    <form asp-action="Show" asp-controller="Queues"
+                          method="GET" asp-route-queueId="@queue.Id">
+                        <button class="card-body home-card grow shadow">@queue.Title</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <br/>
+        <div id="team-profile-members-header">
+            <h4 class="display-7 secondary-text" style="float: left">Team Members <strong>(@Model.TeamMembers.Count)</strong></h4>
+        </div>
+        <table id="team-profile-members" class="table table-responsive-sm">
+            <tbody>
+            @foreach (var user in @Model.TeamMembers)
+            {
+                <tr id="@user.User.Id">
+                    <td id="member-avatar" class="team-member-td">
+                        <div class="avatar-circle">
+                            <span class="initials">@user.User.FirstName.Substring(0, 1)@user.User.LastName.Substring(0, 1)</span>
+                        </div>
+                    </td>
+                    <td id="member-user" class="team-member-td">
+                        <a class="team-name-link" href="/users/profile/@user.User.UserName"><h4 class="display-8">@user.User.FirstName @user.User.LastName</h4></a>
+                    </td>
+                    <td id="member-q-num" class="team-member-td">
+                        <div align="right">
+                            on <u>@Model.Queues.Count</u>
+                            @if (@Model.Queues.Count == 1)
+                            {
+                                <html>Queue</html>
+                            }
+                            else
+                            {
+                                <html>Queues</html>
+                            }
+                        </div>
+                    </td>
+                    <td class="team-member-td">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Role</span>
+                            </div>
+                            @if (Model.TeamCreatorId == user.User.Id)
+                            {
+                                <span id="team-owner-select" class="custom-select">
+                                    Team Owner
+                                </span>
+                            }
+                            else
+                            {
+                                foreach (var member in @Model.TeamMembers)
+                                {
+                                    if (member.User.Id == user.User.Id)
+                                    {
+                                        if (member.IsAdmin)
+                                        {
+                                            <span id="team-owner-select" class="custom-select">
+                                                Admin
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span id="team-owner-select" class="custom-select">
+                                                Normal
+                                            </span>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    </td>
+                    <td id="member-rm-td" class="team-member-td">
+                        <div align="right">
+                            
+                                <button id="rm-team-member" disabled title="Cannot remove Team Owner"
+                                        class="shadow">
+                                    remove
+                                </button>
+                            
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>

@@ -1,5 +1,5 @@
 @{
-//    var queueList = ViewData["Queues"] as List<Queue>;
+    //    var queueList = ViewData["Queues"] as List<Queue>;
 }
 
 <!DOCTYPE html>
@@ -13,10 +13,10 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" 
+        <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" 
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position"
               asp-fallback-test-value="absolute"
               crossorigin="anonymous"
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
@@ -77,7 +77,7 @@
                         <div class="dropdown-menu background-grey shadow-lg" style="min-width: 180px;">
                             <h4 class="dropdown-header">Notifications</h4>
                             <div id="notifications-list">
-                            
+
                             </div>
                         </div>
                     </li>
@@ -122,7 +122,7 @@
                 <form asp-controller="Teams" asp-action="CreateTeam" method="POST">
                     <div class="form-group">
                         <label for="teamName" class="secondary-text">Team Name</label>
-                        <input type="text" id="teamName" name="teamName" class="form-control modal-input" 
+                        <input type="text" id="teamName" name="teamName" class="form-control modal-input"
                                aria-describedby="teamNameHelp" placeholder="Enter team name"/>
                         <small id="teamNameHelp" class="form-text disabled-text">
                             Choose a team name unique to yourself.
@@ -138,7 +138,7 @@
             </div>
             <div class="modal-footer">
                 <small class="disabled-text">
-                    A Team is a group of people and their Queues. 
+                    A Team is a group of people and their Queues.
                     Work together to complete tasks and organize your workload!
                 </small>
             </div>
@@ -161,12 +161,12 @@
                 <form asp-controller="Queues" asp-action="CreateQueue" method="POST">
                     <div class="form-group">
                         <label for="queueTitle" class="secondary-text">Queue Title</label>
-                        <input type="text" class="form-control modal-input" id="queueTitle" 
+                        <input type="text" class="form-control modal-input" id="queueTitle"
                                name="queueTitle" placeholder="Enter title"/>
                         <br/>
                         <label for="teamSelector" class="secondary-text">Select Team</label>
                         <div class="input-group">
-                            <select class="custom-select" id="teamSelector" 
+                            <select class="custom-select" id="teamSelector"
                                     name="queueTeam" aria-describedby="teamSelectorHelp">
 
                             </select>
@@ -180,12 +180,12 @@
                         <label for="visibilitySelector" class="secondary-text">Select Visibility</label>
                         <div class="custom-radio-group" id="visibilitySelector" aria-describedby="visibilitySelectorHelp">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="queueVisibility" 
+                                <input class="form-check-input" type="radio" name="queueVisibility"
                                        id="privateRadio" value="private" checked>
                                 <label class="form-check-label secondary-text" for="privateRadio">Private</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="queueVisibility" 
+                                <input class="form-check-input" type="radio" name="queueVisibility"
                                        id="publicRadio" value="public">
                                 <label class="form-check-label secondary-text" for="publicRadio">Public</label>
                             </div>
@@ -249,7 +249,7 @@
             fillHTML(resp);
         }
     });
-    
+
     function fillHTML(resp) {
         resp.teams.forEach(function(team) {
             var $opt = $('<option value="' + team.id + '">' + team.name + '</option>');
@@ -263,7 +263,7 @@
         });
         $('#inish').text(resp.userInitials);
         $('#user-dd').text(resp.userFirstName + " " + resp.userLastName);
-        
+
         $('#user-profile-btn').attr('href', '/Account/Profile');
         $('#users-name').text(resp.userFirstName + " " + resp.userLastName);
         $('#users-label').text('@@' + resp.userName);
@@ -271,26 +271,26 @@
         $('#new-l-name').attr('value', resp.userLastName);
         $('#new-u-name').attr('value', resp.userName);
         $('#u-id').attr('value', resp.userId);
-        
+
         if (resp.teams.length > 0) {
             resp.teams.forEach(function(team) {
-                if(!team.isPrivate) {
-                    var $tr = $('<tr>' +
-                        '<td class="primary-text" style="width: 20%;"><a href="/Teams/Show/' +
-                        team.id +
-                        '" class="team-name-link"><h4 class="display-8">' +
-                        team.name +
-                        '</h4></a></td>' +
-                        '<td class="secondary-text" style="width: 80%">' +
-                        team.description +
-                        '</td></tr>');
-                    $('#profile-body').append($tr);
-                }
+                var $tr = $('<tr class="border-top">' +
+                    '<td class="primary-text" style="width: 20%;"><a href="/Teams/Show/' +
+                    team.id +
+                    '" class="team-name-link"><h4 class="display-8">' +
+                    team.name +
+                    '</h4></a></td>' +
+                    '<td class="secondary-text" style="width: 80%">' +
+                    team.description +
+                    '</td></tr>');
+                $('#profile-body').append($tr);
+
             });
         }
-        
+
         if (resp.queues.length > 0) {
             resp.queues.forEach(function(queue) {
+
                 var $div = $('<div class="card m-10">' +
                     '<form action="/queues/show/' +
                     queue.id +
@@ -299,27 +299,28 @@
                     queue.title +
                     '</button>' +
                     '</form></div>');
-                console.log($div);
                 $('#q-container').append($div);
+
+
             });
         }
-        
+
         if (resp.notifications.length > 0) {
-            
+
             var count = 0;
             resp.notifications.forEach(function(note) {
-                
+
                 if (!note.isRead) {
                     count++;
                 }
-                
+
             });
-            
-            if(count > 0){
+
+            if (count > 0) {
                 $('#note-badge').toggle();
                 $('#note-badge').text(count);
             }
-            
+
 
             resp.notifications.forEach(function(note) {
 //                var year = date.toISOString().slice(0,4);
@@ -328,44 +329,49 @@
                 var date = new Date(note.readAt);
                 var today = Date.now();
                 var oneDay = 60 * 60 * 24 * 1000;
-                
-                if(note.isRead)
-                {
-                    if(!((today - date) > oneDay))
-                    {
+
+                if (note.isRead) {
+                    if (!((today - date) > oneDay)) {
                         var $notification = $(
                             "<div class='dropdown-divider'></div>" +
                             "<a class='dropdown-item primary-text background-light-grey' style='white-space: normal'" +
-                            "href=" + note.link + ">" + note.message + 
+                            "href=" +
+                            note.link +
+                            ">" +
+                            note.message +
                             "<br/><span class='disabled-text'>Read <i class='fa fa-check' aria-hidden='true'></i></span>" +
                             "</a>"
                         );
                         $('#notifications-list').append($notification);
                     }
-                }
-                else
-                {
-                    if(note.type === 1)
-                    {
+                } else {
+                    if (note.type === 1) {
                         var $notification = $(
                             "<div class='dropdown-divider'></div>" +
                             "<a class='dropdown-item primary-text' style='white-space: normal'" +
-                            "href=" + note.link + ">" + note.message +
-                            "<div id='note-answer-id' class='ml-4'><a onclick='Accept(" + note.id + ")' href='#'>Accept</a> " +
-                            "<a onclick='Decline(" + note.id + ")' href='#' class='link-danger'>Decline</a></div>" +
+                            "href=" +
+                            note.link +
+                            ">" +
+                            note.message +
+                            "<div id='note-answer-id' class='ml-4'><a onclick='Accept(" +
+                            note.id +
+                            ")' href='#'>Accept</a> " +
+                            "<a onclick='Decline(" +
+                            note.id +
+                            ")' href='#' class='link-danger'>Decline</a></div>" +
                             "</a>");
                         $('#notifications-list').append($notification);
-                    } 
-                    else if (note.type === 2) {
+                    } else if (note.type === 2) {
                         var $notification = $(
                             "<div class='dropdown-divider'></div>" +
                             "<a class='dropdown-item primary-text' style='white-space: normal'" +
-                            "href='#' onclick='Read(" + note.id + ")'>" +
+                            "href='#' onclick='Read(" +
+                            note.id +
+                            ")'>" +
                             note.message +
                             "</a>");
-                        $('#notifications-list').append($notification);                        
-                    }
-                    else if (note.type === 3) {
+                        $('#notifications-list').append($notification);
+                    } else if (note.type === 3) {
                         var $notification = $(
                             "<div class='dropdown-divider'></div>" +
                             "<a class='dropdown-item primary-text' style='white-space: normal'" +
@@ -377,10 +383,10 @@
                         $('#notifications-list').append($notification);
                     }
                 }
-            });      
+            });
         }
     }
-    
+
     function Accept(noteId) {
         $.ajax({
             type: 'post',
@@ -390,47 +396,46 @@
             },
             data: JSON.stringify({
                 noteId: noteId
-                
+
             }),
             success: function(resp) {
                 $('#note-badge').toggle();
 
             }
-    });
+        });
     }
+
     function Decline(noteId) {
         $.ajax({
             type: 'post',
             url: '/Teams/DeclineTeam',
             beforeSend: function(req) {
-                req.setRequestHeader('Content-type', 'application/json');               
+                req.setRequestHeader('Content-type', 'application/json');
             },
             data: JSON.stringify({
                 noteId: noteId
             }),
             success: function(resp) {
-                $('#note-badge').toggle();               
+                $('#note-badge').toggle();
             }
         });
     }
+
     function Read(noteId) {
         $.ajax({
             type: 'post',
             url: '/Teams/ReadNotification',
             beforeSend: function(req) {
-                req.setRequestHeader('Content-type', 'application/json');               
+                req.setRequestHeader('Content-type', 'application/json');
             },
             data: JSON.stringify({
                 noteId: noteId
             }),
             success: function(resp) {
-                $('#note-badge').toggle();               
+                $('#note-badge').toggle();
             }
         });
     }
-    
-    
-    
 
 
 </script>

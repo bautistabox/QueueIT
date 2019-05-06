@@ -1,0 +1,4 @@
+CREATE TABLE TeamProfileUrls (
+  TeamId INT NOT NULL,
+  Url NVARCHAR(250) NOT NULL
+)

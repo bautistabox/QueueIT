@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using QueueIT.Identity;
 using QueueIT.InputModels;
@@ -87,86 +83,88 @@ namespace QueueIT.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
-                
-                if (user == null)
+
+                if (user != null)
                 {
-                    user = new QueueItUser
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        UserName = model.UserName,
-                        Email = model.Email
-                    };
+                    ModelState.AddModelError("reg-err", "Username already exists");
+                    return View("Index");
+                }
+                user = new QueueItUser
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    Email = model.Email
+                };
 
-                    var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
                     
-                    if (result.Succeeded)
+                if (result.Succeeded)
+                {
+                    var team = new Team
                     {
-                        var team = new Team
-                        {
-                            Name = "Personal", 
-                            CreatorId = user.Id,
-                            Description = "This is your Personal Team. " +
-                                          "Use it to keep track of your Queues and Tasks " +
-                                          "that you might not want to share with your other teams.",
-                            IsPrivate = true,
-                            CreatedOn = DateTime.Now
-                        };
-                        _db.Teams.Add(team);
-                        _db.SaveChanges();
+                        Name = "Personal", 
+                        CreatorId = user.Id,
+                        Description = "This is your Personal Team. " +
+                                      "Use it to keep track of your Queues and Tasks " +
+                                      "that you might not want to share with your other teams.",
+                        IsPrivate = true,
+                        CreatedOn = DateTime.Now
+                    };
+                    _db.Teams.Add(team);
+                    _db.SaveChanges();
                         
-                        var userTeam = new UserTeam
-                        {
-                            UserId = user.Id,
-                            TeamId = team.Id,
-                            IsAdmin = true
-                        };
-                        _db.UserTeams.Add(userTeam);
-                        _db.SaveChanges();
-
-                        var queue = new Models.Queue
-                        {
-                            Title = "Personal Queue",
-                            TeamId = team.Id,
-                            CreatorId = user.Id,
-                            IsPrivate = true,
-                            CreatedOn = DateTime.Now,
-                            UpdatedOn = DateTime.Now
-                        };
-                        
-                        var userNotificationSetting = new UserNotificationSetting
-                        {
-                            UserId = user.Id,
-                            NotificationsOn = true
-                        };
-                        _db.UserNotificationSettings.Add(userNotificationSetting);
-                        _db.SaveChanges();
-                        
-                        _db.Queues.Add(queue);
-                        _db.SaveChanges();                        
-                        
-                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var confirmationEmail = Url.Action("ConfirmEmailAddress", "Home",
-                            new {token = token, email = user.Email }, Request.Scheme);
-                        System.IO.File.WriteAllText("confirmation.txt", confirmationEmail);
-                        var fullName = user.FirstName + " " + user.LastName;
-                        const string from = "infinity.test.email@gmail.com";
-                        const string fromName = "QueueIT";
-                        const string subject = "QueueIT: Confirm Your Email";
-                        var body = "<br/>Your username is:<br/><br/><b>" + user.UserName + "</b><br/><br/>Visit this link to confirm your email and gain access to the site. <br/><br/>" +
-                                   confirmationEmail + "<br/><br/>Thanks for using the site!<br/><br/>";
-                        _emailSender.SendEmail(user.Email, fullName, from, fromName, subject, body, true);
-                    }
-                    else
+                    var userTeam = new UserTeam
                     {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError("reg-err", error.Description);
-                        }
+                        UserId = user.Id,
+                        TeamId = team.Id,
+                        IsAdmin = true
+                    };
+                    _db.UserTeams.Add(userTeam);
+                    _db.SaveChanges();
 
-                        return View("Index");
+                    var queue = new Models.Queue
+                    {
+                        Title = "Personal Queue",
+                        TeamId = team.Id,
+                        CreatorId = user.Id,
+                        IsPrivate = true,
+                        CreatedOn = DateTime.Now,
+                        UpdatedOn = DateTime.Now
+                    };
+                        
+                    var userNotificationSetting = new UserNotificationSetting
+                    {
+                        UserId = user.Id,
+                        NotificationsOn = true
+                    };
+                    _db.UserNotificationSettings.Add(userNotificationSetting);
+                    _db.SaveChanges();
+                        
+                    _db.Queues.Add(queue);
+                    _db.SaveChanges();                        
+                        
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationEmail = Url.Action("ConfirmEmailAddress", "Home",
+                        new {token = token, email = user.Email }, Request.Scheme);
+                    System.IO.File.WriteAllText("confirmation.txt", confirmationEmail);
+                    var fullName = user.FirstName + " " + user.LastName;
+                    const string from = "infinity.test.email@gmail.com";
+                    const string fromName = "QueueIT";
+                    const string subject = "QueueIT: Confirm Your Email";
+                    var body = "<br/>Your username is:<br/><br/><b>" + user.UserName + "</b><br/><br/>Visit this link to confirm your email and gain access to the site. <br/><br/>" +
+                               confirmationEmail + "<br/><br/>Thanks for using the site!<br/><br/>";
+                    _emailSender.SendEmail(user.Email, fullName, @from, fromName, subject, body, true);
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("reg-err", error.Description);
                     }
+
+                    return View("Index");
                 }
 
                 return View("Success");

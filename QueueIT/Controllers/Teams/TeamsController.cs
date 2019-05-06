@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite.Internal.UrlMatches;
 using QueueIT.Identity;
 using QueueIT.Models;
 using QueueIT.Notifications;
 
-namespace QueueIT.Teams
+namespace QueueIT.Controllers.Teams
 {
     public class TeamsController : Controller
     {
@@ -22,6 +20,40 @@ namespace QueueIT.Teams
             _db = _qdb;
             _userDb = _qudb;
             _userManager = _um;
+        }
+
+        [HttpGet]
+        [Route("/{teamUrl}")]
+        public IActionResult TeamProfile(string teamUrl)
+        {
+            var teamProfileUrl = _db.TeamProfileUrls.FirstOrDefault(tpu => tpu.Url == teamUrl);
+            var team = _db.Teams.FirstOrDefault(t => t.Id == teamProfileUrl.TeamId);
+            if (team == null) return View();
+            var userTeams = _db.UserTeams.Where(ut => ut.TeamId == team.Id);
+            var teamMembers = new List<QueueItUserWithRole>();
+            var queues = _db.Queues.Where(q => q.TeamId == team.Id).ToList();
+            
+            foreach (var userTeam in userTeams)
+            {
+                var teamMember = new QueueItUserWithRole
+                {
+                    IsAdmin = userTeam.IsAdmin,
+                    User = _userDb.Users.FirstOrDefault(u => u.Id == userTeam.UserId)
+                };
+                
+                teamMembers.Add(teamMember);
+            }
+
+            var teamProfileViewModel = new TeamProfileViewModel
+            {
+                TeamName = team.Name,
+                TeamDescription = team.Description,
+                TeamCreatorId = team.CreatorId,
+                TeamMembers = teamMembers,
+                Queues = queues,
+            }; 
+            
+            return View(teamProfileViewModel);
         }
 
         [HttpPost]
@@ -209,21 +241,22 @@ namespace QueueIT.Teams
         public IActionResult SaveProfile([FromForm] EditTeamProfileInputModel model)
         {
             var team = _db.Teams.FirstOrDefault(t => t.Id == model.TeamId);
-            if (team != null)
+            
+            if (team == null) return RedirectToAction("Show", new {teamId = model.TeamId});
+            if(team.Name == "Personal") return RedirectToAction("Show", new {teamId = model.TeamId});
+            
+            if (model.NewTeamName != "" || model.NewTeamName != null)
             {
-                if (model.NewTeamName != "" || model.NewTeamName != null)
-                {
-                    team.Name = model.NewTeamName;
-                }
-
-                if (string.IsNullOrEmpty(model.NewTeamDescription))
-                {
-                    model.NewTeamDescription = model.NewTeamName + "'s description.";
-                }
-                team.Description = model.NewTeamDescription;
-
-                _db.SaveChanges();
+                team.Name = model.NewTeamName;
             }
+
+            if (string.IsNullOrEmpty(model.NewTeamDescription))
+            {
+                model.NewTeamDescription = model.NewTeamName + "'s description.";
+            }
+            team.Description = model.NewTeamDescription;
+
+            _db.SaveChanges();
 
             return RedirectToAction("Show", new {teamId = model.TeamId});
         }

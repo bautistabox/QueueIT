@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using QueueIT.Identity;
 using QueueIT.Notifications;
 
 namespace QueueIT.Models

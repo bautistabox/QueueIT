@@ -1,0 +1,88 @@
+@model UserProfileViewModel
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "_LoggedInLayout";
+}
+
+<br/><br/>
+<div align="center">
+    <div id="team-profile-container" class="rounded shadow">
+        <div class="container-row">
+            <h4 id="users-prof-name" class="primary-text display-6">@Model.UserFullName</h4>
+            <label id="users-prof-label" for="users-name" class="secondary-text">@@@Model.UserName</label>
+        </div>
+        <br/>
+        <nav class="my-nav">
+            <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab"
+                   href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="True">
+                    Profile
+                </a>
+                <a class="nav-item nav-link" id="nav-queues-tab" data-toggle="tab"
+                   href="#nav-queues" role="tab" aria-controls="nav-queues" aria-selected="False">
+                    Queues
+                </a>
+            </div>
+        </nav>
+        <div class="tab-content background-grey" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <br/>
+                <div style="width: 75%;">
+                    <div align="left">
+                        <h4 class="primary-text display-8">Teams</h4>
+                        <table class="table table-responsive-sm">
+                            <tbody id="prof-body">
+                            @foreach (var team in Model.Teams)
+                            {
+                                if (!team.IsPrivate)
+                                {
+                                    <tr>
+                                        <td class="primary-text" style="width: 20%;">
+                                            <a class="team-name-link" href="/Teams/Show/@team.Id">
+                                                <h4 class="display-8">@team.Name</h4>
+                                            </a>
+                                        </td>
+                                        <td class="secondary-text" style="width: 80%;">@team.Description</td>
+                                    </tr>
+                                }
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="nav-queues" role="tabpanel" aria-labelledby="nav-queues-tab">
+                <br/>
+                <div style="width: 75%">
+                    <div align="left">
+                        <h4 class="primary-text display-8">Queues</h4>
+                        <div class="container-col">
+                            <div id="prof-q-container" class="container-row rounded shadow background-dark-grey">
+                                @foreach (var queue in Model.Queues)
+                                {
+                                    foreach (var team in Model.Teams)
+                                    {
+                                        if (queue.TeamId == team.Id)
+                                        {
+                                            if (!team.IsPrivate)
+                                            {
+                                                <div class="card m-10">
+                                                    <form action="/queues/show/@queue.Id" method="GET">
+                                                        <button class="card-body home-card shadow">
+                                                            @queue.Title
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using QueueIT.Controllers.Account;
 
 namespace QueueIT.Models
 {

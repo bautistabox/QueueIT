@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using QueueIT.Identity;
 using QueueIT.Models;
 using QueueIT.Notifications;
 using Task = QueueIT.Models.Task;
 
-namespace QueueIT.Controllers.Queue
+namespace QueueIT.Controllers.Queues
 {
     public class QueuesController : Controller
     {
@@ -26,6 +23,18 @@ namespace QueueIT.Controllers.Queue
             _userDb = userDb;
         }
 
+        [HttpPost]
+        public IActionResult QueueUpdate(QueueUpdateInputModel model)
+        {
+            var queue = _db.Queues.FirstOrDefault(q => q.Id == model.QueueId);
+            if (queue == null) return RedirectToAction("Show", new {queueId = model.QueueId});
+            queue.Title = model.QueueTitle;
+            queue.IsPrivate = model.QueueVisibility.Equals("private");
+            _db.SaveChanges();
+
+            return RedirectToAction("Show", new {queueId = model.QueueId});
+        }
+        
         [HttpGet]
         [Route("queues/show/{queueId}")]
         public IActionResult Show(int queueId)
