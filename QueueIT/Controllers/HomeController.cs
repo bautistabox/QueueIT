@@ -217,7 +217,7 @@ namespace QueueIT.Controllers
                     var body = "Click this link to reset your password and re-gain access to the site. <br/>" +
                                resetUrl;
                     _emailSender.SendEmail(user.Email, fullName, from, fromName, subject, body, true);
-                      
+                    
                 }
                 else
                 {

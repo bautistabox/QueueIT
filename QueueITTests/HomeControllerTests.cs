@@ -242,7 +242,6 @@ namespace QueueITTests
             
             actualResult.ShouldNotBeNull();
             actualResult.ShouldBeOfType<ViewResult>();
-        }
-        
+        }        
     }
 }

@@ -30,14 +30,14 @@
             <h4 class="display-6 secondary-text">
                 <span>Private</span>
             </h4>
-            <img class="lock" src="https://img.icons8.com/ios/50/000000/lock.png" alt="">
+            <img class="lock" src="/lock.png" alt="">
         }
         else
         {
             <h4 class="display-6 secondary-text">
                 <span>Public</span>
             </h4>
-            <img class="lock" src="https://img.icons8.com/ios/50/000000/unlock.png" alt="">
+            <img class="lock" src="/unlock.png" alt="">
         }
     
 </div>
@@ -241,8 +241,18 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="q-title" class="secondary-text">Queue Title</label>
-                        <input id="q-title" name="QueueTitle" class="modal-input form-control"
-                               value="@Model.CurrentQueue.Title" placeholder="Enter title"/>
+                        @if (@Model.CurrentQueue.Title != "Personal Queue")
+                        {
+                            <input id="q-title" name="QueueTitle" class="modal-input form-control"
+                                   value="@Model.CurrentQueue.Title" placeholder="Enter title"/>
+                        }
+                        else
+                        {
+                            <input id="q-title-readonly" name="QueueTitle" class="modal-input form-control"
+                                   value="@Model.CurrentQueue.Title" placeholder="Enter title" readonly title="Cannot Change Personal Queue Name"/>
+                        }
+                        
+                        
                         <br/>
                         <div class="custom-radio-group" name="QueueVisibilitySelector" aria-describedby="QueueVisibilitySelectorHelp">
                             @if (Model.CurrentQueue.IsPrivate)
@@ -279,11 +289,42 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="my-btn my-btn-primary" style="width: 80px;">Save</button>
+                    <div class="btn-group">
+                        <button class="btn my-btn-group-success">Save</button>
+                        @if (Model.CurrentQueue.Title != "Personal Queue")
+                        {
+                            <button type="button" id="del-btn" data-toggle="modal" data-target="#delete-q-modal" class="btn my-btn-danger">Delete</button>
+                        }
+                        else
+                        {
+                            <button type="button" id="del-btn" data-toggle="modal" data-target="#delete-q-modal" class="btn" disabled>Delete</button>
+                        }
+                    </div>
                 </div>
             </form>
         </div>
 
+    </div>
+</div>
+
+<div class="modal fade show" tabindex="-1" role="dialog" id="delete-q-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content background-grey">
+            <div class="modal-header">
+                <h4 class="card-title primary-text">Are you sure you want to delete this Queue and it's associated tasks?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="primary-text">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button type="button" style="margin-right: 1px;"id="del-q-btn" onclick="deleteQ(@Model.CurrentQueue.Id)" class="my-btn my-btn-danger"> 
+                    Delete Queue
+                </button>
+                <button type="button" style="margin-left: 0;" class="my-btn my-btn-nonthreat" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -294,7 +335,26 @@
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript">
     </script>
-    <script type="text/javascript">      
+    <script type="text/javascript">
+
+        $('#del-btn').click(function() {
+            $('#EditQueueModal').modal('toggle');
+        });
+
+        function deleteQ(qId) {
+            $.ajax({
+                type: 'post',
+                url: '/Queues/DeleteQueue',
+                beforeSend: function(req) {
+                    req.setRequestHeader('Content-Type', 'application/json');
+                },
+                data: JSON.stringify({ qId: qId }),
+                success: function() {
+                    window.location.replace('/Account/UserHome');
+                }
+            });
+        }
+
         function addTask() {
             // grab elements
             var addTaskBtn = document.getElementById('add-task');
@@ -338,60 +398,64 @@
         function createTask() {
             // grab elements 
             var newTask = document.getElementById('new-task');
-            if (newTask.value !== "") {
-                // create new kanban item
-                var $newTaskDiv =
-                    $('<div id="new-item" class="drag kanban-col-item new-item">' +
-                        newTask.value +
-                        '<div class="view"><a id="' +
-                        newTask.value +
-                        'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
-                        '<div class="edit"><a id="' +
-                        newTask.value +
-                        'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>');
+            if (newTask.value.length > 50) {
+                showAlert("Task Title shouldn't be longer than 50 characters.", "alert-danger");
+            } else {
+                if (newTask.value !== "") {
+                    // create new kanban item
+                    var $newTaskDiv =
+                        $('<div id="new-item" class="drag kanban-col-item new-item">' +
+                            newTask.value +
+                            '<div class="view"><a id="' +
+                            newTask.value +
+                            'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
+                            '<div class="edit"><a id="' +
+                            newTask.value +
+                            'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>');
 
 
-                var task = newTask.value;
-                if (task) {
-                    $.ajax({
-                        type: 'post',
-                        url: '/Queues/CreateTask',
-                        beforeSend: function(req) {
-                            req.setRequestHeader('Content-Type', 'application/json');
-                        },
-                        data: JSON.stringify(
-                            {
-                                taskTitle: task,
-                                queueId: @Model.CurrentQueue.Id,
-                                CreatorId: '@Model.CurrentUserId',
-                                Status: 0
-                            }),
-                        success: function(taskId) {
-                            if (taskId === -1) {
-                                showAlert("Task already exists. Enter a unique name", "alert-danger");
+                    var task = newTask.value;
+                    if (task) {
+                        $.ajax({
+                            type: 'post',
+                            url: '/Queues/CreateTask',
+                            beforeSend: function(req) {
+                                req.setRequestHeader('Content-Type', 'application/json');
+                            },
+                            data: JSON.stringify(
+                                {
+                                    taskTitle: task,
+                                    queueId: @Model.CurrentQueue.Id,
+                                    CreatorId: '@Model.CurrentUserId',
+                                    Status: 0
+                                }),
+                            success: function(taskId) {
+                                if (taskId === -1) {
+                                    showAlert("Task already exists. Enter a unique name", "alert-danger");
 
-                            } else {
-                                $newTaskDiv.id = taskId;
-                                $('#todo-body').append($newTaskDiv);
-                                document.getElementById('new-item').setAttribute("id", taskId);
-                                document.getElementById(newTask.value + 'DetailsBtn')
-                                    .setAttribute("onclick", "openModal(" + taskId + ", 'edit')");
-                                document.getElementById(newTask.value + 'DetailsViewBtn')
-                                    .setAttribute("onclick", "openModal(" + taskId + ", 'view')");
-                                newTask.value = "";
-                                $newTaskDiv.draggable({ stack: ".drag" });
-                                $newTaskDiv.draggable({
-                                    revert: function(event, ui) {
-                                        $(this).data("uiDraggable").originalPosition = {
-                                            top: 0,
-                                            left: 0
-                                        };
-                                        return !event;
-                                    }
-                                });
+                                } else {
+                                    $newTaskDiv.id = taskId;
+                                    $('#todo-body').append($newTaskDiv);
+                                    document.getElementById('new-item').setAttribute("id", taskId);
+                                    document.getElementById(newTask.value + 'DetailsBtn')
+                                        .setAttribute("onclick", "openModal(" + taskId + ", 'edit')");
+                                    document.getElementById(newTask.value + 'DetailsViewBtn')
+                                        .setAttribute("onclick", "openModal(" + taskId + ", 'view')");
+                                    newTask.value = "";
+                                    $newTaskDiv.draggable({ stack: ".drag" });
+                                    $newTaskDiv.draggable({
+                                        revert: function(event, ui) {
+                                            $(this).data("uiDraggable").originalPosition = {
+                                                top: 0,
+                                                left: 0
+                                            };
+                                            return !event;
+                                        }
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
         }
@@ -405,7 +469,7 @@
                 return !event;
             }
         });
-        
+
         function openModal(taskId, modalType) {
             $.ajax({
                 type: 'get',
@@ -483,9 +547,9 @@
                         $('#task-title').text(data.theTask.title);
                         $('#task-desc').text(data.theTask.description);
                         $('#task-assignee').empty();
-                        if (data.theTask.assigneeId != null){
+                        if (data.theTask.assigneeId != null) {
                             var str = "Task assigned to: " + data.name;
-                            
+
                             $('#task-assignee').append(str);
                         }
 
@@ -506,7 +570,7 @@
                     taskId: taskId
                 }),
                 success: function(resp) {
-                    $('#TaskDetailsModal').modal('toggle');      
+                    $('#TaskDetailsModal').modal('toggle');
                     showAlert("User Assigned to Task!", "alert-success");
                     sendTaskAssignedNotification(resp);
                 }
@@ -533,7 +597,7 @@
                 }
             });
         };
-        
+
         function showAlert(message, alertType) {
 
             $('#alert_placeholder').append('<div id="alertDiv" class="fade show alert ' +
@@ -550,36 +614,45 @@
         }
 
         function saveTask() {
-            $.ajax({
-                type: 'post',
-                url: '/Queues/DetailModal',
-                beforeSend: function(req) {
-                    req.setRequestHeader('Content-type', 'application/json');
-                },
-                data: JSON.stringify({
-                    taskId: $('#modalTaskId').val(),
-                    newTaskTitle: $('#modalTaskTitle').val(),
-                    newTaskDesc: $('#modalTaskDesc').val() || "",
-                    newTaskDueOn: $('#modalDueDatePicker').val()
-                }),
-                success: function(resp) {
-                    if (resp === -1) {
-                        showAlert("Task does not exist.", "alert-danger");
-                    }
-                    document.getElementById(resp).innerHTML = $('#modalTaskTitle').val() +
-                        '<div class="view"><a id="' +
-                        $('#modalTaskTitle').val() +
-                        'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
-                        '<div class="edit"><a id="' +
-                        $('#modalTaskTitle').val() +
-                        'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>';
-
-                    showAlert("Task saved!", "alert-success");
-                },
-                error: function() {
-                    showAlert("Error in saving Task", "alert-danger");
+            if ($('#modalTaskTitle').val().length > 50 || $('#modalTaskDesc').val().length > 255) {
+                if ($('#modalTaskTitle').val().length > 50) {
+                    showAlert("Task Title shouldn't be longer than 50 characters.", "alert-danger");
                 }
-            });
+                if ($('#modalTaskDesc').val().length > 255) {
+                    showAlert("Task Description shouldn't be longer than 255 characters.", "alert-danger");
+                }
+            } else {
+                $.ajax({
+                    type: 'post',
+                    url: '/Queues/DetailModal',
+                    beforeSend: function(req) {
+                        req.setRequestHeader('Content-type', 'application/json');
+                    },
+                    data: JSON.stringify({
+                        taskId: $('#modalTaskId').val(),
+                        newTaskTitle: $('#modalTaskTitle').val(),
+                        newTaskDesc: $('#modalTaskDesc').val() || "",
+                        newTaskDueOn: $('#modalDueDatePicker').val()
+                    }),
+                    success: function(resp) {
+                        if (resp === -1) {
+                            showAlert("Task does not exist.", "alert-danger");
+                        }
+                        document.getElementById(resp).innerHTML = $('#modalTaskTitle').val() +
+                            '<div class="view"><a id="' +
+                            $('#modalTaskTitle').val() +
+                            'DetailsViewBtn" data-target="#TaskDetailsViewModal" data-toggle="modal" href="#TaskDetailsViewModal"><i class="fa fa-search grow-secondary"></i></a></div>' +
+                            '<div class="edit"><a id="' +
+                            $('#modalTaskTitle').val() +
+                            'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>';
+
+                        showAlert("Task saved!", "alert-success");
+                    },
+                    error: function() {
+                        showAlert("Error in saving Task.", "alert-danger");
+                    }
+                });
+            }
         }
 
         $("#todo-footer").keyup(function(event) {
@@ -646,8 +719,7 @@
             });
         }
 
-        
-        
+
     </script>
 
 }

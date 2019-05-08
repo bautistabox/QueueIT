@@ -194,7 +194,7 @@
                             Public means anyone who visits the team's profile can see this Queue.
                         </small>
                     </div>
-                    <button class="my-btn my-btn-primary" style="color: #ffffff !important">Create Queue</button>
+                    <button id="create-q-btn" class="my-btn my-btn-primary" style="color: #ffffff !important">Create Queue</button>
                 </form>
             </div>
             <div class="modal-footer">
@@ -237,7 +237,6 @@
 
 @RenderSection("Scripts", required: false)
 <script>
-
     $.ajax({
         type: 'get',
         url: '/Account/GetLayoutData',
@@ -251,16 +250,22 @@
     });
 
     function fillHTML(resp) {
-        resp.teams.forEach(function(team) {
-            var $opt = $('<option value="' + team.id + '">' + team.name + '</option>');
-            $('#teamSelector').append($opt);
-        });
-        resp.queues.forEach(function(queue) {
-            var $a = $(
-                '<a class="dropdown-item primary-text" href="/Queues/Show/' + queue.id + '">' + queue.title + '</a>'
-            );
-            $('#queue-dd').append($a);
-        });
+        if(resp.teams.length> 0)
+        {
+            resp.teams.forEach(function(team) {
+                var $opt = $('<option value="' + team.id + '">' + team.name + '</option>');
+                $('#teamSelector').append($opt);
+            });
+        }
+        if(resp.queues.length > 0)
+        {
+            resp.queues.forEach(function(queue) {
+                var $a = $(
+                    '<a class="dropdown-item primary-text" href="/Queues/Show/' + queue.id + '">' + queue.title + '</a>'
+                );
+                $('#queue-dd').append($a);
+            });
+        }
         $('#inish').text(resp.userInitials);
         $('#user-dd').text(resp.userFirstName + " " + resp.userLastName);
 

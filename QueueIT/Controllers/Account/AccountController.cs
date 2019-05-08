@@ -55,12 +55,12 @@ namespace QueueIT.Controllers.Account
             var currentUserId = _userManager.GetUserId(HttpContext.User);
             var userTeams = _db.UserTeams.Where(ut => ut.UserId == currentUserId).ToList();
             var notifications = _db.Notifications.Where(n => n.ToId == currentUserId).ToList();
-            var queues = new List<Models.Queue>();
+            var queues = new List<Queue>();
             var teams = new List<Team>();
 
             if (userTeams.Count <= 0) return new LayoutViewModel
             {
-                Queues = new List<Models.Queue>(),
+                Queues = new List<Queue>(),
                 Teams = new List<Team>()
             };
             
@@ -69,9 +69,17 @@ namespace QueueIT.Controllers.Account
                 teams.Add(_db.Teams.FirstOrDefault(t => t.Id == userTeam.TeamId));
             }
 
+            var teamQueues = new List<Queue>();
             foreach (var team in teams)
             {
-                queues.Add(_db.Queues.FirstOrDefault(q => q.TeamId == team.Id));
+                teamQueues = _db.Queues.Where(q => q.TeamId == team.Id).ToList();
+                foreach (var teamQueue in teamQueues)
+                {
+                    if (teamQueue != null)
+                    {
+                        queues.Add(teamQueue);
+                    }
+                }
             }
 
             var user = _dbUser.Users.FirstOrDefault(u => u.Id == currentUserId);

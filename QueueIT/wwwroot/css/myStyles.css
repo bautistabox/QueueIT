@@ -900,6 +900,22 @@ td.team-member-td {
     min-width: 196px;
 }
 
+#del-btn:hover {
+    background-color: #CCCCCC !important;
+}
+
+#q-title-readonly {
+    cursor: not-allowed;
+}
+
+#q-title-readonly:hover {
+    background-color: #e9ecef;
+}
+
+#q-title-readonly:focus {
+    box-shadow: none;
+}
+
 #member-role-td {
     width: 14vw;
     min-width: 196px;

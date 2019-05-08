@@ -39,9 +39,10 @@
                 <br/>
                 <div style="width: 75%">
                     <div align="left">
+                        <h4 class="primary-text display-8">Queues</h4>
                         <div class="container-col">
                             <div id="q-container" class="container-row rounded shadow background-dark-grey">
-                            
+
                             </div>
                         </div>
                     </div>
@@ -55,11 +56,11 @@
                         <div class="errors" asp-validation-summary="All"></div>
                         <div class="form-group" align="left">
                             <label for="new-f-name" class="secondary-text">First Name</label>
-                            <input id="new-f-name" name="FirstName" class="form-control modal-input"/>
+                            <input id="new-f-name" name="FirstName" class="form-control modal-input" required/>
                             <label for="new-l-name" class="secondary-text">Last Name</label>
-                            <input id="new-l-name" name="LastName" class="form-control modal-input"/>
+                            <input id="new-l-name" name="LastName" class="form-control modal-input" required/>
                             <label for="new-u-name" class="secondary-text">Username</label>
-                            <input id="new-u-name" name="Username" class="form-control modal-input"/>
+                            <input id="new-u-name" name="Username" class="form-control modal-input" required/>
                             <input id="u-id" name="Id" type="hidden"/>
                         </div>
                         <div align="center"><button id="save-acct-details" class="my-btn my-btn-primary shadow">Save Account Details</button></div>

@@ -80,7 +80,9 @@ namespace QueueIT.Controllers.Queues
         {
             var isPrivate = (queueVisibility.Equals("private"));
 
-            var queue = new Models.Queue
+            if (string.IsNullOrEmpty(queueTitle) || (queueTitle == "Personal" ||  queueTitle == "Personal Queue")) return RedirectToAction("UserHome", "Account");
+            
+            var queue = new Queue
             {
                 Title = queueTitle,
                 TeamId = queueTeam,
@@ -94,6 +96,26 @@ namespace QueueIT.Controllers.Queues
             _db.SaveChanges();
 
             return RedirectToAction("UserHome", "Account");
+        }
+
+        [HttpPost]
+        public void DeleteQueue([FromBody] DeleteQueueInputModel model)
+        {
+            var queue = _db.Queues.FirstOrDefault(q => q.Id == model.QId);
+            if (queue == null || queue.Title == "Personal Queue") return;
+            
+            
+            
+            var tasks = _db.Tasks.Where(t => t.QueueId == model.QId).ToList();
+            
+            foreach (var task in tasks)
+            {
+                _db.Tasks.Remove(task);
+            }
+
+            _db.Queues.Remove(queue);
+
+            _db.SaveChanges();
         }
 
         [HttpPost]
