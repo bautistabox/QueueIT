@@ -42,6 +42,7 @@ namespace QueueIT.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model)
         {
+            ViewData["username"] = model.LoginUserName;
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.LoginUserName);
@@ -246,28 +247,23 @@ namespace QueueIT.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View();
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
+                var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+                if (result.Succeeded) return View("Index");
+                foreach (var error in result.Errors)
                 {
-                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
-
-                    if (!result.Succeeded)
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
-
-                        return View();
-                    }
-
-                    return View("Success");
+                    ModelState.AddModelError("", error.Description);
                 }
                 
-                ModelState.AddModelError("", "Invalid Request");
+                return View();
+
             }
+                
+            ModelState.AddModelError("", "Invalid Request");
 
             return View();
         }

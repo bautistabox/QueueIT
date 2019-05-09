@@ -9,7 +9,7 @@
 </div>
 
 <br/>
-@if (@Model.CurrentUserId == Model.CurrentQueue.CreatorId)
+@if (@Model.CurrentUserId == Model.CurrentQueue.CreatorId || Model.CurrentUserId == Model.CurrentTeam.CreatorId)
 {
     <div align="center">
         <button class="my-btn my-btn-primary shadow" style="width: 100px;"

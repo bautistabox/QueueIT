@@ -1,6 +1,7 @@
 ﻿@model RegisterModel
 @{
     ViewData["Title"] = "Home Page";
+    var username = ViewData["username"];
 }
 <div class="row">
     <div class="column">
@@ -18,7 +19,7 @@
         <div class="container-col">
             <form class="border-bottom" asp-controller="Home" asp-action="Login" method="post">
                 <div class="container-row">
-                    <input class="log-input" name="LoginUserName" type="text" required placeholder="Username"
+                    <input class="log-input" name="LoginUserName" type="text" value="@username" required placeholder="Username"
                            oninvalid="setCustomValidity('Please enter a username')"
                            onchange="try { setCustomValidity('') } catch (e) {}"/>
                     <div class="container-col">

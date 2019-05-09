@@ -85,6 +85,13 @@ a.link-danger:hover {
     overflow-y: hidden;
 }
 
+.scrollable-qs {
+    margin: 0 0 0 0;
+    height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
 .table td {
     border-top: none;
 }
@@ -556,6 +563,7 @@ button.home-card {
     background-image: linear-gradient(180deg, #ff3c00, #ff0049);
     color: #FFFFFF;
     border: 1.5px;
+    min-width: 151px;
 }
 
 button.home-card:hover {

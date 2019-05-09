@@ -359,15 +359,15 @@
         if (resp.queues.length > 0) {
             resp.queues.forEach(function(queue) {
 
-                var $div = $('<div class="card m-10">' +
+                var $td = $('<td><div class="card m-10">' +
                     '<form action="/queues/show/' +
                     queue.id +
                     '" method="GET">' +
                     '<button class="card-body home-card shadow">' +
                     queue.title +
                     '</button>' +
-                    '</form></div>');
-                $('#q-container').append($div);
+                    '</form></div></td>');
+                $('#q-scroll').append($td);
 
 
             });
