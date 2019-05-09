@@ -6,6 +6,7 @@ namespace QueueIT.Models
     public class TeamShowViewModel
     {
         public string CurrentUserId { get; set; }
+        public bool IsCurrentUserAdmin { get; set; }
         public int TeamId { get; set; }
         public string TeamName { get; set; }
         public string TeamCreatorId { get; set; }

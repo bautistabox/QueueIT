@@ -51,5 +51,7 @@
       <EmbeddedResource Include="Migrations\Script0009 - create table to hold user notification settings.sql" />
       <None Remove="Migrations\Script0010 - create table to store team-urls.sql" />
       <EmbeddedResource Include="Migrations\Script0010 - create table to store team-urls.sql" />
+      <None Remove="Migrations\Script0011 - alter team description column to allow for a longer team description.sql" />
+      <EmbeddedResource Include="Migrations\Script0011 - alter team description column to allow for a longer team description.sql" />
     </ItemGroup>
 </Project>

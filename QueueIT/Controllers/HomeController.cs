@@ -167,7 +167,7 @@ namespace QueueIT.Controllers
                     return View("Index");
                 }
 
-                return View("Success");
+                return View("Index");
             }
             
             ModelState.AddModelError("reg-err", "");
@@ -197,6 +197,13 @@ namespace QueueIT.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult FourOhFour()
+        {
+            return View();
+        }
+        
 
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)

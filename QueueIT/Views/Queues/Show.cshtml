@@ -229,7 +229,7 @@
      aria-labelledby="EditQueueModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content background-grey">
-            <form asp-action="QueueUpdate" asp-controller="Queues" method="POST">
+            <form id="update-q-form" asp-action="QueueUpdate" asp-controller="Queues" method="POST">
                 <input type="hidden" name="QueueId" value="@Model.CurrentQueue.Id"/>
                 <div class="modal-header">
                     <h4 class="modal-title secondary-text" id="EditQueueModalLabel">Edit Queue</h4>
@@ -290,20 +290,22 @@
                 </div>
                 <div class="modal-footer">
                     <div class="btn-group">
-                        <button class="btn my-btn-group-success">Save</button>
+                        <button type="button" onclick="checkForm()" class="btn my-btn-group-success">Save</button>
                         @if (Model.CurrentQueue.Title != "Personal Queue")
                         {
                             <button type="button" id="del-btn" data-toggle="modal" data-target="#delete-q-modal" class="btn my-btn-danger">Delete</button>
                         }
                         else
                         {
-                            <button type="button" id="del-btn" data-toggle="modal" data-target="#delete-q-modal" class="btn" disabled>Delete</button>
+                            <button type="button" id="del-btn" data-toggle="modal" data-target="#delete-q-modal" style="height: 36px;" class="btn" disabled>Delete</button>
                         }
                     </div>
-                </div>
+                </div>  
             </form>
-        </div>
+            <div id="modal_alert_placeholder">
 
+            </div>
+        </div>
     </div>
 </div>
 
@@ -336,6 +338,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript">
     </script>
     <script type="text/javascript">
+
+        var taskSaved = window.localStorage.getItem("task-saved");
+        if (taskSaved === "1") {
+            showAlert("Task saved!", "alert-success");
+            window.localStorage.removeItem("task-saved");
+        }
+
+        function checkForm() {
+            if ($('#q-title').val().length > 50) {
+                showModalAlert("Queue Title shouldn't be more than 50 characters.", "alert-danger");
+                return false;
+            } else if ($('#q-title').val().length < 1) {
+                showModalAlert("You must give this Queue a title.", "alert-danger");
+                return false;
+            } else {
+                $('#update-q-form').submit();
+                return true;
+            }
+        };
 
         $('#del-btn').click(function() {
             $('#EditQueueModal').modal('toggle');
@@ -441,6 +462,7 @@
                                         .setAttribute("onclick", "openModal(" + taskId + ", 'edit')");
                                     document.getElementById(newTask.value + 'DetailsViewBtn')
                                         .setAttribute("onclick", "openModal(" + taskId + ", 'view')");
+                                    
                                     newTask.value = "";
                                     $newTaskDiv.draggable({ stack: ".drag" });
                                     $newTaskDiv.draggable({
@@ -570,7 +592,6 @@
                     taskId: taskId
                 }),
                 success: function(resp) {
-                    $('#TaskDetailsModal').modal('toggle');
                     showAlert("User Assigned to Task!", "alert-success");
                     sendTaskAssignedNotification(resp);
                 }
@@ -593,7 +614,7 @@
                     assigneeId: task.assigneeId
                 }),
                 success: function() {
-                    showAlert("notification sent", "alert-success");
+                    
                 }
             });
         };
@@ -601,6 +622,21 @@
         function showAlert(message, alertType) {
 
             $('#alert_placeholder').append('<div id="alertDiv" class="fade show alert ' +
+                alertType +
+                '"><a class="close" data-dismiss="alert">&times;</a><span>' +
+                message +
+                '</span></div>');
+
+            setTimeout(
+                function() { // this will automatically close the alert and remove this if the users doesnt close it in 5 secs
+                    $("#alertDiv").remove();
+                },
+                5000);
+        }
+        
+        function showModalAlert(message, alertType) {
+
+            $('#modal_alert_placeholder').append('<div id="alertDiv" style="margin-bottom: 0" class="fade show alert ' +
                 alertType +
                 '"><a class="close" data-dismiss="alert">&times;</a><span>' +
                 message +
@@ -645,8 +681,11 @@
                             '<div class="edit"><a id="' +
                             $('#modalTaskTitle').val() +
                             'DetailsBtn" data-target="#TaskDetailsModal" data-toggle="modal" href="#TaskDetailsModal"><i class="fa fa-pencil grow-secondary"></i></a></div></div>';
-
-                        showAlert("Task saved!", "alert-success");
+                        window.localStorage.setItem("task-saved", "1");
+                        window.location.reload();
+                        
+                        
+                        
                     },
                     error: function() {
                         showAlert("Error in saving Task.", "alert-danger");

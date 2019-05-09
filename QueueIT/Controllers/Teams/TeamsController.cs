@@ -131,11 +131,13 @@ namespace QueueIT.Controllers.Teams
                 return RedirectToAction("Index", "Home");
             }
 
-            teamMemberUsers.Reverse();
+            var currentUserTeam = _db.UserTeams.FirstOrDefault(ut => ut.UserId == currentUserId && ut.TeamId == team.Id);
+            if (currentUserTeam == null) return RedirectToAction("Index", "Home");
             
             var model = new TeamShowViewModel
             {
                 CurrentUserId = currentUserId,
+                IsCurrentUserAdmin = currentUserTeam.IsAdmin,
                 TeamId = team.Id,
                 TeamName = team.Name,
                 TeamCreatorId = team.CreatorId,
@@ -244,8 +246,15 @@ namespace QueueIT.Controllers.Teams
             
             if (team == null) return RedirectToAction("Show", new {teamId = model.TeamId});
             if(team.Name == "Personal") return RedirectToAction("Show", new {teamId = model.TeamId});
+            if (string.IsNullOrEmpty(model.NewTeamDescription))
+            {
+                model.NewTeamDescription = model.NewTeamName + "'s description.";
+            }
             
-            if (model.NewTeamName != "" || model.NewTeamName != null)
+            if(model.NewTeamName.Length > 50 || model.NewTeamName.Length < 1) return RedirectToAction("Show", new {teamId = model.TeamId}); 
+            if(model.NewTeamDescription.Length > 450) return RedirectToAction("Show", new {teamId = model.TeamId});
+            
+            if (!string.IsNullOrEmpty(model.NewTeamName))
             {
                 team.Name = model.NewTeamName;
             }
@@ -254,6 +263,7 @@ namespace QueueIT.Controllers.Teams
             {
                 model.NewTeamDescription = model.NewTeamName + "'s description.";
             }
+            
             team.Description = model.NewTeamDescription;
 
             _db.SaveChanges();

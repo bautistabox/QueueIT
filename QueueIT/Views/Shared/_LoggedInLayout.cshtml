@@ -119,7 +119,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-controller="Teams" asp-action="CreateTeam" method="POST">
+                <form id="create-team-form" asp-controller="Teams" asp-action="CreateTeam" method="POST">
                     <div class="form-group">
                         <label for="teamName" class="secondary-text">Team Name</label>
                         <input type="text" id="teamName" name="teamName" class="form-control modal-input"
@@ -133,7 +133,7 @@
                             Provide a brief description of your team.
                         </small>
                     </div>
-                    <button class="my-btn my-btn-primary right">Create Team</button>
+                    <button type="button" onclick="checkCreateTeamForm()" class="my-btn my-btn-primary right">Create Team</button>
                 </form>
             </div>
             <div class="modal-footer">
@@ -141,6 +141,9 @@
                     A Team is a group of people and their Queues.
                     Work together to complete tasks and organize your workload!
                 </small>
+            </div>
+            <div id="create-team-alert-placeholder">
+                
             </div>
         </div>
     </div>
@@ -158,7 +161,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-controller="Queues" asp-action="CreateQueue" method="POST">
+                <form id="create-q-form" asp-controller="Queues" asp-action="CreateQueue" method="POST">
                     <div class="form-group">
                         <label for="queueTitle" class="secondary-text">Queue Title</label>
                         <input type="text" class="form-control modal-input" id="queueTitle"
@@ -194,7 +197,7 @@
                             Public means anyone who visits the team's profile can see this Queue.
                         </small>
                     </div>
-                    <button id="create-q-btn" class="my-btn my-btn-primary" style="color: #ffffff !important">Create Queue</button>
+                    <button type="button" id="create-q-btn" onclick="checkCreateQForm()" class="my-btn my-btn-primary" style="color: #ffffff !important">Create Queue</button>
                 </form>
             </div>
             <div class="modal-footer">
@@ -202,6 +205,9 @@
                     A Queue is a group of tasks that can be organized into one of four columns:
                     <b>Todo</b>, <b>Doing</b>, <b>Done</b>, and <b>Blocked</b>.
                 </small>
+            </div>
+            <div id="create_Q_modal_alert_placeholder">
+
             </div>
         </div>
     </div>
@@ -248,6 +254,63 @@
             fillHTML(resp);
         }
     });
+    
+    function checkCreateQForm() {
+        if ($('#queueTitle').val().length > 50) {
+            showCreateQModalAlert("Queue Title shouldn't be more than 50 characters.", "alert-danger");
+            return false;
+        } else if ($('#queueTitle').val().length < 1) {
+            showCreateQModalAlert("You must give this Queue a title.", "alert-danger");
+            return false;
+        } else {
+            $('#create-q-form').submit();
+            return true;
+        }
+    }
+    
+    function showCreateQModalAlert(message, alertType) {
+        $('#create_Q_modal_alert_placeholder').append('<div id="alertDiv" style="margin-bottom: 0" class="fade show alert ' +
+            alertType +
+            '"><a class="close" data-dismiss="alert">&times;</a><span>' +
+            message +
+            '</span></div>');
+
+        setTimeout(
+            function() { // this will automatically close the alert and remove this if the users doesnt close it in 5 secs
+                $("#alertDiv").remove();
+            },
+            5000);
+    }
+    
+    function checkCreateTeamForm() {
+        if ($('#teamName').val().length > 50 || $('#teamName').val().length < 1) {
+            if ($('#teamName').val().length > 50) {
+                showCreateTeamModalAlert("Team name should not be longer than 50 characters.", "alert-danger");
+            } else {
+                showCreateTeamModalAlert("You must give the team a name.", "alert-danger");
+            }
+            return false;
+        }
+        if ($('#teamDesc').val().length > 450) {
+            showCreateTeamModalAlert("Team Description is not required, but is limited to 450 characters.", "alert-danger");
+            return false;
+        }
+        $('#create-team-form').submit();
+    }
+    
+    function showCreateTeamModalAlert(message, alertType) {
+        $('#create-team-alert-placeholder').append('<div id="alertDiv" style="margin-bottom: 0" class="fade show alert ' +
+            alertType +
+            '"><a class="close" data-dismiss="alert">&times;</a><span>' +
+            message +
+            '</span></div>');
+
+        setTimeout(
+            function() { // this will automatically close the alert and remove this if the users doesnt close it in 5 secs
+                $("#alertDiv").remove();
+            },
+            5000);
+    }
 
     function fillHTML(resp) {
         if(resp.teams.length> 0)

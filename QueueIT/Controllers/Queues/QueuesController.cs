@@ -26,8 +26,13 @@ namespace QueueIT.Controllers.Queues
         [HttpPost]
         public IActionResult QueueUpdate(QueueUpdateInputModel model)
         {
+            Console.WriteLine("In QUEUE_UPDATE");
             var queue = _db.Queues.FirstOrDefault(q => q.Id == model.QueueId);
-            if (queue == null) return RedirectToAction("Show", new {queueId = model.QueueId});
+            if (queue == null || string.IsNullOrEmpty(model.QueueTitle)) return RedirectToAction("Show", new {queueId = model.QueueId});
+
+            if (model.QueueTitle.Length > 50) return RedirectToAction("Show", new {queueId = model.QueueId});
+            
+            
             queue.Title = model.QueueTitle;
             queue.IsPrivate = model.QueueVisibility.Equals("private");
             _db.SaveChanges();
